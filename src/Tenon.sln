@@ -3,9 +3,44 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Extensions", "Tenon.Extensions\Tenon.Extensions.csproj", "{D498B2DF-E630-4EA2-BC25-C46622C0AB36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Repository.EfCore", "Tenon.Repository.EfCore\Tenon.Repository.EfCore.csproj", "{0F45B922-9394-4FC1-8D74-B9FB3D495C6A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E105A163-9660-4A89-8CA9-C242762B8613}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Repository.EfCoreTests", "..\test\Tenon.Repository.EfCoreTests\Tenon.Repository.EfCoreTests.csproj", "{A3719960-7931-49CB-B8D4-E33D02B14823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Repository", "Tenon.Repository\Tenon.Repository.csproj", "{7FDFFDCC-11C0-4034-B65A-A70680AB5F20}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D498B2DF-E630-4EA2-BC25-C46622C0AB36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D498B2DF-E630-4EA2-BC25-C46622C0AB36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D498B2DF-E630-4EA2-BC25-C46622C0AB36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D498B2DF-E630-4EA2-BC25-C46622C0AB36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F45B922-9394-4FC1-8D74-B9FB3D495C6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F45B922-9394-4FC1-8D74-B9FB3D495C6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F45B922-9394-4FC1-8D74-B9FB3D495C6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F45B922-9394-4FC1-8D74-B9FB3D495C6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3719960-7931-49CB-B8D4-E33D02B14823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3719960-7931-49CB-B8D4-E33D02B14823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3719960-7931-49CB-B8D4-E33D02B14823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3719960-7931-49CB-B8D4-E33D02B14823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FDFFDCC-11C0-4034-B65A-A70680AB5F20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FDFFDCC-11C0-4034-B65A-A70680AB5F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FDFFDCC-11C0-4034-B65A-A70680AB5F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FDFFDCC-11C0-4034-B65A-A70680AB5F20}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A3719960-7931-49CB-B8D4-E33D02B14823} = {E105A163-9660-4A89-8CA9-C242762B8613}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}
