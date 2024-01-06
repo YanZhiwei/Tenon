@@ -1,15 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Tenon.Repository.EfCore;
 using Tenon.Repository.EfCoreTests.Entities;
 
 namespace Tenon.Repository.EfCoreTests;
 
-public sealed class AuditTestDbContext : AuditDbContext<long>
+public sealed class AuditTestDbContext : AuditDbContext
 {
     public AuditTestDbContext(DbContextOptions option) : base(option)
     {
-      
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Name, "tenon"),
+            new(ClaimTypes.NameIdentifier, "8888")
+        };
+        var cookieClaimsIdentity = new ClaimsIdentity(claims, "Cookies");
+        var efClaimsPrincipal = new ClaimsPrincipal(cookieClaimsIdentity);
+        ClaimsPrincipal = efClaimsPrincipal;
     }
 
     public DbSet<Blog> Blogs { get; set; }
@@ -17,7 +25,7 @@ public sealed class AuditTestDbContext : AuditDbContext<long>
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-       // optionsBuilder.UseLazyLoadingProxies();
+        // optionsBuilder.UseLazyLoadingProxies();
         optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
     }
 
@@ -27,14 +35,5 @@ public sealed class AuditTestDbContext : AuditDbContext<long>
         modelBuilder.Entity<Blog>().ToTable("blogs");
         modelBuilder.Entity<Post>().ToTable("posts");
         base.OnModelCreating(modelBuilder);
-    }
-
-    protected override Operator<long>? GetOperator()
-    {
-        return new Operator<long>
-        {
-            Id = 0,
-            Account = "Test"
-        };
     }
 }
