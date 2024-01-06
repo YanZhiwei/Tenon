@@ -75,6 +75,10 @@ public class EfRepositoryTests
             var blogRepository = new EfRepository<Blog>(context);
             var result = await blogRepository.InsertAsync(blog);
             Assert.AreEqual(result > 0, true);
+            var findedBlog = await blogRepository.GetAsync(4, false);
+            findedBlog.Url = "http://sample2.com";
+            result = await blogRepository.UpdateAsync(findedBlog);
+            Assert.AreEqual(result > 0, true);
         }
     }
 

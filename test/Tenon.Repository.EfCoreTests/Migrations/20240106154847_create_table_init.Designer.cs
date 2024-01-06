@@ -11,14 +11,46 @@ using Tenon.Repository.EfCoreTests;
 namespace Tenon.Repository.EfCoreTests.Migrations
 {
     [DbContext(typeof(AuditTestDbContext))]
-    [Migration("20240104143912_create_table_unitTest")]
-    partial class create_table_unitTest
+    [Migration("20240106154847_create_table_init")]
+    partial class create_table_init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.14");
+
+            modelBuilder.Entity("Tenon.Repository.EfCore.EfAuditEntry", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Changes")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EntityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EntityName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("NameIdentifier")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditEntries");
+                });
 
             modelBuilder.Entity("Tenon.Repository.EfCoreTests.Entities.Blog", b =>
                 {
@@ -30,6 +62,12 @@ namespace Tenon.Repository.EfCoreTests.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("ModifyBy")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Rating")

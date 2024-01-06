@@ -30,14 +30,21 @@ public class EfRepository<TEntity> : IRepository<TEntity, long>, IEfRepository<T
     public virtual async Task<TEntity?> GetAsync(long keyValue, bool noTracking = true,
         CancellationToken token = default)
     {
-        return await GetAsync(keyValue, new List<Expression<Func<TEntity, dynamic>>>(), noTracking, token);
+        return await GetAsync(keyValue, navigationPropertyPath: null, noTracking, token);
     }
 
     public virtual async Task<TEntity?> GetAsync(long keyValue,
         IEnumerable<Expression<Func<TEntity, dynamic>>> navigationPropertyPaths = null, bool noTracking = true,
         CancellationToken token = default)
     {
-        return await GetAsync(keyValue, new List<Expression<Func<TEntity, dynamic>>>(), noTracking, token);
+        if (navigationPropertyPaths is null)
+            return await GetAsync(keyValue, navigationPropertyPath: null, noTracking, token);
+        if (navigationPropertyPaths.Count() == 1)
+            return await GetAsync(keyValue, navigationPropertyPaths.First(), noTracking, token);
+        var query = GetDbSet(noTracking).Where(t => t.Id == keyValue);
+        foreach (var navigationPath in navigationPropertyPaths)
+            query = query.Include(navigationPath);
+        return await query.FirstOrDefaultAsync(token);
     }
 
     public virtual async Task<TEntity?> GetAsync(long keyValue,
