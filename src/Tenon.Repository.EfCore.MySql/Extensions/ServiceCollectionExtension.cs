@@ -8,13 +8,19 @@ namespace Tenon.Repository.EfCore.MySql.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddEfCoreMySql(this IServiceCollection services,
-        Action<DbContextOptionsBuilder> optionsBuilder)
+    public static IServiceCollection AddEfCoreMySql<TDbContext>(this IServiceCollection services,
+        Action<DbContextOptionsBuilder>? optionsBuilder = null)
+        where TDbContext : MysqlDbContext
     {
         services.TryAddScoped<IUnitOfWork, MySqlUnitOfWork>();
-        services.TryAddScoped(typeof(IEfRepository<,>), typeof(EfRepository<>));
-        services.AddDbContext<DbContext, MysqlDbContext>(optionsBuilder);
+        services.TryAddScoped(typeof(IEfRepository<EfEntity, long>), typeof(EfRepository<EfEntity>));
+        if (optionsBuilder != null)
+            services.AddDbContext<DbContext, TDbContext>(optionsBuilder);
+        else
+            services.AddDbContext<DbContext, TDbContext>(option =>
+            {
 
+            });
         return services;
     }
 }

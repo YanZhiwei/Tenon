@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Options;
 namespace Tenon.Repository.EfCore.MySql
 {
     public class MysqlDbContext : AuditDbContext
@@ -12,7 +12,10 @@ namespace Tenon.Repository.EfCore.MySql
 
         public MysqlDbContext(DbContextOptions options) : base(options)
         {
+
         }
+
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
