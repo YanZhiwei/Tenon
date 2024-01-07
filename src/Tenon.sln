@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Repository", "Tenon.R
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{16309650-073B-49E8-B044-D0098E84B640}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Repository.EfCore.MySql", "Tenon.Repository.EfCore.MySql\Tenon.Repository.EfCore.MySql.csproj", "{DC165CD3-8105-446E-AA87-45290052DA5C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Repository.EfCore.MySqlTests", "..\test\Tenon.Repository.EfCore.MySqlTests\Tenon.Repository.EfCore.MySqlTests.csproj", "{FE29948E-7614-4CFF-9F33-C91BA8F2456A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,12 +41,21 @@ Global
 		{7FDFFDCC-11C0-4034-B65A-A70680AB5F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FDFFDCC-11C0-4034-B65A-A70680AB5F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FDFFDCC-11C0-4034-B65A-A70680AB5F20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC165CD3-8105-446E-AA87-45290052DA5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC165CD3-8105-446E-AA87-45290052DA5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC165CD3-8105-446E-AA87-45290052DA5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC165CD3-8105-446E-AA87-45290052DA5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE29948E-7614-4CFF-9F33-C91BA8F2456A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE29948E-7614-4CFF-9F33-C91BA8F2456A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE29948E-7614-4CFF-9F33-C91BA8F2456A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE29948E-7614-4CFF-9F33-C91BA8F2456A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A3719960-7931-49CB-B8D4-E33D02B14823} = {E105A163-9660-4A89-8CA9-C242762B8613}
+		{FE29948E-7614-4CFF-9F33-C91BA8F2456A} = {E105A163-9660-4A89-8CA9-C242762B8613}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}
