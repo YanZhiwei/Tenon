@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tenon.Repository.EfCore;
 
-namespace Tenon.Repository.EfCoreTests.Entities
+namespace Tenon.Repository.EfCore.SqliteTests.Entities
 {
     [PrimaryKey(nameof(Id))]
     public class Blog : EfBasicAuditEntity, IFullAuditable

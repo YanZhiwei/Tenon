@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Tenon.Repository.EfCoreTests.Migrations
+namespace Tenon.Repository.EfCore.SqliteTests.Migrations
 {
     /// <inheritdoc />
     public partial class create_table_init : Migration

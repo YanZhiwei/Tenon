@@ -1,6 +1,4 @@
-﻿using Tenon.Repository.EfCore;
-
-namespace Tenon.Repository.EfCoreTests.Entities;
+﻿namespace Tenon.Repository.EfCore.SqliteTests.Entities;
 
 public class Post : EfBasicAuditEntity
 {

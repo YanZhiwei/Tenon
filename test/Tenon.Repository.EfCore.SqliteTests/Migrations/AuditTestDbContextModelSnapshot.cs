@@ -3,13 +3,13 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Tenon.Repository.EfCoreTests;
+using Tenon.Repository.EfCore.SqliteTests;
 
 #nullable disable
 
-namespace Tenon.Repository.EfCoreTests.Migrations
+namespace Tenon.Repository.EfCore.SqliteTests.Migrations
 {
-    [DbContext(typeof(AuditTestDbContext))]
+    [DbContext(typeof(SqliteTestDbContext))]
     partial class AuditTestDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

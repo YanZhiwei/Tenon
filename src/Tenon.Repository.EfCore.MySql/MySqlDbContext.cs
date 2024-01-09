@@ -1,23 +1,13 @@
-﻿using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Tenon.Repository.EfCore.MySql
+namespace Tenon.Repository.EfCore.MySql;
+
+public abstract class MySqlDbContext(DbContextOptions options, IAuditContextAccessor auditContext)
+    : AuditDbContext(options, auditContext)
 {
-    public class MysqlDbContext : AuditDbContext
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public MysqlDbContext(DbContextOptions options, ClaimsPrincipal claimsPrincipal) : base(options, claimsPrincipal)
-        {
-
-        }
-
-        public MysqlDbContext(DbContextOptions options) : base(options)
-        {
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.HasCharSet("utf8mb4 ");
-            base.OnModelCreating(modelBuilder);
-        }
+        modelBuilder.HasCharSet("utf8mb4");
+        base.OnModelCreating(modelBuilder);
     }
 }

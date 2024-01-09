@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Tenon.Repository.EfCoreTests;
+namespace Tenon.Repository.EfCore.SqliteTests;
 
-public class AuditDbContextFactory : IDesignTimeDbContextFactory<AuditTestDbContext>
+public class SqliteTestDbFactory : IDesignTimeDbContextFactory<SqliteTestDbContext>
 {
-    public AuditTestDbContext CreateDbContext(string[] args)
+    public SqliteTestDbContext CreateDbContext(string[] args)
     {
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -14,10 +14,10 @@ public class AuditDbContextFactory : IDesignTimeDbContextFactory<AuditTestDbCont
 
         var configuration = builder.Build();
         var connectString = configuration.GetConnectionString("DefaultConnection");
-        var options = new DbContextOptionsBuilder<AuditTestDbContext>()
+        var options = new DbContextOptionsBuilder<SqliteTestDbContext>()
             //.UseLazyLoadingProxies()
             .UseSqlite(connectString)
             .Options;
-        return new AuditTestDbContext(options);
+        return new SqliteTestDbContext(options, null);
     }
 }

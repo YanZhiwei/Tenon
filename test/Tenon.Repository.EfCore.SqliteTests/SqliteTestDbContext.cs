@@ -1,14 +1,18 @@
 ﻿using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Tenon.Repository.EfCore.MySql;
-using Tenon.Repository.EfCore.MySqlTests.Entities;
+using Tenon.Repository.EfCore.Sqlite;
+using Tenon.Repository.EfCore.SqliteTests.Entities;
 
-namespace Tenon.Repository.EfCore.MySqlTests;
+namespace Tenon.Repository.EfCore.SqliteTests;
 
-public sealed class MySqlTestDbContext(DbContextOptions options, IAuditContextAccessor auditContext)
-    : MySqlDbContext(options, auditContext)
+public sealed class SqliteTestDbContext : SqliteDbContext
 {
+    public SqliteTestDbContext(DbContextOptions options, EfCore.IAuditContextAccessor auditContext) : base(options,
+        auditContext)
+    {
+    }
+
     public DbSet<Blog> Blogs { get; set; }
     public DbSet<Post> Posts { get; set; }
 
@@ -26,7 +30,7 @@ public sealed class MySqlTestDbContext(DbContextOptions options, IAuditContextAc
         base.OnModelCreating(modelBuilder);
     }
 
-    protected override long GetUserId(IAuditContextAccessor context)
+    protected override long GetUserId(EfCore.IAuditContextAccessor context)
     {
         var claims = new List<Claim>
         {
