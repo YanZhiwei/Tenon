@@ -21,6 +21,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Repository.EfCore.MyS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Repository.EfCore.SqliteTests", "..\test\Tenon.Repository.EfCore.SqliteTests\Tenon.Repository.EfCore.SqliteTests.csproj", "{91FB1838-D738-4591-8E01-2F201BEAA8E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Redis", "Tenon.Redis\Tenon.Redis.csproj", "{4D406FF1-4797-417C-86D6-4F73FD824E69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Redis.StackExchangeProvider", "Tenon.Redis.StackExchangeProvider\Tenon.Redis.StackExchangeProvider.csproj", "{0FA80F50-D367-4CEE-9FC3-795D1901EA69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.DistributedLocker", "Tenon.DistributedLocker\Tenon.DistributedLocker.csproj", "{9BE51950-0237-4E5E-9A62-82D89E090A21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +61,18 @@ Global
 		{91FB1838-D738-4591-8E01-2F201BEAA8E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91FB1838-D738-4591-8E01-2F201BEAA8E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91FB1838-D738-4591-8E01-2F201BEAA8E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D406FF1-4797-417C-86D6-4F73FD824E69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D406FF1-4797-417C-86D6-4F73FD824E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D406FF1-4797-417C-86D6-4F73FD824E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D406FF1-4797-417C-86D6-4F73FD824E69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FA80F50-D367-4CEE-9FC3-795D1901EA69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FA80F50-D367-4CEE-9FC3-795D1901EA69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FA80F50-D367-4CEE-9FC3-795D1901EA69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FA80F50-D367-4CEE-9FC3-795D1901EA69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BE51950-0237-4E5E-9A62-82D89E090A21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BE51950-0237-4E5E-9A62-82D89E090A21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BE51950-0237-4E5E-9A62-82D89E090A21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BE51950-0237-4E5E-9A62-82D89E090A21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
