@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Tenon.Repository.EfCoreTests;
+using Tenon.Repository.EfCore.SqliteTests;
 
 #nullable disable
 
-namespace Tenon.Repository.EfCoreTests.Migrations
+namespace Tenon.Repository.EfCore.SqliteTests.Migrations
 {
-    [DbContext(typeof(AuditTestDbContext))]
+    [DbContext(typeof(SqliteTestDbContext))]
     [Migration("20240106154847_create_table_init")]
     partial class create_table_init
     {

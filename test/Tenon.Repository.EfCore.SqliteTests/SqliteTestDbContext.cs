@@ -1,16 +1,16 @@
 ﻿using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Tenon.Repository.EfCore;
-using Tenon.Repository.EfCoreTests.Entities;
+using Tenon.Repository.EfCore.Sqlite;
+using Tenon.Repository.EfCore.SqliteTests.Entities;
 
-namespace Tenon.Repository.EfCoreTests;
+namespace Tenon.Repository.EfCore.SqliteTests;
 
-public sealed class AuditTestDbContext : AuditDbContext
+public sealed class SqliteTestDbContext : SqliteDbContext
 {
-    public AuditTestDbContext(DbContextOptions options, EfCore.IAuditContextAccessor auditContext) : base(options, auditContext)
+    public SqliteTestDbContext(DbContextOptions options, EfCore.IAuditContextAccessor auditContext) : base(options,
+        auditContext)
     {
-     
     }
 
     public DbSet<Blog> Blogs { get; set; }
