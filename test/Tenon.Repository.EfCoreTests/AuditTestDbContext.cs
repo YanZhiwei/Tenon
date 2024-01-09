@@ -8,16 +8,9 @@ namespace Tenon.Repository.EfCoreTests;
 
 public sealed class AuditTestDbContext : AuditDbContext
 {
-    public AuditTestDbContext(DbContextOptions option) : base(option)
+    public AuditTestDbContext(DbContextOptions options, EfCore.IAuditContextAccessor auditContext) : base(options, auditContext)
     {
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.Name, "tenon"),
-            new(ClaimTypes.NameIdentifier, "8888")
-        };
-        var cookieClaimsIdentity = new ClaimsIdentity(claims, "Cookies");
-        var efClaimsPrincipal = new ClaimsPrincipal(cookieClaimsIdentity);
-        ClaimsPrincipal = efClaimsPrincipal;
+     
     }
 
     public DbSet<Blog> Blogs { get; set; }
@@ -35,5 +28,21 @@ public sealed class AuditTestDbContext : AuditDbContext
         modelBuilder.Entity<Blog>().ToTable("blogs");
         modelBuilder.Entity<Post>().ToTable("posts");
         base.OnModelCreating(modelBuilder);
+    }
+
+    protected override long GetUserId(EfCore.IAuditContextAccessor context)
+    {
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Name, "tenon"),
+            new(ClaimTypes.NameIdentifier, new Random().NextInt64(0, 1000).ToString())
+        };
+        var cookieClaimsIdentity = new ClaimsIdentity(claims, "Cookies");
+        var efClaimsPrincipal = new ClaimsPrincipal(cookieClaimsIdentity);
+        context.Principal = context.Principal ?? efClaimsPrincipal;
+        return long.TryParse(context.Principal.Claims?.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value,
+            out var nameIdentifier)
+            ? nameIdentifier
+            : -1;
     }
 }

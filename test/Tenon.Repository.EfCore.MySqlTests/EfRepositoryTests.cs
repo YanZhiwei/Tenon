@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,6 +24,7 @@ public class EfRepositoryTests
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
+            .AddScoped<IAuditContextAccessor, AuditContextAccessor>()
             .AddEfCoreMySql<MySqlTestDbContext>(configuration.GetSection("MySql"))
             .BuildServiceProvider();
     }
@@ -99,13 +99,13 @@ public class EfRepositoryTests
             using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
             {
                 var bogs = new Blog[5]
-            {
-                new() { Url = "http://sample.com", Id = 81 },
-                new() { Url = "http://sample.com", Id = 82 },
-                new() { Url = "http://sample.com", Id = 83 },
-                new() { Url = "http://sample.com", Id = 84 },
-                new() { Url = "http://sample.com", Id = 85 }
-            };
+                {
+                    new() { Url = "http://sample.com", Id = 81 },
+                    new() { Url = "http://sample.com", Id = 82 },
+                    new() { Url = "http://sample.com", Id = 83 },
+                    new() { Url = "http://sample.com", Id = 84 },
+                    new() { Url = "http://sample.com", Id = 85 }
+                };
                 var blogRepository = new EfRepository<Blog>(context);
                 var result = await blogRepository.InsertAsync(bogs);
                 Assert.AreEqual(result == 5, true);
