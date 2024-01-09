@@ -15,17 +15,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Repository.EfCore.MySql", "Tenon.Repository.EfCore.MySql\Tenon.Repository.EfCore.MySql.csproj", "{DC165CD3-8105-446E-AA87-45290052DA5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Repository.EfCore.Sqlite", "Tenon.Repository.EfCore.Sqlite\Tenon.Repository.EfCore.Sqlite.csproj", "{2CAF90E6-D498-48B9-A628-9A19C3D3786F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Repository.EfCore.Sqlite", "Tenon.Repository.EfCore.Sqlite\Tenon.Repository.EfCore.Sqlite.csproj", "{2CAF90E6-D498-48B9-A628-9A19C3D3786F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Repository.EfCore.MySqlTests", "..\test\Tenon.Repository.EfCore.MySqlTests\Tenon.Repository.EfCore.MySqlTests.csproj", "{DF428EBA-FCA9-41B0-8E7F-51EBAD991423}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Repository.EfCore.SqliteTests", "..\test\Tenon.Repository.EfCore.SqliteTests\Tenon.Repository.EfCore.SqliteTests.csproj", "{91FB1838-D738-4591-8E01-2F201BEAA8E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Redis", "Tenon.Redis\Tenon.Redis.csproj", "{4D406FF1-4797-417C-86D6-4F73FD824E69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Redis", "Tenon.Redis\Tenon.Redis.csproj", "{4D406FF1-4797-417C-86D6-4F73FD824E69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Redis.StackExchangeProvider", "Tenon.Redis.StackExchangeProvider\Tenon.Redis.StackExchangeProvider.csproj", "{0FA80F50-D367-4CEE-9FC3-795D1901EA69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Redis.StackExchangeProvider", "Tenon.Redis.StackExchangeProvider\Tenon.Redis.StackExchangeProvider.csproj", "{0FA80F50-D367-4CEE-9FC3-795D1901EA69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.DistributedLocker", "Tenon.DistributedLocker\Tenon.DistributedLocker.csproj", "{9BE51950-0237-4E5E-9A62-82D89E090A21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.DistributedLocker", "Tenon.DistributedLocker\Tenon.DistributedLocker.csproj", "{9BE51950-0237-4E5E-9A62-82D89E090A21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.BloomFilter", "Tenon.BloomFilter\Tenon.BloomFilter.csproj", "{11B5A99A-427E-4B40-8DE6-3FE010BD8843}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{9BE51950-0237-4E5E-9A62-82D89E090A21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BE51950-0237-4E5E-9A62-82D89E090A21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BE51950-0237-4E5E-9A62-82D89E090A21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11B5A99A-427E-4B40-8DE6-3FE010BD8843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11B5A99A-427E-4B40-8DE6-3FE010BD8843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11B5A99A-427E-4B40-8DE6-3FE010BD8843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11B5A99A-427E-4B40-8DE6-3FE010BD8843}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
