@@ -6,7 +6,7 @@ using Tenon.Repository.EfCore.MySqlTests.Entities;
 
 namespace Tenon.Repository.EfCore.MySqlTests;
 
-public sealed class MySqlTestDbContext : MysqlDbContext
+public sealed class MySqlTestDbContext : MySqlDbContext
 {
     public MySqlTestDbContext(DbContextOptions option) : base(option)
     {

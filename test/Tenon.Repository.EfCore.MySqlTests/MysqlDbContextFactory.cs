@@ -19,7 +19,7 @@ public class MysqlDbContextFactory : IDesignTimeDbContextFactory<MySqlTestDbCont
         var mysqlSection = configuration.GetSection("Mysql");
         var mysqlConfig = mysqlSection.Get<MySqlOptions>();
         var serverVersion = new MariaDbServerVersion(new Version(8, 2, 0));
-        var options = new DbContextOptionsBuilder<MysqlDbContext>()
+        var options = new DbContextOptionsBuilder<MySqlDbContext>()
             .UseMySql(mysqlConfig.ConnectionString, serverVersion)
             .Options;
         return new MySqlTestDbContext(options);
