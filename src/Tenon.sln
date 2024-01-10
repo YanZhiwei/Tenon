@@ -35,13 +35,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Helper", "Tenon.Helpe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Serialization", "Tenon.Serialization\Tenon.Serialization.csproj", "{3D5496E5-3774-4309-BC6C-5B813EF53A24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.JsonSerialization", "Tenon.JsonSerialization\Tenon.JsonSerialization.csproj", "{5691C3B8-E46B-4280-96BD-6E16BEA7C19E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.StackExchange.Redis.Extensions", "Tenon.StackExchange.Redis.Extensions\Tenon.StackExchange.Redis.Extensions.csproj", "{D1AE34B4-FF19-4E51-9781-6E64A3EC8BE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching", "Tenon.Caching\Tenon.Caching.csproj", "{050BADF0-487C-44A3-93D3-256548D9BB0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching.Redis", "Tenon.Caching.Redis\Tenon.Caching.Redis.csproj", "{E2257EB0-D4B2-4062-9A43-AC50F1EE5B38}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Serialization.Json", "Tenon.Serialization.Json\Tenon.Serialization.Json.csproj", "{28923138-3EAC-43DF-BBF5-29DD2FF88427}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,10 +105,6 @@ Global
 		{3D5496E5-3774-4309-BC6C-5B813EF53A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D5496E5-3774-4309-BC6C-5B813EF53A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D5496E5-3774-4309-BC6C-5B813EF53A24}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5691C3B8-E46B-4280-96BD-6E16BEA7C19E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5691C3B8-E46B-4280-96BD-6E16BEA7C19E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5691C3B8-E46B-4280-96BD-6E16BEA7C19E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5691C3B8-E46B-4280-96BD-6E16BEA7C19E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D1AE34B4-FF19-4E51-9781-6E64A3EC8BE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D1AE34B4-FF19-4E51-9781-6E64A3EC8BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1AE34B4-FF19-4E51-9781-6E64A3EC8BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -121,6 +117,10 @@ Global
 		{E2257EB0-D4B2-4062-9A43-AC50F1EE5B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2257EB0-D4B2-4062-9A43-AC50F1EE5B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2257EB0-D4B2-4062-9A43-AC50F1EE5B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28923138-3EAC-43DF-BBF5-29DD2FF88427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28923138-3EAC-43DF-BBF5-29DD2FF88427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28923138-3EAC-43DF-BBF5-29DD2FF88427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28923138-3EAC-43DF-BBF5-29DD2FF88427}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

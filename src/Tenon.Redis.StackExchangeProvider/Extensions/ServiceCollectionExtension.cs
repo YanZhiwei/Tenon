@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Tenon.JsonSerialization;
 using Tenon.Redis.StackExchangeProvider.Configurations;
 using Tenon.Serialization;
+using Tenon.Serialization.Json;
 
 namespace Tenon.Redis.StackExchangeProvider.Extensions;
 

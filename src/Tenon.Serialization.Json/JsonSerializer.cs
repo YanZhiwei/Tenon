@@ -1,8 +1,7 @@
 ﻿using System.Text.Json;
-using Tenon.Serialization;
 using SystemJsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Tenon.JsonSerialization;
+namespace Tenon.Serialization.Json;
 
 public sealed class JsonSerializer(JsonSerializerOptions? jsonSerializerOptions = null) : ISerializer
 {

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Tenon.JsonSerialization;
+namespace Tenon.Serialization.Json;
 
 public class DateTimeNullableConverter(string format) : JsonConverter<DateTime?>
 {
