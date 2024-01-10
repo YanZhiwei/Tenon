@@ -43,6 +43,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching.Redis", "Teno
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Serialization.Json", "Tenon.Serialization.Json\Tenon.Serialization.Json.csproj", "{28923138-3EAC-43DF-BBF5-29DD2FF88427}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.DistributedId", "Tenon.DistributedId\Tenon.DistributedId.csproj", "{FECE53B0-372F-4CEE-9206-C4E03E49B043}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.DistributedId.Snowflake", "Tenon.DistributedId.Snowflake\Tenon.DistributedId.Snowflake.csproj", "{DF9C2F2A-372E-41FA-B651-D589A911F88D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.CentralizedConfiguration", "Tenon.CentralizedConfiguration\Tenon.CentralizedConfiguration.csproj", "{3223E319-2AD8-45A3-A72E-40E6BFC8E58F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +127,18 @@ Global
 		{28923138-3EAC-43DF-BBF5-29DD2FF88427}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28923138-3EAC-43DF-BBF5-29DD2FF88427}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28923138-3EAC-43DF-BBF5-29DD2FF88427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FECE53B0-372F-4CEE-9206-C4E03E49B043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FECE53B0-372F-4CEE-9206-C4E03E49B043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FECE53B0-372F-4CEE-9206-C4E03E49B043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FECE53B0-372F-4CEE-9206-C4E03E49B043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF9C2F2A-372E-41FA-B651-D589A911F88D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF9C2F2A-372E-41FA-B651-D589A911F88D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF9C2F2A-372E-41FA-B651-D589A911F88D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF9C2F2A-372E-41FA-B651-D589A911F88D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3223E319-2AD8-45A3-A72E-40E6BFC8E58F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3223E319-2AD8-45A3-A72E-40E6BFC8E58F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3223E319-2AD8-45A3-A72E-40E6BFC8E58F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3223E319-2AD8-45A3-A72E-40E6BFC8E58F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
