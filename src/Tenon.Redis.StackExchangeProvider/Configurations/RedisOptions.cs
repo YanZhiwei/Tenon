@@ -2,5 +2,5 @@
 
 public sealed class RedisOptions
 {
-    public string? ConnectionString { get; set; } = string.Empty;
+    public string ConnectionString { get; set; } = string.Empty;
 }

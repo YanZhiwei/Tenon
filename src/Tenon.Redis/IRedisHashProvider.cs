@@ -34,7 +34,7 @@ public interface IRedisHashProvider
     /// <summary>
     ///     https://redis.io/commands/hgetall
     /// </summary>
-    Dictionary<string, string> HGetAll(string cacheKey);
+    IDictionary<string, string> HGetAll(string cacheKey);
 
     /// <summary>
     ///     https://redis.io/commands/hincrby
@@ -44,7 +44,7 @@ public interface IRedisHashProvider
     /// <summary>
     ///     https://redis.io/commands/hkeys
     /// </summary>
-    List<string> HKeys(string cacheKey);
+    IEnumerable<string> HKeys(string cacheKey);
 
     /// <summary>
     ///     https://redis.io/commands/hlen
@@ -54,12 +54,12 @@ public interface IRedisHashProvider
     /// <summary>
     ///     https://redis.io/commands/hvals
     /// </summary>
-    List<string> HVals(string cacheKey);
+    IEnumerable<string> HVals(string cacheKey);
 
     /// <summary>
     ///     https://redis.io/commands/hmget
     /// </summary>
-    Dictionary<string, string> HMGet(string cacheKey, IEnumerable<string> fields);
+    IDictionary<string, string> HMGet(string cacheKey, IEnumerable<string> fields);
 
     /// <summary>
     ///     https://redis.io/commands/hset
@@ -89,7 +89,7 @@ public interface IRedisHashProvider
     /// <summary>
     ///     https://redis.io/commands/hgetall
     /// </summary>
-    Task<Dictionary<string, string>> HGetAllAsync(string cacheKey);
+    Task<IDictionary<string, string>> HGetAllAsync(string cacheKey);
 
     /// <summary>
     ///     https://redis.io/commands/hincrby
@@ -99,7 +99,7 @@ public interface IRedisHashProvider
     /// <summary>
     ///     https://redis.io/commands/hkeys
     /// </summary>
-    Task<List<string>> HKeysAsync(string cacheKey);
+    Task<IEnumerable<string>> HKeysAsync(string cacheKey);
 
     /// <summary>
     ///     https://redis.io/commands/hlen
@@ -109,10 +109,10 @@ public interface IRedisHashProvider
     /// <summary>
     ///     https://redis.io/commands/hvals
     /// </summary>
-    Task<List<string>> HValsAsync(string cacheKey);
+    Task<IEnumerable<string>> HValsAsync(string cacheKey);
 
     /// <summary>
     ///     https://redis.io/commands/hmget
     /// </summary>
-    Task<Dictionary<string, string>> HMGetAsync(string cacheKey, IEnumerable<string> fields);
+    Task<IDictionary<string, string>> HMGetAsync(string cacheKey, IEnumerable<string> fields);
 }

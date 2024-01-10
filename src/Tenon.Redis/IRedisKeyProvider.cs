@@ -7,12 +7,12 @@ public interface IRedisKeyProvider
     /// <summary>
     ///     https://redis.io/commands/del
     /// </summary>
-    bool KeyDel(string cacheKey);
+    bool KeyDelete(string cacheKey);
 
     /// <summary>
     ///     https://redis.io/commands/del
     /// </summary>
-    Task<bool> KeyDelAsync(string cacheKey);
+    Task<bool> KeyDeleteAsync(string cacheKey);
 
     /// <summary>
     ///     https://redis.io/commands/expire

@@ -5,15 +5,15 @@ using Tenon.Redis.StackExchangeProvider.Configurations;
 
 namespace Tenon.Redis.StackExchangeProvider;
 
-public class RedisDatabase
+public sealed class RedisConnection
 {
     private readonly RedisOptions _redisOptions;
-    protected readonly Lazy<ConnectionMultiplexer> ConnectionMultiplexer;
+    private readonly Lazy<ConnectionMultiplexer> _connectionMultiplexer;
 
-    public RedisDatabase(IOptionsMonitor<RedisOptions> options)
+    public RedisConnection(IOptionsMonitor<RedisOptions> options)
     {
         _redisOptions = options.CurrentValue;
-        ConnectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
+        _connectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
     }
 
     private ConnectionMultiplexer CreateConnectionMultiplexer()
@@ -24,23 +24,23 @@ public class RedisDatabase
 
     public IDatabase GetDatabase()
     {
-        return ConnectionMultiplexer.Value.GetDatabase();
+        return _connectionMultiplexer.Value.GetDatabase();
     }
 
-    public virtual IEnumerable<IServer> GetServers()
+    public IEnumerable<IServer> GetServers()
     {
         var endpoints = GetMastersServers();
 
         foreach (var endpoint in endpoints)
-            yield return ConnectionMultiplexer.Value.GetServer(endpoint);
+            yield return _connectionMultiplexer.Value.GetServer(endpoint);
     }
 
-    protected virtual IEnumerable<EndPoint> GetMastersServers()
+    private IEnumerable<EndPoint> GetMastersServers()
     {
         var masters = new List<EndPoint>();
-        foreach (var ep in ConnectionMultiplexer.Value.GetEndPoints())
+        foreach (var ep in _connectionMultiplexer.Value.GetEndPoints())
         {
-            var server = ConnectionMultiplexer.Value.GetServer(ep);
+            var server = _connectionMultiplexer.Value.GetServer(ep);
             if (!server.IsConnected) continue;
             if (server.ServerType == ServerType.Cluster)
             {
