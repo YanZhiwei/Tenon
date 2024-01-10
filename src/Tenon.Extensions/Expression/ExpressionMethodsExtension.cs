@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-
+using SystemExpressions = System.Linq.Expressions.Expression;
 namespace Tenon.Extensions.Expression;
 
 public static class ExpressionMethodsExtension
@@ -25,7 +25,7 @@ public static class ExpressionMethodsExtension
         return memberExpression.Member;
     }
 
-    private static MemberExpression ExtractMemberExpression(System.Linq.Expressions.Expression expression)
+    private static MemberExpression ExtractMemberExpression(SystemExpressions expression)
     {
         switch (expression.NodeType)
         {

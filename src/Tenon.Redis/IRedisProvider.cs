@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Tenon.Redis;
 
-namespace Tenon.Redis
+public interface IRedisProvider : IRedisStringProvider, IRedisHashProvider, IRedisListProvider, IRedisSortedSetProvider,
+    IRedisKeyProvider
 {
-    public interface IRedisProvider : IRedisStringProvider, IRedisHashProvider, IRedisListProvider, IRedisSortedSetProvider
-    {
-    }
 }
