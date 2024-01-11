@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tenon.BloomFilter
+namespace Tenon.DistributedId
 {
     public class Class1
     {
