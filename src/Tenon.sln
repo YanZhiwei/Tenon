@@ -31,27 +31,31 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.BloomFilter", "Tenon.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Redis.StackExchangeProviderTests", "..\test\Tenon.Redis.StackExchangeProviderTests\Tenon.Redis.StackExchangeProviderTests.csproj", "{02AD807B-E1D5-42F5-A50E-F7A5D45D9AD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Helper", "Tenon.Helper\Tenon.Helper.csproj", "{070358D9-B0BF-44DC-BC2A-3A5AF7C434DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Helper", "Tenon.Helper\Tenon.Helper.csproj", "{070358D9-B0BF-44DC-BC2A-3A5AF7C434DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Serialization", "Tenon.Serialization\Tenon.Serialization.csproj", "{3D5496E5-3774-4309-BC6C-5B813EF53A24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Serialization", "Tenon.Serialization\Tenon.Serialization.csproj", "{3D5496E5-3774-4309-BC6C-5B813EF53A24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.StackExchange.Redis.Extensions", "Tenon.StackExchange.Redis.Extensions\Tenon.StackExchange.Redis.Extensions.csproj", "{D1AE34B4-FF19-4E51-9781-6E64A3EC8BE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.StackExchange.Redis.Extensions", "Tenon.StackExchange.Redis.Extensions\Tenon.StackExchange.Redis.Extensions.csproj", "{D1AE34B4-FF19-4E51-9781-6E64A3EC8BE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching", "Tenon.Caching\Tenon.Caching.csproj", "{050BADF0-487C-44A3-93D3-256548D9BB0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching", "Tenon.Caching\Tenon.Caching.csproj", "{050BADF0-487C-44A3-93D3-256548D9BB0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching.Redis", "Tenon.Caching.Redis\Tenon.Caching.Redis.csproj", "{E2257EB0-D4B2-4062-9A43-AC50F1EE5B38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching.Redis", "Tenon.Caching.Redis\Tenon.Caching.Redis.csproj", "{E2257EB0-D4B2-4062-9A43-AC50F1EE5B38}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Serialization.Json", "Tenon.Serialization.Json\Tenon.Serialization.Json.csproj", "{28923138-3EAC-43DF-BBF5-29DD2FF88427}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.DistributedId", "Tenon.DistributedId\Tenon.DistributedId.csproj", "{FECE53B0-372F-4CEE-9206-C4E03E49B043}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.DistributedId", "Tenon.DistributedId\Tenon.DistributedId.csproj", "{FECE53B0-372F-4CEE-9206-C4E03E49B043}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.DistributedId.Snowflake", "Tenon.DistributedId.Snowflake\Tenon.DistributedId.Snowflake.csproj", "{DF9C2F2A-372E-41FA-B651-D589A911F88D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.DistributedId.Snowflake", "Tenon.DistributedId.Snowflake\Tenon.DistributedId.Snowflake.csproj", "{DF9C2F2A-372E-41FA-B651-D589A911F88D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.CentralizedConfiguration", "Tenon.CentralizedConfiguration\Tenon.CentralizedConfiguration.csproj", "{3223E319-2AD8-45A3-A72E-40E6BFC8E58F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.CentralizedConfiguration", "Tenon.CentralizedConfiguration\Tenon.CentralizedConfiguration.csproj", "{3223E319-2AD8-45A3-A72E-40E6BFC8E58F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.CentralizedConfiguration.Apollo", "Tenon.CentralizedConfiguration.Apollo\Tenon.CentralizedConfiguration.Apollo.csproj", "{D3C49A80-184B-4CA0-9B6B-F4C6AA80F918}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.CentralizedConfiguration.Apollo", "Tenon.CentralizedConfiguration.Apollo\Tenon.CentralizedConfiguration.Apollo.csproj", "{D3C49A80-184B-4CA0-9B6B-F4C6AA80F918}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.DistributedLocker.Redis", "Tenon.DistributedLocker.Redis\Tenon.DistributedLocker.Redis.csproj", "{B1BB9D1F-FDDF-4C90-962F-ECC0959037FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.DistributedLocker.Redis", "Tenon.DistributedLocker.Redis\Tenon.DistributedLocker.Redis.csproj", "{B1BB9D1F-FDDF-4C90-962F-ECC0959037FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.BloomFilter.Redis", "Tenon.BloomFilter.Redis\Tenon.BloomFilter.Redis.csproj", "{0DA6E0A5-FD85-407C-9622-19F181488102}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.BloomFilter.RedisTests", "..\test\Tenon.BloomFilter.RedisTests\Tenon.BloomFilter.RedisTests.csproj", "{76AFCC60-0618-4F27-8896-307CEA6A7D38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,6 +155,14 @@ Global
 		{B1BB9D1F-FDDF-4C90-962F-ECC0959037FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1BB9D1F-FDDF-4C90-962F-ECC0959037FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1BB9D1F-FDDF-4C90-962F-ECC0959037FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DA6E0A5-FD85-407C-9622-19F181488102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DA6E0A5-FD85-407C-9622-19F181488102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DA6E0A5-FD85-407C-9622-19F181488102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DA6E0A5-FD85-407C-9622-19F181488102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76AFCC60-0618-4F27-8896-307CEA6A7D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76AFCC60-0618-4F27-8896-307CEA6A7D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76AFCC60-0618-4F27-8896-307CEA6A7D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76AFCC60-0618-4F27-8896-307CEA6A7D38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +171,7 @@ Global
 		{DF428EBA-FCA9-41B0-8E7F-51EBAD991423} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{91FB1838-D738-4591-8E01-2F201BEAA8E3} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{02AD807B-E1D5-42F5-A50E-F7A5D45D9AD0} = {E105A163-9660-4A89-8CA9-C242762B8613}
+		{76AFCC60-0618-4F27-8896-307CEA6A7D38} = {E105A163-9660-4A89-8CA9-C242762B8613}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}

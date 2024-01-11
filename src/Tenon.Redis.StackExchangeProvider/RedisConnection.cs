@@ -19,7 +19,7 @@ public sealed class RedisConnection
     private ConnectionMultiplexer CreateConnectionMultiplexer()
     {
         _ = ConfigurationOptions.Parse(_redisOptions.ConnectionString);
-        return StackExchange.Redis.ConnectionMultiplexer.Connect(_redisOptions.ConnectionString);
+        return ConnectionMultiplexer.Connect(_redisOptions.ConnectionString);
     }
 
     public IDatabase GetDatabase()
