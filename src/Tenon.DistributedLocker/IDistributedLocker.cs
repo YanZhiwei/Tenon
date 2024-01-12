@@ -2,7 +2,7 @@
 
 namespace Tenon.DistributedLocker
 {
-    public class Class1
+    public interface IDistributedLocker
     {
 
     }
