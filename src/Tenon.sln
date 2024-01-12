@@ -53,9 +53,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.CentralizedConfigurat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.DistributedLocker.Redis", "Tenon.DistributedLocker.Redis\Tenon.DistributedLocker.Redis.csproj", "{B1BB9D1F-FDDF-4C90-962F-ECC0959037FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.BloomFilter.Redis", "Tenon.BloomFilter.Redis\Tenon.BloomFilter.Redis.csproj", "{0DA6E0A5-FD85-407C-9622-19F181488102}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.BloomFilter.Redis", "Tenon.BloomFilter.Redis\Tenon.BloomFilter.Redis.csproj", "{0DA6E0A5-FD85-407C-9622-19F181488102}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.BloomFilter.RedisTests", "..\test\Tenon.BloomFilter.RedisTests\Tenon.BloomFilter.RedisTests.csproj", "{76AFCC60-0618-4F27-8896-307CEA6A7D38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.DistributedLocker.RedisTests", "..\test\Tenon.DistributedLocker.RedisTests\Tenon.DistributedLocker.RedisTests.csproj", "{F2E9012A-574D-47B9-B258-2514AE7B30F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.BloomFilter.RedisTests", "..\test\Tenon.BloomFilter.RedisTests\Tenon.BloomFilter.RedisTests.csproj", "{61A7C54D-ED29-4334-AE18-6190C9ECA56F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,10 +161,14 @@ Global
 		{0DA6E0A5-FD85-407C-9622-19F181488102}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DA6E0A5-FD85-407C-9622-19F181488102}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DA6E0A5-FD85-407C-9622-19F181488102}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76AFCC60-0618-4F27-8896-307CEA6A7D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76AFCC60-0618-4F27-8896-307CEA6A7D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76AFCC60-0618-4F27-8896-307CEA6A7D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76AFCC60-0618-4F27-8896-307CEA6A7D38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2E9012A-574D-47B9-B258-2514AE7B30F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2E9012A-574D-47B9-B258-2514AE7B30F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2E9012A-574D-47B9-B258-2514AE7B30F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2E9012A-574D-47B9-B258-2514AE7B30F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61A7C54D-ED29-4334-AE18-6190C9ECA56F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61A7C54D-ED29-4334-AE18-6190C9ECA56F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61A7C54D-ED29-4334-AE18-6190C9ECA56F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61A7C54D-ED29-4334-AE18-6190C9ECA56F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -171,7 +177,8 @@ Global
 		{DF428EBA-FCA9-41B0-8E7F-51EBAD991423} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{91FB1838-D738-4591-8E01-2F201BEAA8E3} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{02AD807B-E1D5-42F5-A50E-F7A5D45D9AD0} = {E105A163-9660-4A89-8CA9-C242762B8613}
-		{76AFCC60-0618-4F27-8896-307CEA6A7D38} = {E105A163-9660-4A89-8CA9-C242762B8613}
+		{F2E9012A-574D-47B9-B258-2514AE7B30F2} = {E105A163-9660-4A89-8CA9-C242762B8613}
+		{61A7C54D-ED29-4334-AE18-6190C9ECA56F} = {E105A163-9660-4A89-8CA9-C242762B8613}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}

@@ -17,7 +17,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.4" />
     <PackageReference Include="MSTest.TestFramework" Version="3.0.4" />
@@ -25,15 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Tenon.BloomFilter.Redis\Tenon.BloomFilter.Redis.csproj" />
-    <ProjectReference Include="..\..\src\Tenon.Redis.StackExchangeProvider\Tenon.Redis.StackExchangeProvider.csproj" />
-    <ProjectReference Include="..\..\src\Tenon.Serialization.Json\Tenon.Serialization.Json.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\..\src\Tenon.DistributedLocker.Redis\Tenon.DistributedLocker.Redis.csproj" />
   </ItemGroup>
 
 </Project>

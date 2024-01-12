@@ -21,7 +21,7 @@ public class StackExchangeProviderTests
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddRedisStackExchangeProvider(configuration.GetSection("Redis"))
+            .AddRedisStackExchangeProvider<Tenon.Serialization.Json.JsonSerializer>(configuration.GetSection("Redis"))
             .BuildServiceProvider();
     }
 
