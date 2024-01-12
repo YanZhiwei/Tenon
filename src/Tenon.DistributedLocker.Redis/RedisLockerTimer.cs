@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Tenon.Helper;
+using Timer = System.Timers.Timer;
 
 namespace Tenon.DistributedLocker.Redis;
 
