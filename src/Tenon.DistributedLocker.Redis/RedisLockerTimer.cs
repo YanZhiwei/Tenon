@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics;
 using Tenon.Helper;
-using Timer = System.Timers.Timer;
 
 namespace Tenon.DistributedLocker.Redis;
 
-internal sealed class RedisLockerTimer : IDisposable, IAsyncDisposable
+internal sealed class RedisLockerTimer : IDisposable
 {
     private static readonly string Prefix;
 
@@ -35,12 +34,6 @@ internal sealed class RedisLockerTimer : IDisposable, IAsyncDisposable
             refreshMilliseconds);
         _innerTimer.Dispose();
     }
-
-    public async ValueTask DisposeAsync()
-    {
-        await _innerTimer.DisposeAsync();
-    }
-
 
     public void Dispose()
     {
