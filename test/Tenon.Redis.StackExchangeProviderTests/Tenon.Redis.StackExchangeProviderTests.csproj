@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Tenon.Redis.StackExchangeProvider\Tenon.Redis.StackExchangeProvider.csproj" />
+    <ProjectReference Include="..\..\src\Tenon.Serialization.Json\Tenon.Serialization.Json.csproj" />
+    <ProjectReference Include="..\..\src\Tenon.Serialization\Tenon.Serialization.csproj" />
   </ItemGroup>
 
   <ItemGroup>

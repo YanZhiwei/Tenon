@@ -59,9 +59,9 @@ public static class IDatabaseExtension
     /// <summary>
     ///     https://redis.io/commands/bf.reserve/
     /// </summary>
-    public static async Task<long> BfReserveAsync(this IDatabase redisDb, RedisKey key, double errorRate,
+    public static async Task BfReserveAsync(this IDatabase redisDb, RedisKey key, double errorRate,
         int initialCapacity)
     {
-        return (long)await redisDb.ExecuteAsync("BF.RESERVE", key, errorRate, initialCapacity);
+        await redisDb.ExecuteAsync("BF.RESERVE", key, errorRate, initialCapacity);
     }
 }

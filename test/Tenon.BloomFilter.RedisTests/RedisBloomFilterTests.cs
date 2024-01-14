@@ -1,42 +1,97 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
+using Tenon.BloomFilter.Redis.Configurations;
+using Tenon.Redis.StackExchangeProvider;
+using Tenon.Redis.StackExchangeProvider.Extensions;
 
-namespace Tenon.BloomFilter.RedisTests
+namespace Tenon.BloomFilter.RedisTests;
+
+[TestClass]
+public class RedisBloomFilterTests
 {
-    /// <summary>
-    /// https://www.jb51.net/article/260737.htm
-    /// https://www.cnblogs.com/pangzili/p/16455101.html
-    /// </summary>
-    [TestClass()]
-    public class RedisBloomFilterTests
+    private readonly string _boomFilterKey;
+    private readonly string _boomFilterDefaultValue;
+    private readonly IServiceProvider _serviceProvider;
+
+    public RedisBloomFilterTests()
     {
-        [TestMethod()]
-        public void AddAsyncTest()
-        {
-            Assert.Fail();
-        }
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false)
+            .Build();
+        _serviceProvider = new ServiceCollection()
+            .AddLogging(loggingBuilder => loggingBuilder
+                .SetMinimumLevel(LogLevel.Debug))
+            .AddRedisStackExchangeProvider<Tenon.Serialization.Json.JsonSerializer>(configuration.GetSection("Redis"))
+            .AddRedisBloomFilter<StackExchangeProvider>()
+            .BuildServiceProvider();
+        _boomFilterKey = $"Tenon.BloomFilter.RedisTests:{DateTime.Now.ToString("yyyyMMddHHmmss")}";
+        _boomFilterDefaultValue = $"zhangsan_{DateTime.Now.ToString("yyyyMMddHHmmss")}";  
+    }
 
-        [TestMethod()]
-        public void AddAsyncTest1()
+    [TestInitialize]
+    public async Task Init()
+    {
+        using (var scope = _serviceProvider.CreateScope())
         {
-            Assert.Fail();
+            var bloomFilter = scope.ServiceProvider.GetService<IBloomFilter>();
+            await bloomFilter.ReserveAsync(_boomFilterKey, 0.01, 1000);
+            var actual = await bloomFilter.AddAsync(_boomFilterKey, _boomFilterDefaultValue);
+            Assert.IsTrue(actual);
         }
+    }
 
-        [TestMethod()]
-        public void ExistsAsyncTest()
+    [TestMethod]
+    public async Task AddAsyncTest()
+    {
+        using (var scope = _serviceProvider.CreateScope())
         {
-            Assert.Fail();
+            var bloomFilter = scope.ServiceProvider.GetService<IBloomFilter>();
+            var actual = await bloomFilter.AddAsync(_boomFilterKey, "zhangsan");
+            Assert.IsTrue(actual);
         }
+    }
 
-        [TestMethod()]
-        public void ExistsAsyncTest1()
+    [TestMethod]
+    public async Task AddRangeAsyncTest()
+    {
+        using (var scope = _serviceProvider.CreateScope())
         {
-            Assert.Fail();
+            var bloomFilter = scope.ServiceProvider.GetService<IBloomFilter>();
+            var actual = await bloomFilter.AddAsync(_boomFilterKey, new[] { "zhangsan1", "zhangsan2", "zhangsan3" });
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(3, actual.Length);
+            Assert.IsTrue(actual[0]);
+            Assert.IsTrue(actual[1]);
+            Assert.IsTrue(actual[2]);
         }
+    }
 
-        [TestMethod()]
-        public void ReserveAsyncTest()
+    [TestMethod]
+    public async Task ExistsAsyncTest()
+    {
+        using (var scope = _serviceProvider.CreateScope())
         {
-            Assert.Fail();
+            var bloomFilter = scope.ServiceProvider.GetService<IBloomFilter>();
+            Debug.WriteLine($"ExistsAsyncTest key:{_boomFilterKey}");
+            var actual = await bloomFilter.ExistsAsync(_boomFilterKey, _boomFilterDefaultValue);
+            Assert.IsTrue(actual);
+        }
+    }
+
+    [TestMethod]
+    public async Task ExistsRangeAsyncTest()
+    {
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            var bloomFilter = scope.ServiceProvider.GetService<IBloomFilter>();
+            var actual = await bloomFilter.ExistsAsync(_boomFilterKey, new[] { _boomFilterDefaultValue });
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(1, actual.Length);
+            Assert.IsTrue(actual[0]);
         }
     }
 }
