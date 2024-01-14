@@ -1,18 +1,18 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
-using Tenon.DistributedLocker.Redis.Configurations;
+using Tenon.DistributedLocker.Configurations;
 using Tenon.Redis;
 
 namespace Tenon.DistributedLocker.Redis;
 
 public sealed class RedisDistributedLocker(
     IRedisProvider redisProvider,
-    IOptionsMonitor<RedisDistributedLockerOptions?>? distributedLockerOptions = null) : IDistributedLocker
+    IOptionsMonitor<DistributedLockerOptions?>? distributedLockerOptions = null) : IDistributedLocker
 {
     public static readonly string Prefix;
     private static readonly ConcurrentDictionary<string, Timer> AutoRenewalTimers;
-    private readonly RedisDistributedLockerOptions? _distributedLockerOptions = distributedLockerOptions?.CurrentValue;
+    private readonly DistributedLockerOptions? _distributedLockerOptions = distributedLockerOptions?.CurrentValue;
 
     private readonly IRedisProvider _redisProvider =
         redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
