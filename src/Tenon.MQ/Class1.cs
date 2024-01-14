@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tenon.DistributedId
+namespace Tenon.MQ
 {
     public class Class1
     {
