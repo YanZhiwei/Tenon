@@ -64,10 +64,4 @@ public static class IDatabaseExtension
     {
         await redisDb.ExecuteAsync("BF.RESERVE", key, errorRate, initialCapacity);
     }
-
-    public static async Task<(bool Success, string LockValue)> LockAsync(this IDatabase redisDb, string cacheKey, int timeoutSeconds = 5, bool autoDelay = false)
-    {
-       
-       
-    }
 }

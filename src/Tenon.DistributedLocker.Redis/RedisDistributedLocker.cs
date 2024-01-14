@@ -1,55 +1,117 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
+using Microsoft.Extensions.Options;
+using Tenon.DistributedLocker.Redis.Configurations;
 using Tenon.Redis;
 
 namespace Tenon.DistributedLocker.Redis;
 
-public sealed class RedisDistributedLocker(IRedisProvider redisProvider) : IDistributedLocker
+public sealed class RedisDistributedLocker(
+    IRedisProvider redisProvider,
+    IOptionsMonitor<RedisDistributedLockerOptions?>? distributedLockerOptions = null) : IDistributedLocker
 {
-    private static readonly ConcurrentDictionary<string, RedisLockerTimer> AutoDelayTimers;
-    private readonly IRedisProvider _redisProvider = redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
+    public static readonly string Prefix;
+    private static readonly ConcurrentDictionary<string, Timer> AutoRenewalTimers;
+    private readonly RedisDistributedLockerOptions? _distributedLockerOptions = distributedLockerOptions?.CurrentValue;
+
+    private readonly IRedisProvider _redisProvider =
+        redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
 
     static RedisDistributedLocker()
     {
-        AutoDelayTimers = new ConcurrentDictionary<string, RedisLockerTimer>();
+        AutoRenewalTimers = new ConcurrentDictionary<string, Timer>();
+        using var currentProcess = Process.GetCurrentProcess();
+        Prefix = $"locker_{Environment.MachineName}_{currentProcess.Id}";
     }
 
-    public async Task<bool> LockAsync(string cacheKey, int timeoutSeconds = 5, bool autoDelay = false)
+    public async Task<bool> LockTakeAsync(string cacheKey, int timeoutSeconds = 30, bool autoDelay = false)
     {
-        var redisLockerTimer = new RedisLockerTimer(cacheKey, AutoDelayTimerWorker, timeoutSeconds);
-        var lockKey = redisLockerTimer.LockKeyId;
-        var lockValue = redisLockerTimer.LockValue;
-        var expiration = redisLockerTimer.Expiration;
+        var lockKey = CreateLockKey(cacheKey);
+        var lockValue = cacheKey;
+        var expiration = TimeSpan.FromSeconds(timeoutSeconds);
         var flag = await _redisProvider.StringSetAsync(lockKey, lockValue, expiration, StringSetWhen.NotExists);
-        if (flag && autoDelay)
+        if (!autoDelay) return flag;
+        if (!flag) return flag;
+        var refreshMilliseconds = (int)(expiration.TotalMilliseconds / 2.0);
+        var renewalTimer = new Timer(RenewalTimerWorker,
+            new RedisLockerState(lockKey, lockValue, (int)expiration.TotalMilliseconds), refreshMilliseconds,
+            refreshMilliseconds);
+        if (!AutoRenewalTimers.TryAdd(lockKey, renewalTimer))
         {
-            var addResult = AutoDelayTimers.TryAdd(lockKey, redisLockerTimer);
-            if (!addResult)
-            {
-                //
-            }
-
-            return addResult;
+            await renewalTimer.DisposeAsync();
+            return false;
         }
 
-        return false;
+        return true;
+    }
+
+    public bool LockTake(string cacheKey, int timeoutSeconds = 5, bool autoDelay = false)
+    {
+        var lockKey = CreateLockKey(cacheKey);
+        var lockValue = cacheKey;
+        var expiration = TimeSpan.FromSeconds(timeoutSeconds);
+        var flag = _redisProvider.StringSet(lockKey, lockValue, expiration, StringSetWhen.NotExists);
+        if (!flag || !autoDelay) return false;
+        var refreshMilliseconds = (int)(expiration.TotalMilliseconds / 2.0);
+        var renewalTimer = new Timer(RenewalTimerWorker,
+            new RedisLockerState(lockKey, lockValue, (int)expiration.TotalMilliseconds), refreshMilliseconds,
+            refreshMilliseconds);
+        if (!AutoRenewalTimers.TryAdd(lockKey, renewalTimer))
+        {
+            renewalTimer.Dispose();
+            return false;
+        }
+
+        return true;
+    }
+
+    public async Task<bool> LockReleaseAsync(string cacheKey)
+    {
+        var lockKey = CreateLockKey(cacheKey);
+        if (AutoRenewalTimers.ContainsKey(lockKey))
+            if (AutoRenewalTimers.TryRemove(lockKey, out var renewalTimer))
+                await renewalTimer.DisposeAsync();
+
+        var parameters = new { key = lockKey, value = cacheKey };
+        var result = (int)await _redisProvider.EvalAsync(LuaDefaults.Unlock, parameters);
+        return result == 1;
+    }
+
+    public bool LockRelease(string cacheKey)
+    {
+        var lockKey = CreateLockKey(cacheKey);
+        if (AutoRenewalTimers.ContainsKey(lockKey))
+            if (AutoRenewalTimers.TryRemove(lockKey, out var renewalTimer))
+                renewalTimer.Dispose();
+
+        var parameters = new { key = lockKey };
+        var result = (int)_redisProvider.Eval(LuaDefaults.Unlock, parameters);
+        return result == 1;
     }
 
 
-    private void AutoDelayTimerWorker(object? state)
+    private string CreateLockKey(string cacheKey)
+    {
+        return string.IsNullOrWhiteSpace(_distributedLockerOptions?.LockKeyPrefix)
+            ? $"{Prefix}_{cacheKey}"
+            : $"{_distributedLockerOptions.LockKeyPrefix}_{cacheKey}";
+    }
+
+    private void RenewalTimerWorker(object? state)
     {
         if (state is RedisLockerState lockerState)
         {
+            var lockKey = lockerState.LockKey;
             object parameters = new
-                { key = lockerState.LockKeyId, value = lockerState.LockValue, milliseconds = lockerState.Milliseconds };
-            var lockResult = _redisProvider.Eval(LuaDefaults.DelayLock, parameters);
-            if ((int)lockResult == 0) Close(lockerState.LockValue);
+            {
+                key = lockKey,
+                value = lockerState.LockValue,
+                milliseconds = (int)lockerState.MilliSeconds
+            };
+            var lockResult = _redisProvider.Eval(LuaDefaults.AutoRenewalLock, parameters);
+            Debug.WriteLine($"{DateTime.Now:yyyy-M-d dd HH:mm:ss}:lockResult:{lockResult}");
+            if ((int)lockResult == 0)
+                LockRelease(lockKey);
         }
-    }
-
-    private void Close(string key)
-    {
-        if (AutoDelayTimers.ContainsKey(key))
-            if (AutoDelayTimers.TryRemove(key, out var timer))
-                timer?.Dispose();
     }
 }
