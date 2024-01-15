@@ -1,4 +1,4 @@
-﻿namespace Tenon.Redis.StackExchangeProvider.Configurations;
+﻿namespace Tenon.Redis.Configurations;
 
 public sealed class RedisOptions
 {

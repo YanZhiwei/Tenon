@@ -25,7 +25,7 @@ public class RedisDistributedLockerTests
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddRedisStackExchangeProvider<JsonSerializer>(configuration.GetSection("Redis"))
+            .AddRedisStackExchangeProvider<SystemTextJsonSerializer>(configuration.GetSection("Redis"))
             .AddRedisDistributedLocker<StackExchangeProvider>(configuration.GetSection("DistributedLocker"))
             .BuildServiceProvider();
     }
