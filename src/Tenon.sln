@@ -59,13 +59,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.DistributedLocker.Red
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.BloomFilter.RedisTests", "..\test\Tenon.BloomFilter.RedisTests\Tenon.BloomFilter.RedisTests.csproj", "{61A7C54D-ED29-4334-AE18-6190C9ECA56F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.MQ", "Tenon.MQ\Tenon.MQ.csproj", "{22833358-6596-4778-B558-BEE3FF931FA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.MQ", "Tenon.MQ\Tenon.MQ.csproj", "{22833358-6596-4778-B558-BEE3FF931FA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.EventBus", "Tenon.EventBus\Tenon.EventBus.csproj", "{5886F568-91D4-4F71-9573-0C745F7FD982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.EventBus", "Tenon.EventBus\Tenon.EventBus.csproj", "{5886F568-91D4-4F71-9573-0C745F7FD982}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.MQ.RabbitMq", "Tenon.MQ.RabbitMq\Tenon.MQ.RabbitMq.csproj", "{B62B2F68-F8EA-449C-8DE3-117E09E6D3C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.MQ.RabbitMq", "Tenon.MQ.RabbitMq\Tenon.MQ.RabbitMq.csproj", "{B62B2F68-F8EA-449C-8DE3-117E09E6D3C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.EventBus.Cap", "Tenon.EventBus.Cap\Tenon.EventBus.Cap.csproj", "{E87A95C8-471C-4342-9309-C90003B577A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.EventBus.Cap", "Tenon.EventBus.Cap\Tenon.EventBus.Cap.csproj", "{E87A95C8-471C-4342-9309-C90003B577A3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching.RedisTests", "..\test\Tenon.Caching.RedisTests\Tenon.Caching.RedisTests.csproj", "{F28AEC53-80E2-4048-BB15-277FF47CE760}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -193,6 +195,10 @@ Global
 		{E87A95C8-471C-4342-9309-C90003B577A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E87A95C8-471C-4342-9309-C90003B577A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E87A95C8-471C-4342-9309-C90003B577A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F28AEC53-80E2-4048-BB15-277FF47CE760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F28AEC53-80E2-4048-BB15-277FF47CE760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F28AEC53-80E2-4048-BB15-277FF47CE760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F28AEC53-80E2-4048-BB15-277FF47CE760}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -203,6 +209,7 @@ Global
 		{02AD807B-E1D5-42F5-A50E-F7A5D45D9AD0} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{F2E9012A-574D-47B9-B258-2514AE7B30F2} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{61A7C54D-ED29-4334-AE18-6190C9ECA56F} = {E105A163-9660-4A89-8CA9-C242762B8613}
+		{F28AEC53-80E2-4048-BB15-277FF47CE760} = {E105A163-9660-4A89-8CA9-C242762B8613}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}

@@ -1,4 +1,6 @@
-﻿namespace Tenon.Redis.StackExchangeProvider;
+﻿using StackExchange.Redis;
+
+namespace Tenon.Redis.StackExchangeProvider;
 
 public partial class StackExchangeProvider
 {
@@ -7,9 +9,21 @@ public partial class StackExchangeProvider
         return _redisDatabase.KeyDelete(cacheKey);
     }
 
+    public long KeyDelete(IEnumerable<string> cacheKeys)
+    {
+        var redisKeys = cacheKeys.Where(k => !string.IsNullOrEmpty(k)).Select(k => (RedisKey)k).ToArray();
+        return redisKeys.Any() ? _redisDatabase.KeyDelete(redisKeys) : 0;
+    }
+
     public async Task<bool> KeyDeleteAsync(string cacheKey)
     {
         return await _redisDatabase.KeyDeleteAsync(cacheKey);
+    }
+
+    public async Task<long> KeysDeleteAsync(IEnumerable<string> cacheKeys)
+    {
+        var redisKeys = cacheKeys.Where(k => !string.IsNullOrEmpty(k)).Select(k => (RedisKey)k).ToArray();
+        return redisKeys.Any() ? await _redisDatabase.KeyDeleteAsync(redisKeys) : 0;
     }
 
     public bool KeyExpire(string cacheKey, int second)
@@ -20,6 +34,12 @@ public partial class StackExchangeProvider
     public async Task<bool> KeyExpireAsync(string cacheKey, int second)
     {
         return await _redisDatabase.KeyExpireAsync(cacheKey, TimeSpan.FromSeconds(second));
+    }
+
+    public async Task<long> KeysExpireAsync(IEnumerable<string> cacheKeys)
+    {
+        var redisKeys = cacheKeys.Where(k => !string.IsNullOrEmpty(k)).Select(k => (RedisKey)k).ToArray();
+        return redisKeys.Any() ? await _redisDatabase.KeyExistsAsync(redisKeys) : 0;
     }
 
     public async Task<bool> KeyExistsAsync(string cacheKey)

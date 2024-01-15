@@ -25,7 +25,7 @@ public class RedisBloomFilterTests
         _serviceProvider = new ServiceCollection()
             .AddLogging(loggingBuilder => loggingBuilder
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddRedisStackExchangeProvider<Tenon.Serialization.Json.JsonSerializer>(configuration.GetSection("Redis"))
+            .AddRedisStackExchangeProvider<Tenon.Serialization.Json.SystemTextJsonSerializer>(configuration.GetSection("Redis"))
             .AddRedisBloomFilter<StackExchangeProvider>()
             .BuildServiceProvider();
         _boomFilterKey = $"Tenon.BloomFilter.RedisTests:{DateTime.Now.ToString("yyyyMMddHHmmss")}";
