@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using Tenon.Redis.StackExchangeProvider.Configurations;
+using Tenon.Redis.Configurations;
 
 namespace Tenon.Redis.StackExchangeProvider;
 
