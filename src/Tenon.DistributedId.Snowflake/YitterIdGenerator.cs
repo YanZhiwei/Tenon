@@ -5,8 +5,8 @@ namespace Tenon.DistributedId.Snowflake;
 public sealed class YitterIdGenerator : IDGenerator
 {
     private static readonly object SyncRoot = new();
-    private readonly byte _workerIdBitLength = 6;
     private readonly byte _seqBitLength = 6;
+    private readonly byte _workerIdBitLength = 6;
     public short CurrentWorkerId { get; private set; } = -1;
 
     public void SetWorkerId(ushort workerId)

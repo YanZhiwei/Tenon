@@ -2,20 +2,20 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tenon.Caching.Redis.Extensions;
+using Tenon.Caching.RedisStackExchange.Extensions;
 using Tenon.Helper.Internal;
-using Tenon.Redis.StackExchangeProvider.Extensions;
-using Tenon.Serialization.Json;
 
-namespace Tenon.Caching.RedisTests;
+namespace Tenon.Caching.RedisStackExchangeTests;
 
 [TestClass]
 public class RedisCacheProviderTests
 {
+    private readonly string _serviceKey;
     private readonly IServiceProvider _serviceProvider;
 
     public RedisCacheProviderTests()
     {
+        _serviceKey = nameof(RedisCacheProviderTests);
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", false)
@@ -24,18 +24,18 @@ public class RedisCacheProviderTests
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddRedisStackExchangeProvider<SystemTextJsonSerializer>(configuration.GetSection("Redis"))
-            .AddRedisCache<SystemTextJsonSerializer>(configuration.GetSection("RedisCache"))
+            .AddRedisStackExchangeCache(configuration.GetSection("RedisCache"))
+            .AddKeyedRedisStackExchangeCache(_serviceKey, configuration.GetSection("RedisCache"))
             .BuildServiceProvider();
     }
 
     [TestMethod]
-    public void SetTest()
+    public void KeyedSetTest()
     {
         using (var scope = _serviceProvider.CreateScope())
         {
             var cacheKey = $"{RandomHelper.NextString(6, true)}";
-            var cacheProvider = scope.ServiceProvider.GetService<ICacheProvider>();
+            var cacheProvider = scope.ServiceProvider.GetRequiredKeyedService<ICacheProvider>(_serviceKey);
             var actual = cacheProvider.Set(cacheKey, cacheKey, TimeSpan.FromSeconds(5));
             Assert.IsTrue(actual);
             Thread.Sleep(TimeSpan.FromSeconds(10));

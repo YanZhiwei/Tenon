@@ -3,12 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tenon.Redis.StackExchangeProvider.Extensions;
+using Tenon.Serialization.Json;
+using Tenon.Serialization.Json.Extensions;
 
 namespace Tenon.Redis.StackExchangeProviderTests;
 
 [TestClass]
 public class StackExchangeProviderTests
 {
+    private readonly string _serviceKey = nameof(StackExchangeProviderTests);
     private readonly IServiceProvider _serviceProvider;
 
     public StackExchangeProviderTests()
@@ -21,7 +24,10 @@ public class StackExchangeProviderTests
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddRedisStackExchangeProvider<Tenon.Serialization.Json.SystemTextJsonSerializer>(configuration.GetSection("Redis"))
+            .AddSystemTextJsonSerializer()
+            .AddRedisStackExchangeProvider(configuration.GetSection("Redis"))
+            .AddKeyedRedisStackExchangeProvider(_serviceKey,
+                configuration.GetSection("Redis2"))
             .BuildServiceProvider();
     }
 
@@ -31,6 +37,17 @@ public class StackExchangeProviderTests
         using (var scope = _serviceProvider.CreateScope())
         {
             var redisProvider = scope.ServiceProvider.GetService<IRedisProvider>();
+            var actual = redisProvider?.IncrBy($"test_{DateTime.Now:yyyyMMddHHmmss}");
+            Assert.AreEqual(1, actual);
+        }
+    }
+
+    [TestMethod]
+    public void KeyedIncrByTest()
+    {
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            var redisProvider = scope.ServiceProvider.GetRequiredKeyedService<IRedisProvider>(_serviceKey);
             var actual = redisProvider?.IncrBy($"test_{DateTime.Now:yyyyMMddHHmmss}");
             Assert.AreEqual(1, actual);
         }

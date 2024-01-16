@@ -69,6 +69,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.EventBus.Cap", "Tenon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching.RedisTests", "..\test\Tenon.Caching.RedisTests\Tenon.Caching.RedisTests.csproj", "{F28AEC53-80E2-4048-BB15-277FF47CE760}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Models", "Tenon.Models\Tenon.Models.csproj", "{434D59C8-555C-4CA0-98E3-BCC5AC02C7F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching.RedisStackExchange", "Tenon.Caching.RedisStackExchange\Tenon.Caching.RedisStackExchange.csproj", "{7F7CFB78-7812-4B63-9375-215B537B5CC5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching.RedisStackExchangeTests", "..\test\Tenon.Caching.RedisStackExchangeTests\Tenon.Caching.RedisStackExchangeTests.csproj", "{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -199,6 +205,18 @@ Global
 		{F28AEC53-80E2-4048-BB15-277FF47CE760}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F28AEC53-80E2-4048-BB15-277FF47CE760}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F28AEC53-80E2-4048-BB15-277FF47CE760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{434D59C8-555C-4CA0-98E3-BCC5AC02C7F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{434D59C8-555C-4CA0-98E3-BCC5AC02C7F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{434D59C8-555C-4CA0-98E3-BCC5AC02C7F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{434D59C8-555C-4CA0-98E3-BCC5AC02C7F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F7CFB78-7812-4B63-9375-215B537B5CC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F7CFB78-7812-4B63-9375-215B537B5CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F7CFB78-7812-4B63-9375-215B537B5CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F7CFB78-7812-4B63-9375-215B537B5CC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -210,6 +228,7 @@ Global
 		{F2E9012A-574D-47B9-B258-2514AE7B30F2} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{61A7C54D-ED29-4334-AE18-6190C9ECA56F} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{F28AEC53-80E2-4048-BB15-277FF47CE760} = {E105A163-9660-4A89-8CA9-C242762B8613}
+		{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546} = {E105A163-9660-4A89-8CA9-C242762B8613}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}

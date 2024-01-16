@@ -6,22 +6,32 @@ using Tenon.Redis;
 
 namespace Tenon.DistributedLocker.Redis;
 
-public sealed class RedisDistributedLocker(
-    IRedisProvider redisProvider,
-    IOptionsMonitor<DistributedLockerOptions?>? distributedLockerOptions = null) : IDistributedLocker
+public sealed class RedisDistributedLocker : IDistributedLocker
 {
     public static readonly string Prefix;
     private static readonly ConcurrentDictionary<string, Timer> AutoRenewalTimers;
-    private readonly DistributedLockerOptions? _distributedLockerOptions = distributedLockerOptions?.CurrentValue;
-
-    private readonly IRedisProvider _redisProvider =
-        redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
+    private readonly DistributedLockerOptions? _distributedLockerOptions;
+    private readonly IRedisProvider _redisProvider;
 
     static RedisDistributedLocker()
     {
         AutoRenewalTimers = new ConcurrentDictionary<string, Timer>();
         using var currentProcess = Process.GetCurrentProcess();
         Prefix = $"locker_{Environment.MachineName}_{currentProcess.Id}";
+    }
+
+    public RedisDistributedLocker(IRedisProvider redisProvider,
+        IOptionsMonitor<DistributedLockerOptions> distributedLockerOptions)
+    {
+        _redisProvider = redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
+        _distributedLockerOptions = distributedLockerOptions?.CurrentValue;
+    }
+
+    public RedisDistributedLocker(IRedisProvider redisProvider,
+        DistributedLockerOptions distributedLockerOptions)
+    {
+        _redisProvider = redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
+        _distributedLockerOptions = distributedLockerOptions;
     }
 
     public async Task<bool> LockTakeAsync(string cacheKey, int timeoutSeconds = 30, bool autoDelay = false)
