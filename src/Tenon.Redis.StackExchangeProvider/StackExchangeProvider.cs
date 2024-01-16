@@ -8,6 +8,7 @@ public partial class StackExchangeProvider : IRedisProvider
 {
     private readonly IDatabase _redisDatabase;
     private readonly ISerializer _serializer;
+
     public StackExchangeProvider(RedisConnection redisConnection, ISerializer serializer)
     {
         _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));

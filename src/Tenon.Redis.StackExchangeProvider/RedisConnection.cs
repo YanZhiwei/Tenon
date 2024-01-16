@@ -7,12 +7,18 @@ namespace Tenon.Redis.StackExchangeProvider;
 
 public sealed class RedisConnection
 {
-    private readonly RedisOptions _redisOptions;
     private readonly Lazy<ConnectionMultiplexer> _connectionMultiplexer;
+    private readonly RedisOptions _redisOptions;
 
-    public RedisConnection(IOptionsMonitor<RedisOptions> options)
+    public RedisConnection(RedisOptions redisOptions)
     {
-        _redisOptions = options.CurrentValue;
+        _redisOptions = redisOptions;
+        _connectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
+    }
+
+    public RedisConnection(IOptionsMonitor<RedisOptions> redisOptions)
+    {
+        _redisOptions = redisOptions.CurrentValue;
         _connectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
     }
 

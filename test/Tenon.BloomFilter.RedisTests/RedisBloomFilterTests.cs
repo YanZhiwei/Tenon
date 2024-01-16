@@ -1,19 +1,19 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
 using Tenon.BloomFilter.Redis.Configurations;
-using Tenon.Redis.StackExchangeProvider;
 using Tenon.Redis.StackExchangeProvider.Extensions;
+using Tenon.Serialization.Json.Extensions;
 
 namespace Tenon.BloomFilter.RedisTests;
 
 [TestClass]
 public class RedisBloomFilterTests
 {
-    private readonly string _boomFilterKey;
     private readonly string _boomFilterDefaultValue;
+    private readonly string _boomFilterKey;
     private readonly IServiceProvider _serviceProvider;
 
     public RedisBloomFilterTests()
@@ -25,11 +25,12 @@ public class RedisBloomFilterTests
         _serviceProvider = new ServiceCollection()
             .AddLogging(loggingBuilder => loggingBuilder
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddRedisStackExchangeProvider<Tenon.Serialization.Json.SystemTextJsonSerializer>(configuration.GetSection("Redis"))
-            .AddRedisBloomFilter<StackExchangeProvider>()
+            .AddSystemTextJsonSerializer()
+            .AddRedisStackExchangeProvider(configuration.GetSection("Redis"))
+            .AddRedisBloomFilter()
             .BuildServiceProvider();
         _boomFilterKey = $"Tenon.BloomFilter.RedisTests:{DateTime.Now.ToString("yyyyMMddHHmmss")}";
-        _boomFilterDefaultValue = $"zhangsan_{DateTime.Now.ToString("yyyyMMddHHmmss")}";  
+        _boomFilterDefaultValue = $"zhangsan_{DateTime.Now.ToString("yyyyMMddHHmmss")}";
     }
 
     [TestInitialize]
