@@ -59,11 +59,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.DistributedLocker.Red
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.BloomFilter.RedisTests", "..\test\Tenon.BloomFilter.RedisTests\Tenon.BloomFilter.RedisTests.csproj", "{61A7C54D-ED29-4334-AE18-6190C9ECA56F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.MQ", "Tenon.MQ\Tenon.MQ.csproj", "{22833358-6596-4778-B558-BEE3FF931FA8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.EventBus", "Tenon.EventBus\Tenon.EventBus.csproj", "{5886F568-91D4-4F71-9573-0C745F7FD982}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.MQ.RabbitMq", "Tenon.MQ.RabbitMq\Tenon.MQ.RabbitMq.csproj", "{B62B2F68-F8EA-449C-8DE3-117E09E6D3C2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.EventBus.Cap", "Tenon.EventBus.Cap\Tenon.EventBus.Cap.csproj", "{E87A95C8-471C-4342-9309-C90003B577A3}"
 EndProject
@@ -71,9 +67,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching.RedisTests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Models", "Tenon.Models\Tenon.Models.csproj", "{434D59C8-555C-4CA0-98E3-BCC5AC02C7F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching.RedisStackExchange", "Tenon.Caching.RedisStackExchange\Tenon.Caching.RedisStackExchange.csproj", "{7F7CFB78-7812-4B63-9375-215B537B5CC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching.RedisStackExchange", "Tenon.Caching.RedisStackExchange\Tenon.Caching.RedisStackExchange.csproj", "{7F7CFB78-7812-4B63-9375-215B537B5CC5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching.RedisStackExchangeTests", "..\test\Tenon.Caching.RedisStackExchangeTests\Tenon.Caching.RedisStackExchangeTests.csproj", "{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.RabbitMq", "Tenon.RabbitMq\Tenon.RabbitMq.csproj", "{2DFCAF99-90FF-435F-854F-716A505F3B72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Rpc", "Tenon.Rpc\Tenon.Rpc.csproj", "{1ACC741F-8E02-401E-B262-71FE25A2E20C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Trackers", "Tenon.Trackers\Tenon.Trackers.csproj", "{E662D296-F716-4908-AD20-9EF656D4AF6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -185,18 +187,10 @@ Global
 		{61A7C54D-ED29-4334-AE18-6190C9ECA56F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61A7C54D-ED29-4334-AE18-6190C9ECA56F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61A7C54D-ED29-4334-AE18-6190C9ECA56F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22833358-6596-4778-B558-BEE3FF931FA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22833358-6596-4778-B558-BEE3FF931FA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22833358-6596-4778-B558-BEE3FF931FA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22833358-6596-4778-B558-BEE3FF931FA8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5886F568-91D4-4F71-9573-0C745F7FD982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5886F568-91D4-4F71-9573-0C745F7FD982}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5886F568-91D4-4F71-9573-0C745F7FD982}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5886F568-91D4-4F71-9573-0C745F7FD982}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B62B2F68-F8EA-449C-8DE3-117E09E6D3C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B62B2F68-F8EA-449C-8DE3-117E09E6D3C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B62B2F68-F8EA-449C-8DE3-117E09E6D3C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B62B2F68-F8EA-449C-8DE3-117E09E6D3C2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E87A95C8-471C-4342-9309-C90003B577A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E87A95C8-471C-4342-9309-C90003B577A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E87A95C8-471C-4342-9309-C90003B577A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -217,6 +211,18 @@ Global
 		{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DFCAF99-90FF-435F-854F-716A505F3B72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DFCAF99-90FF-435F-854F-716A505F3B72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DFCAF99-90FF-435F-854F-716A505F3B72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DFCAF99-90FF-435F-854F-716A505F3B72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ACC741F-8E02-401E-B262-71FE25A2E20C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ACC741F-8E02-401E-B262-71FE25A2E20C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ACC741F-8E02-401E-B262-71FE25A2E20C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ACC741F-8E02-401E-B262-71FE25A2E20C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E662D296-F716-4908-AD20-9EF656D4AF6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E662D296-F716-4908-AD20-9EF656D4AF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E662D296-F716-4908-AD20-9EF656D4AF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E662D296-F716-4908-AD20-9EF656D4AF6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
