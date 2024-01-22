@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tenon.MQ
+﻿namespace Tenon.Rpc
 {
     public class Class1
     {

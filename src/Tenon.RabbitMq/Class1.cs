@@ -1,4 +1,4 @@
-﻿namespace Tenon.MQ.RabbitMq
+﻿namespace Tenon.RabbitMq
 {
     public class Class1
     {

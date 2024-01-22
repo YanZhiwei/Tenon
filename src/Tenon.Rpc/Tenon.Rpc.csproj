@@ -6,12 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DotNetCore.CAP" Version="8.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Tenon.EventBus\Tenon.EventBus.csproj" />
-  </ItemGroup>
-
 </Project>
