@@ -5,8 +5,8 @@ namespace Tenon.CentralizedConfiguration
     /// <summary>
     /// https://learn.microsoft.com/zh-cn/dotnet/architecture/cloud-native/centralized-configuration
     /// </summary>
-    public class Class1
+    public interface IRegistrationProvider
     {
-
+        void Register(Uri serviceAddress, string serviceId);
     }
 }
