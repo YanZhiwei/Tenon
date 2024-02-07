@@ -71,11 +71,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching.RedisStackExc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching.RedisStackExchangeTests", "..\test\Tenon.Caching.RedisStackExchangeTests\Tenon.Caching.RedisStackExchangeTests.csproj", "{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.RabbitMq", "Tenon.RabbitMq\Tenon.RabbitMq.csproj", "{2DFCAF99-90FF-435F-854F-716A505F3B72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.RabbitMq", "Tenon.RabbitMq\Tenon.RabbitMq.csproj", "{2DFCAF99-90FF-435F-854F-716A505F3B72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Rpc", "Tenon.Rpc\Tenon.Rpc.csproj", "{1ACC741F-8E02-401E-B262-71FE25A2E20C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Rpc", "Tenon.Rpc\Tenon.Rpc.csproj", "{1ACC741F-8E02-401E-B262-71FE25A2E20C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Trackers", "Tenon.Trackers\Tenon.Trackers.csproj", "{E662D296-F716-4908-AD20-9EF656D4AF6E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Consul", "Tenon.Consul\Tenon.Consul.csproj", "{2EA44FF0-2365-4CAC-A54D-9BDD1A8A3744}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Abstractions", "Tenon.Abstractions\Tenon.Abstractions.csproj", "{23110D20-D1AB-4AC9-940B-65C297D6217E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.AspNetCore", "Tenon.AspNetCore\Tenon.AspNetCore.csproj", "{4D5CE8C2-1DBF-4C58-82E9-15C0F6B0B9CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{76FD4AE7-DA80-4244-8A1A-784DD49F9894}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsulSample", "..\samples\ConsulSample\ConsulSample.csproj", "{6E11502C-D0AB-45DE-B20A-07F0A8654336}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -223,6 +233,22 @@ Global
 		{E662D296-F716-4908-AD20-9EF656D4AF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E662D296-F716-4908-AD20-9EF656D4AF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E662D296-F716-4908-AD20-9EF656D4AF6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EA44FF0-2365-4CAC-A54D-9BDD1A8A3744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EA44FF0-2365-4CAC-A54D-9BDD1A8A3744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EA44FF0-2365-4CAC-A54D-9BDD1A8A3744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EA44FF0-2365-4CAC-A54D-9BDD1A8A3744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23110D20-D1AB-4AC9-940B-65C297D6217E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23110D20-D1AB-4AC9-940B-65C297D6217E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23110D20-D1AB-4AC9-940B-65C297D6217E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23110D20-D1AB-4AC9-940B-65C297D6217E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D5CE8C2-1DBF-4C58-82E9-15C0F6B0B9CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D5CE8C2-1DBF-4C58-82E9-15C0F6B0B9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D5CE8C2-1DBF-4C58-82E9-15C0F6B0B9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D5CE8C2-1DBF-4C58-82E9-15C0F6B0B9CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E11502C-D0AB-45DE-B20A-07F0A8654336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E11502C-D0AB-45DE-B20A-07F0A8654336}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E11502C-D0AB-45DE-B20A-07F0A8654336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E11502C-D0AB-45DE-B20A-07F0A8654336}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -235,6 +261,7 @@ Global
 		{61A7C54D-ED29-4334-AE18-6190C9ECA56F} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{F28AEC53-80E2-4048-BB15-277FF47CE760} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546} = {E105A163-9660-4A89-8CA9-C242762B8613}
+		{6E11502C-D0AB-45DE-B20A-07F0A8654336} = {76FD4AE7-DA80-4244-8A1A-784DD49F9894}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}
