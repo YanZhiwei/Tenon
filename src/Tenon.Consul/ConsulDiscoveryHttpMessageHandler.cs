@@ -3,10 +3,12 @@ using Tenon.Consul.Options;
 
 namespace Tenon.Consul;
 
-public sealed class ConsulDiscoveryHttpMessageHandler(ConsulOptions consulOptions, ILoadBalancer loadBalancer)
+public sealed class ConsulDiscoveryHttpMessageHandler(
+    ConsulDiscoveryOptions consulDiscoveryOptions,
+    ILoadBalancer loadBalancer)
     : DelegatingHandler
 {
-    private readonly ServiceDiscoveryProvider _serviceDiscoveryProvider = new(consulOptions, loadBalancer);
+    private readonly ServiceDiscoveryProvider _serviceDiscoveryProvider = new(consulDiscoveryOptions, loadBalancer);
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
         CancellationToken cancellationToken)
