@@ -20,6 +20,7 @@ namespace ConsulSample
             var startAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             var serviceInfo = ServiceInfo.CreateInstance(startAssembly);
             builder.Services.AddConsul(builder.Configuration.GetSection("Consul"));
+            builder.Services.AddConsulDiscovery(builder.Configuration.GetSection("ConsulDiscovery"));
             builder.Services.AddSingleton<IWebServiceInfo>(serviceInfo);
             var app = builder.Build();
             app.UseConsulRegistrationCenter();
