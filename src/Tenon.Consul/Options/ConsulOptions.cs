@@ -1,4 +1,4 @@
-﻿namespace Tenon.Consul;
+﻿namespace Tenon.Consul.Options;
 
 public sealed class ConsulOptions
 {

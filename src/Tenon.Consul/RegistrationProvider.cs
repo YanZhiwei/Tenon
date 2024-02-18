@@ -3,17 +3,15 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Tenon.Consul.Options;
 
 namespace Tenon.Consul;
 
 public sealed class RegistrationProvider(
     IOptions<ConsulOptions> consulOption,
-    ConsulClient consulClient,
     IHostApplicationLifetime hostApplicationLifetime,
     IServer server)
 {
-    private readonly ConsulClient _consulClient = consulClient ?? throw new ArgumentNullException(nameof(consulClient));
-
     private readonly IOptions<ConsulOptions> _consulOption =
         consulOption ?? throw new ArgumentNullException(nameof(consulOption));
 
@@ -28,32 +26,41 @@ public sealed class RegistrationProvider(
             serviceId = $"{_consulOption.Value.ServiceName}-{Convert.ToString(DateTime.UtcNow.Ticks, 16)}";
         _hostApplicationLifetime.ApplicationStarted.Register(() =>
         {
-            var addresses = _server.Features.Get<IServerAddressesFeature>().Addresses;
-            var address = addresses.FirstOrDefault();
-            var serviceAddress = new Uri(address);
-            var protocol = serviceAddress.Scheme;
-            var host = serviceAddress.Host;
-            var port = serviceAddress.Port;
-            var agentServiceRegistration = new AgentServiceRegistration
+            using (var consulClient = new ConsulClient(x => x.Address = new Uri(_consulOption.Value.ConsulUrl)))
             {
-                ID = serviceId,
-                Name = _consulOption.Value.ServiceName,
-                Address = host,
-                Port = port,
-                Meta = new Dictionary<string, string> { ["Protocol"] = protocol },
-                Tags = _consulOption.Value.Tags,
-                Check = new AgentServiceCheck
+                var addresses = _server.Features.Get<IServerAddressesFeature>().Addresses;
+                var address = addresses.FirstOrDefault();
+                var serviceAddress = new Uri(address);
+                var protocol = serviceAddress.Scheme;
+                var host = serviceAddress.Host;
+                var port = serviceAddress.Port;
+                var agentServiceRegistration = new AgentServiceRegistration
                 {
-                    DeregisterCriticalServiceAfter =
-                        TimeSpan.FromSeconds(_consulOption.Value.DeregisterCriticalServiceAfter),
-                    Interval = TimeSpan.FromSeconds(_consulOption.Value.CheckIntervalInSecond),
-                    HTTP = $"{protocol}://{host}:{port}/{_consulOption.Value.HealthCheckUrl}",
-                    Timeout = TimeSpan.FromSeconds(_consulOption.Value.CheckTimeout)
-                }
-            };
-            _consulClient.Agent.ServiceRegister(agentServiceRegistration);
+                    ID = serviceId,
+                    Name = _consulOption.Value.ServiceName,
+                    Address = host,
+                    Port = port,
+                    Meta = new Dictionary<string, string> { ["Protocol"] = protocol },
+                    Tags = _consulOption.Value.Tags,
+                    Check = new AgentServiceCheck
+                    {
+                        DeregisterCriticalServiceAfter =
+                            TimeSpan.FromSeconds(_consulOption.Value.DeregisterCriticalServiceAfter),
+                        Interval = TimeSpan.FromSeconds(_consulOption.Value.CheckIntervalInSecond),
+                        HTTP = $"{protocol}://{host}:{port}/{_consulOption.Value.HealthCheckUrl}",
+                        Timeout = TimeSpan.FromSeconds(_consulOption.Value.CheckTimeout)
+                    }
+                };
+                var result = consulClient.Agent.ServiceRegister(agentServiceRegistration).GetAwaiter().GetResult();
+            }
         });
-        _hostApplicationLifetime.ApplicationStopping.Register(() =>
-            _consulClient.Agent.ServiceDeregister(serviceId));
+        _hostApplicationLifetime.ApplicationStopping.Register(
+            () =>
+            {
+                using (var consulClient = new ConsulClient(x => x.Address = new Uri(_consulOption.Value.ConsulUrl)))
+                {
+                    var result = consulClient.Agent.ServiceDeregister(serviceId).GetAwaiter().GetResult();
+                }
+            });
     }
 }
