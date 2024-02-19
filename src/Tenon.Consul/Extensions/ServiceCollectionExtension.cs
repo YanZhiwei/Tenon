@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tenon.Consul.Options;
+using Tenon.Consul.Configurations;
+using Tenon.Consul.LoadBalancer;
 
 namespace Tenon.Consul.Extensions;
 
@@ -11,13 +12,6 @@ public static class ServiceCollectionExtension
         if (consulSection == null)
             throw new ArgumentNullException(nameof(consulSection));
         return services.Configure<ConsulOptions>(consulSection);
-        //.AddSingleton(provider =>
-        //{
-        //    var configOptions = provider.GetService<IOptions<ConsulOptions>>();
-        //    if (configOptions == null)
-        //        throw new NullReferenceException(nameof(configOptions));
-        //    return new ConsulClient(x => x.Address = new Uri(configOptions.Value.ConsulUrl));
-        //})
     }
 
     public static IServiceCollection AddConsulDiscovery(this IServiceCollection services,
@@ -26,6 +20,8 @@ public static class ServiceCollectionExtension
         if (consulDiscoverySection == null)
             throw new ArgumentNullException(nameof(consulDiscoverySection));
         return services
-            .Configure<ConsulDiscoveryOptions>(consulDiscoverySection);
+            .Configure<ConsulDiscoveryOptions>(consulDiscoverySection)
+            .AddSingleton<ILoadBalancer, RandomLoadBalancer>()
+            .AddScoped<ConsulDiscoverDelegatingHandler>();
     }
 }

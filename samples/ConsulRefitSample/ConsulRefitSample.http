@@ -1,0 +1,6 @@
+@ConsulRefitSample_HostAddress = http://localhost:5289
+
+GET {{ConsulRefitSample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

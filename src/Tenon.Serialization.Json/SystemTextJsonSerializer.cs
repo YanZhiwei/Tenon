@@ -5,7 +5,7 @@ namespace Tenon.Serialization.Json;
 
 public sealed class SystemTextJsonSerializer(JsonSerializerOptions? jsonSerializerOptions = null) : ISerializer
 {
-    private static readonly JsonSerializerOptions DefaultJsonSerializerOption;
+    public static readonly JsonSerializerOptions DefaultJsonSerializerOption;
     private readonly JsonSerializerOptions _jsonSerializerOption = jsonSerializerOptions ?? DefaultJsonSerializerOption;
 
     static SystemTextJsonSerializer()

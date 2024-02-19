@@ -12,10 +12,11 @@ namespace ConsulSample.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -25,7 +26,7 @@ namespace ConsulSample.Controllers
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
                 TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                Summary = $"[{_httpContextAccessor.HttpContext.Request.Host.Value}]{Summaries[Random.Shared.Next(Summaries.Length)]}"
             })
             .ToArray();
         }

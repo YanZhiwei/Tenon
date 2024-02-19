@@ -1,10 +1,11 @@
-﻿using Tenon.Consul.LoadBalancer;
-using Tenon.Consul.Options;
+﻿using Microsoft.Extensions.Options;
+using Tenon.Consul.Configurations;
+using Tenon.Consul.LoadBalancer;
 
 namespace Tenon.Consul;
 
-public sealed class ConsulDiscoveryHttpMessageHandler(
-    ConsulDiscoveryOptions consulDiscoveryOptions,
+public sealed class ConsulDiscoverDelegatingHandler(
+    IOptions<ConsulDiscoveryOptions> consulDiscoveryOptions,
     ILoadBalancer loadBalancer)
     : DelegatingHandler
 {

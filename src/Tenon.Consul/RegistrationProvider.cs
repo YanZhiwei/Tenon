@@ -1,16 +1,14 @@
 ﻿using Consul;
-using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Tenon.Consul.Options;
+using Tenon.Consul.Configurations;
+using Tenon.Helper.Internal;
 
 namespace Tenon.Consul;
 
 public sealed class RegistrationProvider(
     IOptions<ConsulOptions> consulOption,
-    IHostApplicationLifetime hostApplicationLifetime,
-    IServer server)
+    IHostApplicationLifetime hostApplicationLifetime)
 {
     private readonly IOptions<ConsulOptions> _consulOption =
         consulOption ?? throw new ArgumentNullException(nameof(consulOption));
@@ -18,19 +16,21 @@ public sealed class RegistrationProvider(
     private readonly IHostApplicationLifetime _hostApplicationLifetime =
         hostApplicationLifetime ?? throw new ArgumentNullException(nameof(hostApplicationLifetime));
 
-    private readonly IServer _server = server ?? throw new ArgumentNullException(nameof(server));
 
-    public void Register(string? serviceId = null)
+    public void Register(Func<Uri> getServiceAddressHandle, string? serviceId = null)
     {
+        if (getServiceAddressHandle == null)
+            throw new ArgumentNullException(nameof(getServiceAddressHandle));
         if (string.IsNullOrWhiteSpace(serviceId))
             serviceId = $"{_consulOption.Value.ServiceName}-{Convert.ToString(DateTime.UtcNow.Ticks, 16)}";
+
         _hostApplicationLifetime.ApplicationStarted.Register(() =>
         {
             using (var consulClient = new ConsulClient(x => x.Address = new Uri(_consulOption.Value.ConsulUrl)))
             {
-                var addresses = _server.Features.Get<IServerAddressesFeature>().Addresses;
-                var address = addresses.FirstOrDefault();
-                var serviceAddress = new Uri(address);
+                var serviceAddress = getServiceAddressHandle();
+                if (serviceAddress == null)
+                    throw new ArgumentNullException(nameof(serviceAddress));
                 var protocol = serviceAddress.Scheme;
                 var host = serviceAddress.Host;
                 var port = serviceAddress.Port;

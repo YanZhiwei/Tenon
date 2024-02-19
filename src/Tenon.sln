@@ -85,7 +85,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.AspNetCore", "Tenon.A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{76FD4AE7-DA80-4244-8A1A-784DD49F9894}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsulSample", "..\samples\ConsulSample\ConsulSample.csproj", "{6E11502C-D0AB-45DE-B20A-07F0A8654336}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulSample", "..\samples\ConsulSample\ConsulSample.csproj", "{6E11502C-D0AB-45DE-B20A-07F0A8654336}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulRefitSample", "..\samples\ConsulRefitSample\ConsulRefitSample.csproj", "{CC4E2469-289A-48D7-B4A5-33DE1B442B45}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Consul.RefitClient", "Tenon.Consul.RefitClient\Tenon.Consul.RefitClient.csproj", "{96F30DFA-D6A4-4E96-B6D9-58F99DAADB2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Consul.GrpcClient", "Tenon.Consul.GrpcClient\Tenon.Consul.GrpcClient.csproj", "{DC1C151C-99B0-4455-9B90-5A42D6BDB437}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -249,6 +255,18 @@ Global
 		{6E11502C-D0AB-45DE-B20A-07F0A8654336}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E11502C-D0AB-45DE-B20A-07F0A8654336}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E11502C-D0AB-45DE-B20A-07F0A8654336}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC4E2469-289A-48D7-B4A5-33DE1B442B45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC4E2469-289A-48D7-B4A5-33DE1B442B45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC4E2469-289A-48D7-B4A5-33DE1B442B45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC4E2469-289A-48D7-B4A5-33DE1B442B45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96F30DFA-D6A4-4E96-B6D9-58F99DAADB2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96F30DFA-D6A4-4E96-B6D9-58F99DAADB2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96F30DFA-D6A4-4E96-B6D9-58F99DAADB2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96F30DFA-D6A4-4E96-B6D9-58F99DAADB2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC1C151C-99B0-4455-9B90-5A42D6BDB437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC1C151C-99B0-4455-9B90-5A42D6BDB437}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC1C151C-99B0-4455-9B90-5A42D6BDB437}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC1C151C-99B0-4455-9B90-5A42D6BDB437}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -262,6 +280,7 @@ Global
 		{F28AEC53-80E2-4048-BB15-277FF47CE760} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{E99DCDA2-FB3F-4CBB-8784-2D93DFBFE546} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{6E11502C-D0AB-45DE-B20A-07F0A8654336} = {76FD4AE7-DA80-4244-8A1A-784DD49F9894}
+		{CC4E2469-289A-48D7-B4A5-33DE1B442B45} = {76FD4AE7-DA80-4244-8A1A-784DD49F9894}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}
