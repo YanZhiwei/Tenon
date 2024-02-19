@@ -1,7 +1,10 @@
 
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Tenon.Abstractions;
 using Tenon.AspNetCore;
 using Tenon.Consul.Extensions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ConsulSample
 {
@@ -20,10 +23,16 @@ namespace ConsulSample
             var startAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             var serviceInfo = ServiceInfo.CreateInstance(startAssembly);
             builder.Services.AddConsul(builder.Configuration.GetSection("Consul"));
-            builder.Services.AddConsulDiscovery(builder.Configuration.GetSection("ConsulDiscovery"));
             builder.Services.AddSingleton<IWebServiceInfo>(serviceInfo);
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             var app = builder.Build();
-            app.UseConsulRegistrationCenter();
+           
+            app.UseConsulRegistrationCenter(() =>
+            {
+                var server = app.Services.GetService<IServer>();
+                var addressFeature = server.Features.Get<IServerAddressesFeature>();
+                return new Uri(addressFeature.Addresses.FirstOrDefault().ToString());
+            });
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
