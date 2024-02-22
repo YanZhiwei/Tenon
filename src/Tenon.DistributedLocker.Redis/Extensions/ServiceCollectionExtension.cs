@@ -19,7 +19,7 @@ public static class ServiceCollectionExtension
     }
 
     public static IServiceCollection AddKeyedRedisDistributedLocker(this IServiceCollection services,
-        string serviceKey, IConfigurationSection? distributedLockerSection = null)
+        string? serviceKey, IConfigurationSection? distributedLockerSection = null)
     {
         if (string.IsNullOrEmpty(serviceKey))
             throw new ArgumentNullException(nameof(serviceKey));

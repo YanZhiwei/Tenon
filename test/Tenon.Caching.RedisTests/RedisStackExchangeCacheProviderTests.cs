@@ -2,7 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tenon.Caching.Extensions;
 using Tenon.Caching.Redis.Extensions;
+using Tenon.Caching.RedisStackExchange;
 using Tenon.Helper.Internal;
 using Tenon.Redis.StackExchangeProvider.Extensions;
 using Tenon.Serialization.Json.Extensions;
@@ -12,7 +14,7 @@ namespace Tenon.Caching.RedisTests;
 [TestClass]
 public class RedisStackExchangeCacheProviderTests
 {
-    private readonly string _serviceKey;
+    private readonly string? _serviceKey;
     private readonly IServiceProvider _serviceProvider;
 
     public RedisStackExchangeCacheProviderTests()
