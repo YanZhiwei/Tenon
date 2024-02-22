@@ -9,7 +9,7 @@ namespace Tenon.Caching.Redis.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddKeyedRedisCache(this IServiceCollection services, string serviceKey,
+    public static IServiceCollection AddKeyedRedisCache(this IServiceCollection services, string? serviceKey,
         IConfigurationSection redisCacheSection, bool requiredKeyedService = false)
     {
         if (string.IsNullOrEmpty(serviceKey))

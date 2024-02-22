@@ -12,7 +12,7 @@ namespace Tenon.DistributedLocker.RedisTests;
 [TestClass]
 public class RedisDistributedLockerTests
 {
-    private readonly string _serviceKey = nameof(RedisDistributedLockerTests);
+    private readonly string? _serviceKey = nameof(RedisDistributedLockerTests);
     private readonly IServiceProvider _serviceProvider;
 
     public RedisDistributedLockerTests()

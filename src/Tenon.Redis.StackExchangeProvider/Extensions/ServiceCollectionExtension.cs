@@ -22,7 +22,7 @@ public static class ServiceCollectionExtension
     }
 
     public static IServiceCollection AddKeyedRedisStackExchangeProvider(this IServiceCollection services,
-        string serviceKey, IConfigurationSection redisSection)
+        string? serviceKey, IConfigurationSection redisSection)
     {
         if (string.IsNullOrEmpty(serviceKey))
             throw new ArgumentNullException(nameof(serviceKey));

@@ -12,7 +12,7 @@ public static class ServiceCollectionExtension
     }
 
     public static IServiceCollection AddKeyedSystemTextJsonSerializer(this IServiceCollection services,
-        string serviceKey)
+        string? serviceKey)
     {
         if (string.IsNullOrWhiteSpace(serviceKey))
             throw new ArgumentNullException(nameof(serviceKey));

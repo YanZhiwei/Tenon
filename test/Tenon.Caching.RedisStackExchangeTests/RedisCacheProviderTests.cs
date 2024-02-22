@@ -2,7 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tenon.Caching.RedisStackExchange.Extensions;
+using Tenon.Caching.Extensions;
+using Tenon.Caching.RedisStackExchange.Configurations;
 using Tenon.Helper.Internal;
 
 namespace Tenon.Caching.RedisStackExchangeTests;
@@ -10,7 +11,7 @@ namespace Tenon.Caching.RedisStackExchangeTests;
 [TestClass]
 public class RedisCacheProviderTests
 {
-    private readonly string _serviceKey;
+    private readonly string? _serviceKey;
     private readonly IServiceProvider _serviceProvider;
 
     public RedisCacheProviderTests()
@@ -24,8 +25,11 @@ public class RedisCacheProviderTests
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddRedisStackExchangeCache(configuration.GetSection("RedisCache"))
-            .AddKeyedRedisStackExchangeCache(_serviceKey, configuration.GetSection("RedisCache"))
+            .AddCaching(opt =>
+            {
+                opt.UseRedisStackExchange(configuration.GetSection("RedisCache"));
+                opt.UseKeyedRedisStackExchange(_serviceKey, configuration.GetSection("RedisCache2"));
+            })
             .BuildServiceProvider();
     }
 
@@ -51,7 +55,7 @@ public class RedisCacheProviderTests
         {
             var cacheKey = $"{RandomHelper.NextString(6, true)}";
             var cacheProvider = scope.ServiceProvider.GetService<ICacheProvider>();
-            var actual = await cacheProvider.SetAsync(cacheKey, cacheKey, TimeSpan.FromSeconds(5));
+            var actual = await cacheProvider?.SetAsync(cacheKey, cacheKey, TimeSpan.FromSeconds(5))!;
             Assert.IsTrue(actual);
             await Task.Delay(TimeSpan.FromSeconds(10));
             var result = await cacheProvider.ExistsAsync(cacheKey);

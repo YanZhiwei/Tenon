@@ -11,7 +11,7 @@ namespace Tenon.Redis.StackExchangeProviderTests;
 [TestClass]
 public class StackExchangeProviderTests
 {
-    private readonly string _serviceKey = nameof(StackExchangeProviderTests);
+    private readonly string? _serviceKey = nameof(StackExchangeProviderTests);
     private readonly IServiceProvider _serviceProvider;
 
     public StackExchangeProviderTests()
