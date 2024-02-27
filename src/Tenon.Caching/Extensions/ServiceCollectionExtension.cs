@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Tenon.Caching.Configurations;
-
 namespace Tenon.Caching.Extensions;
 
 public static class ServiceCollectionExtension
@@ -10,9 +9,11 @@ public static class ServiceCollectionExtension
     {
         if (setupAction == null)
             throw new ArgumentNullException(nameof(setupAction));
-
         var options = new CachingOptions();
         setupAction(options);
+        if (options.KeyedServices && string.IsNullOrWhiteSpace(options.KeyedServiceKey))
+            throw new ArgumentNullException(nameof(options.KeyedServiceKey));
+        services.Configure(setupAction);
         foreach (var serviceExtension in options.Extensions)
             serviceExtension.AddServices(services);
         return services;

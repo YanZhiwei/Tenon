@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tenon.Caching.Configurations;
 using Tenon.Caching.Extensions;
 using Tenon.Caching.RedisStackExchange.Configurations;
 using Tenon.Helper.Internal;
@@ -11,12 +13,10 @@ namespace Tenon.Caching.RedisStackExchangeTests;
 [TestClass]
 public class RedisCacheProviderTests
 {
-    private readonly string? _serviceKey;
     private readonly IServiceProvider _serviceProvider;
 
     public RedisCacheProviderTests()
     {
-        _serviceKey = nameof(RedisCacheProviderTests);
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", false)
@@ -27,9 +27,17 @@ public class RedisCacheProviderTests
                 .SetMinimumLevel(LogLevel.Debug))
             .AddCaching(opt =>
             {
+                opt.KeyedServiceKey = $"{nameof(CachingOptions).ToLower()}:test";
+                opt.KeyedServices = true;
+                opt.UseSystemTextJsonSerializer();
                 opt.UseRedisStackExchange(configuration.GetSection("RedisCache"));
-                opt.UseKeyedRedisStackExchange(_serviceKey, configuration.GetSection("RedisCache2"));
             })
+            .AddCaching(opt =>
+            {
+                opt.UseSystemTextJsonSerializer();
+                opt.UseRedisStackExchange(configuration.GetSection("RedisCache2"));
+            })
+            //.AddKeyedRedisStackExchangeCache($"{nameof(CachingOptions).ToLower()}:test", configuration.GetSection("RedisCache"))
             .BuildServiceProvider();
     }
 
@@ -38,8 +46,11 @@ public class RedisCacheProviderTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
+            var cachingOptions = _serviceProvider.GetRequiredService<IOptions<CachingOptions>>().Value;
+            var serviceKey = cachingOptions.KeyedServiceKey; //$"{nameof(CachingOptions).ToLower()}:test";//
             var cacheKey = $"{RandomHelper.NextString(6, true)}";
-            var cacheProvider = scope.ServiceProvider.GetRequiredKeyedService<ICacheProvider>(_serviceKey);
+            var cacheProvider =
+                scope.ServiceProvider.GetRequiredKeyedService<ICacheProvider>(serviceKey);
             var actual = cacheProvider.Set(cacheKey, cacheKey, TimeSpan.FromSeconds(5));
             Assert.IsTrue(actual);
             Thread.Sleep(TimeSpan.FromSeconds(10));
