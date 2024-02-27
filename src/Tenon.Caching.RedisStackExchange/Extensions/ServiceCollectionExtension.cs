@@ -3,8 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Tenon.Caching.Redis;
 using Tenon.Caching.Redis.Configurations;
+using Tenon.Redis;
 using Tenon.Redis.Configurations;
 using Tenon.Redis.StackExchangeProvider.Extensions;
+using Tenon.Serialization;
 using Tenon.Serialization.Json.Extensions;
 
 namespace Tenon.Caching.RedisStackExchange.Extensions;
@@ -31,10 +33,16 @@ public static class ServiceCollectionExtension
         if (string.IsNullOrWhiteSpace(redisConfig.ConnectionString))
             throw new ArgumentNullException(nameof(redisConfig.ConnectionString));
         services.AddKeyedSystemTextJsonSerializer(serviceKey);
-        services.AddKeyedRedisStackExchangeProvider(serviceKey, redisCacheSection);
-        services.TryAddKeyedScoped<ICacheProvider, RedisCacheProvider>(serviceKey);
+        services.AddKeyedRedisStackExchangeProvider(serviceKey, redisSection);
+        services.TryAddKeyedSingleton<ICacheProvider>(serviceKey, (serviceProvider, key) =>
+        {
+            var redisProvider = serviceProvider.GetKeyedService<IRedisProvider>(key);
+            var serializer = serviceProvider.GetKeyedService<ISerializer>(key);
+            return new RedisCacheProvider(redisCacheConfig, redisProvider, serializer);
+        });
         return services;
     }
+
 
     public static IServiceCollection AddRedisStackExchangeCache(this IServiceCollection services,
         IConfigurationSection redisCacheSection)
@@ -55,7 +63,7 @@ public static class ServiceCollectionExtension
         services.Configure<RedisCachingOptions>(redisCacheSection);
         services.Configure<RedisOptions>(redisSection);
         services.AddSystemTextJsonSerializer();
-        services.AddRedisStackExchangeProvider(redisCacheSection);
+        services.AddRedisStackExchangeProvider(redisSection);
         services.TryAddSingleton<ICacheProvider, RedisCacheProvider>();
         return services;
     }

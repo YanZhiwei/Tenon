@@ -9,16 +9,13 @@ public static class RedisStackExchangeCachingOptions
     public static CachingOptions UseRedisStackExchange(this CachingOptions options,
         IConfigurationSection redisCacheSection)
     {
-        options.RegisterExtension(new CachingOptionsExtension(redisCacheSection));
+        options.RegisterExtension(new CachingOptionsExtension(redisCacheSection, options));
         return options;
     }
 
-    public static CachingOptions UseKeyedRedisStackExchange(this CachingOptions options, string serviceKey,
-        IConfigurationSection redisCacheSection)
+    public static CachingOptions UseSystemTextJsonSerializer(this CachingOptions options)
     {
-        if (string.IsNullOrWhiteSpace(serviceKey))
-            throw new ArgumentNullException(nameof(serviceKey));
-        options.RegisterExtension(new CachingOptionsExtension(redisCacheSection, serviceKey));
+        options.RegisterExtension(new SerializerOptionsExtension(true, options));
         return options;
     }
 }
