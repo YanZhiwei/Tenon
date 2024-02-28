@@ -1,4 +1,5 @@
-﻿using Tenon.Redis;
+﻿using Tenon.BloomFilter.Abstractions;
+using Tenon.Infra.Redis;
 
 namespace Tenon.BloomFilter.Redis;
 

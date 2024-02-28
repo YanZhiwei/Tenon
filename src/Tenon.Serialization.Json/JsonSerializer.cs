@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Tenon.Serialization.Abstractions;
 using SystemJsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Tenon.Serialization.Json;

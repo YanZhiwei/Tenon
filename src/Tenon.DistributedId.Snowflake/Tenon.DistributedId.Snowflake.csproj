@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Tenon.DistributedId.Abstractions\Tenon.DistributedId.Abstractions.csproj" />
     <ProjectReference Include="..\Tenon.DistributedId\Tenon.DistributedId.csproj" />
   </ItemGroup>
 

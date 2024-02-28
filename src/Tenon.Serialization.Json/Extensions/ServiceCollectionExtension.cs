@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Tenon.Serialization.Abstractions;
 
 namespace Tenon.Serialization.Json.Extensions;
 

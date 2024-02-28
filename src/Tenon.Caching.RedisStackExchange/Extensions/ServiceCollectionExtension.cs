@@ -3,10 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Tenon.Caching.Redis;
 using Tenon.Caching.Redis.Configurations;
-using Tenon.Redis;
-using Tenon.Redis.Configurations;
-using Tenon.Redis.StackExchangeProvider.Extensions;
-using Tenon.Serialization;
+using Tenon.Infra.Redis;
+using Tenon.Infra.Redis.Configurations;
+using Tenon.Infra.Redis.StackExchangeProvider.Extensions;
+using Tenon.Serialization.Abstractions;
 using Tenon.Serialization.Json.Extensions;
 
 namespace Tenon.Caching.RedisStackExchange.Extensions;

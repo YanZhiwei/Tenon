@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Infrastructures\Tenon.Infra.Redis.StackExchangeProvider\Tenon.Infra.Redis.StackExchangeProvider.csproj" />
     <ProjectReference Include="..\Tenon.BloomFilter.Redis\Tenon.BloomFilter.Redis.csproj" />
     <ProjectReference Include="..\Tenon.BloomFilter\Tenon.BloomFilter.csproj" />
     <ProjectReference Include="..\Tenon.Redis.StackExchangeProvider\Tenon.Redis.StackExchangeProvider.csproj" />

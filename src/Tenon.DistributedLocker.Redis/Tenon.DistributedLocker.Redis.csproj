@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Tenon.DistributedLocker.Abstractions\Tenon.DistributedLocker.Abstractions.csproj" />
+    <ProjectReference Include="..\Infrastructures\Tenon.Infra.Redis\Tenon.Infra.Redis.csproj" />
     <ProjectReference Include="..\Tenon.DistributedLocker\Tenon.DistributedLocker.csproj" />
     <ProjectReference Include="..\Tenon.Helper\Tenon.Helper.csproj" />
     <ProjectReference Include="..\Tenon.Redis\Tenon.Redis.csproj" />

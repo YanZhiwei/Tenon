@@ -1,4 +1,4 @@
-﻿using Tenon.Redis.Configurations;
+﻿using Tenon.Infra.Redis.Configurations;
 
 namespace Tenon.Caching.Redis.Configurations;
 

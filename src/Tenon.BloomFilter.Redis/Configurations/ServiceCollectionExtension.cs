@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Tenon.Redis;
+using Tenon.BloomFilter.Abstractions;
+using Tenon.Infra.Redis;
+
 
 namespace Tenon.BloomFilter.Redis.Configurations;
 

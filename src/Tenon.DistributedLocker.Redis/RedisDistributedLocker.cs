@@ -1,8 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
-using Tenon.DistributedLocker.Configurations;
-using Tenon.Redis;
+using Tenon.DistributedLocker.Abstractions;
+using Tenon.DistributedLocker.Abstractions.Configurations;
+using Tenon.Infra.Redis;
 
 namespace Tenon.DistributedLocker.Redis;
 

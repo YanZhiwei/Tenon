@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tenon.Extensions\Tenon.Extensions.csproj" />
+    <ProjectReference Include="..\Extensions\Tenon.Extensions\Tenon.Extensions.csproj" />
     <ProjectReference Include="..\Tenon.Repository\Tenon.Repository.csproj" />
   </ItemGroup>
 
