@@ -17,9 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Infrastructures\Tenon.Infra.Redis.StackExchangeProvider\Tenon.Infra.Redis.StackExchangeProvider.csproj" />
     <ProjectReference Include="..\Tenon.Caching.Redis\Tenon.Caching.Redis.csproj" />
-    <ProjectReference Include="..\Tenon.Caching\Tenon.Caching.csproj" />
     <ProjectReference Include="..\Tenon.Serialization.Json\Tenon.Serialization.Json.csproj" />
-    <ProjectReference Include="..\Tenon.Serialization\Tenon.Serialization.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Tenon.Caching;
+﻿namespace Tenon.Caching.Abstractions;
 
 /// <summary>
 /// reference https://github.com/FoundatioFx/Foundatio/blob/HEAD/src/Foundatio/Caching/CacheValue.cs

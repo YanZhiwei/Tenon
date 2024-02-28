@@ -1,7 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using Tenon.Caching.Configurations;
-namespace Tenon.Caching.Extensions;
+using Tenon.Caching.Abstractions.Configurations;
+
+namespace Tenon.Caching.Abstractions.Extensions;
 
 public static class ServiceCollectionExtension
 {

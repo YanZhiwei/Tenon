@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Tenon.Serialization.Abstractions\Tenon.Serialization.Abstractions.csproj" />
-    <ProjectReference Include="..\Tenon.Serialization\Tenon.Serialization.csproj" />
   </ItemGroup>
 
 </Project>

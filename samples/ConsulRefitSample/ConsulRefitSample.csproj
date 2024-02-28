@@ -16,8 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Infrastructures\Tenon.Infra.Consul.GrpcClient\Tenon.Infra.Consul.GrpcClient.csproj" />
     <ProjectReference Include="..\..\src\Infrastructures\Tenon.Infra.Consul\Tenon.Infra.Consul.csproj" />
-    <ProjectReference Include="..\..\src\Tenon.Consul.RefitClient\Tenon.Consul.RefitClient.csproj" />
-    <ProjectReference Include="..\..\src\Tenon.Consul\Tenon.Consul.csproj" />
   </ItemGroup>
 
 </Project>

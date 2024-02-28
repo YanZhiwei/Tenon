@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Tenon.Caching;
+namespace Tenon.Caching.Abstractions;
 
 public interface ICacheProvider
 {

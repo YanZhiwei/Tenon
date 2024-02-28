@@ -3,8 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tenon.Caching.Configurations;
-using Tenon.Caching.Extensions;
+using Tenon.Caching.Abstractions;
+using Tenon.Caching.Abstractions.Configurations;
+using Tenon.Caching.Abstractions.Extensions;
 using Tenon.Caching.RedisStackExchange.Configurations;
 using Tenon.Helper.Internal;
 

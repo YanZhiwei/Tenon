@@ -18,7 +18,6 @@
     <ProjectReference Include="..\..\Abstractions\Tenon.Serialization.Abstractions\Tenon.Serialization.Abstractions.csproj" />
     <ProjectReference Include="..\..\Extensions\Tenon.StackExchange.Redis.Extensions\Tenon.StackExchange.Redis.Extensions.csproj" />
     <ProjectReference Include="..\..\Helpers\Tenon.Helper\Tenon.Helper.csproj" />
-    <ProjectReference Include="..\..\Tenon.Serialization\Tenon.Serialization.csproj" />
     <ProjectReference Include="..\Tenon.Infra.Redis\Tenon.Infra.Redis.csproj" />
   </ItemGroup>
 

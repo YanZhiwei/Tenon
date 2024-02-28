@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Abstractions\Tenon.Abstractions\Tenon.Abstractions.csproj" />
-    <ProjectReference Include="..\..\Tenon.Abstractions\Tenon.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
