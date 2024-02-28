@@ -27,7 +27,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Tenon.BloomFilter.RedisStackExchange\Tenon.BloomFilter.RedisStackExchange.csproj" />
     <ProjectReference Include="..\..\src\Tenon.BloomFilter.Redis\Tenon.BloomFilter.Redis.csproj" />
-    <ProjectReference Include="..\..\src\Tenon.BloomFilter\Tenon.BloomFilter.csproj" />
   </ItemGroup>
 
   <ItemGroup>

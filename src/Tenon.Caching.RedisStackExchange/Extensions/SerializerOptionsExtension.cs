@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Tenon.Caching.Configurations;
+using Tenon.Caching.Abstractions;
+using Tenon.Caching.Abstractions.Configurations;
 using Tenon.Serialization.Json.Extensions;
 
 namespace Tenon.Caching.RedisStackExchange.Extensions;

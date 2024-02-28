@@ -11,14 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Tenon.Caching.Abstractions\Tenon.Caching.Abstractions.csproj" />
     <ProjectReference Include="..\Abstractions\Tenon.Serialization.Abstractions\Tenon.Serialization.Abstractions.csproj" />
     <ProjectReference Include="..\Extensions\Tenon.Extensions\Tenon.Extensions.csproj" />
     <ProjectReference Include="..\Helpers\Tenon.Helper\Tenon.Helper.csproj" />
     <ProjectReference Include="..\Infrastructures\Tenon.Infra.Redis\Tenon.Infra.Redis.csproj" />
-    <ProjectReference Include="..\Tenon.Caching\Tenon.Caching.csproj" />
-    <ProjectReference Include="..\Tenon.Helper\Tenon.Helper.csproj" />
-    <ProjectReference Include="..\Tenon.Redis\Tenon.Redis.csproj" />
-    <ProjectReference Include="..\Tenon.Serialization\Tenon.Serialization.csproj" />
   </ItemGroup>
 
 </Project>

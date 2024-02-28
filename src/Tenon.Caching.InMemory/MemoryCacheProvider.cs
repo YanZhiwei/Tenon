@@ -1,4 +1,6 @@
-﻿namespace Tenon.Caching.InMemory
+﻿using Tenon.Caching.Abstractions;
+
+namespace Tenon.Caching.InMemory
 {
     public sealed class MemoryCacheProvider: ICacheProvider
     {

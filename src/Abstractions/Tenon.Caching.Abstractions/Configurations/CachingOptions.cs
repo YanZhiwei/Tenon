@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Tenon.Caching.Configurations;
+namespace Tenon.Caching.Abstractions.Configurations;
 
 public class CachingOptions
 {

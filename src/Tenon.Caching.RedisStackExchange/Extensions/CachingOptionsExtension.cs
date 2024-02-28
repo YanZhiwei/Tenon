@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Tenon.Caching.Configurations;
+using Tenon.Caching.Abstractions;
+using Tenon.Caching.Abstractions.Configurations;
 using Tenon.Caching.Redis;
 using Tenon.Caching.Redis.Configurations;
 using Tenon.Infra.Redis;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Tenon.Caching.Configurations;
+using Tenon.Caching.Abstractions.Configurations;
 using Tenon.Caching.RedisStackExchange.Extensions;
 
 namespace Tenon.Caching.RedisStackExchange;
