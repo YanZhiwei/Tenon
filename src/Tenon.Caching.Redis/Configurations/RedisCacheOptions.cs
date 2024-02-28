@@ -6,5 +6,5 @@ public sealed class RedisCachingOptions
 {
     public int MaxRandomSecond { get; set; }
 
-    public RedisOptions Redis { get; set; }
+    public required RedisOptions Redis { get; set; }
 }
