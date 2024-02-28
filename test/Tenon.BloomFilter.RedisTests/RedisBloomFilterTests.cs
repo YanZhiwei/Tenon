@@ -3,8 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tenon.BloomFilter.Abstractions;
 using Tenon.BloomFilter.Redis.Configurations;
-using Tenon.Redis.StackExchangeProvider.Extensions;
+using Tenon.Infra.Redis.StackExchangeProvider.Extensions;
 using Tenon.Serialization.Json.Extensions;
 
 namespace Tenon.BloomFilter.RedisTests;

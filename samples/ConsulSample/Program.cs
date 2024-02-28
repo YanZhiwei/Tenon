@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Tenon.Abstractions;
-using Tenon.AspNetCore;
-using Tenon.Consul.Extensions;
-using static System.Net.Mime.MediaTypeNames;
+using Tenon.Infra.Consul.Extensions;
 
 namespace ConsulSample
 {
@@ -21,7 +19,7 @@ namespace ConsulSample
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             var startAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var serviceInfo = ServiceInfo.CreateInstance(startAssembly);
+            var serviceInfo = Tenon.AspNetCore.Extensions.ServiceInfo.CreateInstance(startAssembly);
             builder.Services.AddConsul(builder.Configuration.GetSection("Consul"));
             builder.Services.AddSingleton<IWebServiceInfo>(serviceInfo);
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

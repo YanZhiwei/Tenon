@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Tenon.DistributedLocker.Abstractions;
 using Tenon.DistributedLocker.RedisStackExchange.Extensions;
 using Tenon.Helper.Internal;
 

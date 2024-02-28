@@ -3,8 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Tenon.BloomFilter.Configurations;
-using Tenon.BloomFilter.Extensions;
+using Tenon.BloomFilter.Abstractions;
+using Tenon.BloomFilter.Abstractions.Configurations;
+using Tenon.BloomFilter.Abstractions.Extensions;
 using Tenon.BloomFilter.RedisStackExchange.Configurations;
 
 namespace Tenon.BloomFilter.RedisStackExchangeTests;

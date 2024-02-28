@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Tenon.BloomFilter.Configurations;
+using Tenon.BloomFilter.Abstractions;
+using Tenon.BloomFilter.Abstractions.Configurations;
 using Tenon.BloomFilter.Redis;
-using Tenon.Redis;
-using Tenon.Redis.Configurations;
-using Tenon.Redis.StackExchangeProvider.Extensions;
+using Tenon.Infra.Redis;
+using Tenon.Infra.Redis.Configurations;
+using Tenon.Infra.Redis.StackExchangeProvider.Extensions;
+
 
 namespace Tenon.BloomFilter.RedisStackExchange.Extensions;
 

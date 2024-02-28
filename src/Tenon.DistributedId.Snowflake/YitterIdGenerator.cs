@@ -1,4 +1,5 @@
-﻿using Yitter.IdGenerator;
+﻿using Tenon.DistributedId.Abstractions;
+using Yitter.IdGenerator;
 
 namespace Tenon.DistributedId.Snowflake;
 

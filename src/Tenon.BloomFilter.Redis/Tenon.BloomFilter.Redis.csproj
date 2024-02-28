@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Tenon.BloomFilter.Abstractions\Tenon.BloomFilter.Abstractions.csproj" />
+    <ProjectReference Include="..\Infrastructures\Tenon.Infra.Redis\Tenon.Infra.Redis.csproj" />
     <ProjectReference Include="..\Tenon.BloomFilter\Tenon.BloomFilter.csproj" />
     <ProjectReference Include="..\Tenon.Redis\Tenon.Redis.csproj" />
   </ItemGroup>

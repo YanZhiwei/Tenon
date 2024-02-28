@@ -1,5 +1,6 @@
 ﻿using DotNetCore.CAP;
-using Tenon.EventBus.Models;
+using Tenon.EventBus.Abstractions;
+using Tenon.EventBus.Abstractions.Models;
 
 namespace Tenon.EventBus.Cap;
 

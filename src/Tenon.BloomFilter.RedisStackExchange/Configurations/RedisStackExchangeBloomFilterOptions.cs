@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Tenon.BloomFilter.Configurations;
+using Tenon.BloomFilter.Abstractions.Configurations;
 using Tenon.BloomFilter.RedisStackExchange.Extensions;
 
 namespace Tenon.BloomFilter.RedisStackExchange.Configurations;

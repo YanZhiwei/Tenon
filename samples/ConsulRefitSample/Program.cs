@@ -1,4 +1,4 @@
-using Tenon.Consul.RefitClient.Extensions;
+using Tenon.Infra.Consul.GrpcClient.Extensions;
 
 namespace ConsulRefitSample;
 

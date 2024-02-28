@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Tenon.DistributedLocker.Abstractions;
 using Tenon.DistributedLocker.Redis.Configurations;
-using Tenon.Redis;
+using Tenon.Infra.Redis;
 
 namespace Tenon.DistributedLocker.Redis.Extensions;
 

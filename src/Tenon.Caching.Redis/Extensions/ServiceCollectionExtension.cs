@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Tenon.Caching.Redis.Configurations;
-using Tenon.Redis;
-using Tenon.Serialization;
+using Tenon.Infra.Redis;
+using Tenon.Serialization.Abstractions;
 
 namespace Tenon.Caching.Redis.Extensions;
 

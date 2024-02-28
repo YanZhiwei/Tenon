@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tenon.Redis.StackExchangeProvider.Extensions;
-using Tenon.Serialization.Json;
+using Tenon.Infra.Redis;
+using Tenon.Infra.Redis.StackExchangeProvider.Extensions;
 using Tenon.Serialization.Json.Extensions;
 
 namespace Tenon.Redis.StackExchangeProviderTests;
