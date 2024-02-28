@@ -45,7 +45,7 @@ internal class CachingOptionsExtension(IConfigurationSection redisCacheSection, 
             services.TryAddKeyedSingleton<ICacheProvider>(serviceKey, (serviceProvider, key) =>
             {
                 var redisProvider = serviceProvider.GetKeyedService<IRedisProvider>(key);
-                var serializer = serviceProvider.GetKeyedService<ISerializer>(key);
+                var serializer = serviceProvider.GetRequiredKeyedService<ISerializer>(key);
                 return new RedisCacheProvider(redisCacheConfig, redisProvider, serializer);
             });
         }
