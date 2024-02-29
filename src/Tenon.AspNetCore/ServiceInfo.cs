@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Tenon.Abstractions;
 
-namespace Tenon.AspNetCore.Extensions;
+namespace Tenon.AspNetCore;
 
 public class ServiceInfo
     : IWebServiceInfo

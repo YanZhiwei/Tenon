@@ -23,8 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Abstractions\Tenon.Abstractions\Tenon.Abstractions.csproj" />
-    <ProjectReference Include="..\..\src\Extensions\Tenon.AspNetCore.Extensions\Tenon.AspNetCore.Extensions.csproj" />
     <ProjectReference Include="..\..\src\Infrastructures\Tenon.Infra.Consul\Tenon.Infra.Consul.csproj" />
+    <ProjectReference Include="..\..\src\Tenon.AspNetCore\Tenon.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>
