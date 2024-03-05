@@ -10,8 +10,6 @@ namespace Tenon.AspNetCore.Authentication.Bearer;
 
 public abstract class BearerAuthenticationHandler : AuthenticationHandler<BearerSchemeOptions>
 {
-    public const string AuthenticationScheme = "Bearer";
-
     protected BearerAuthenticationHandler(IOptionsMonitor<BearerSchemeOptions> options, ILoggerFactory logger,
         UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
     {
@@ -26,9 +24,10 @@ public abstract class BearerAuthenticationHandler : AuthenticationHandler<Bearer
     {
         AuthenticateResult authResult;
         var authHeader = Request.Headers["Authorization"].ToString();
-        if (!string.IsNullOrWhiteSpace(authHeader) && authHeader.StartsWith(AuthenticationScheme))
+        if (!string.IsNullOrWhiteSpace(authHeader) && authHeader.StartsWith(BearerDefaults.AuthenticationScheme,
+                StringComparison.CurrentCultureIgnoreCase))
         {
-            var startIndex = AuthenticationScheme.Length + 1;
+            var startIndex = BearerDefaults.AuthenticationScheme.Length + 1;
             var token = authHeader[startIndex..].Trim();
             if (string.IsNullOrWhiteSpace(token))
             {
@@ -56,13 +55,14 @@ public abstract class BearerAuthenticationHandler : AuthenticationHandler<Bearer
                 return await Task.FromResult(authResult);
             }
 
-            var claims = await ValidateAsync(principal);
+            var claims = await GetValidatedInfoAsync(principal);
             if (claims?.Any() ?? false)
             {
-                var identity = new ClaimsIdentity(claims, AuthenticationScheme);
+                var identity = new ClaimsIdentity(claims, BearerDefaults.AuthenticationScheme);
                 var claimsPrincipal = new ClaimsPrincipal(identity);
                 authResult =
-                    AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, AuthenticationScheme));
+                    AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal,
+                        BearerDefaults.AuthenticationScheme));
                 if (Options.OnTokenValidated != null)
                 {
                     var validatedContext = new BearerTokenValidatedContext(Context, Scheme, Options)
@@ -90,5 +90,5 @@ public abstract class BearerAuthenticationHandler : AuthenticationHandler<Bearer
 
     protected abstract TokenValidationParameters GenerateTokenValidationParameters();
 
-    protected abstract Task<Claim[]> ValidateAsync(ClaimsPrincipal principal);
+    protected abstract Task<Claim[]> GetValidatedInfoAsync(ClaimsPrincipal principal);
 }

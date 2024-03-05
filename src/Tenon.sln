@@ -107,7 +107,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Caching.Abstractions"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.AspNetCore", "Tenon.AspNetCore\Tenon.AspNetCore.csproj", "{CEFB0F51-B1BD-4032-AE1A-D395EBF66FBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Infra.Kafka", "Infrastructures\Tenon.Infra.Kafka\Tenon.Infra.Kafka.csproj", "{DF1BE1FB-30D0-49B7-AA87-3C83F874520D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Kafka", "Infrastructures\Tenon.Infra.Kafka\Tenon.Infra.Kafka.csproj", "{DF1BE1FB-30D0-49B7-AA87-3C83F874520D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiSample", "..\samples\WebApiSample\WebApiSample.csproj", "{C11B0EC6-FB31-4297-B6E5-B331EFFE2332}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiJwtBearerSample", "..\samples\WebApiJwtBearerSample\WebApiJwtBearerSample.csproj", "{30E99ADB-3D05-420F-A554-6BA48B6CA6C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -295,6 +299,14 @@ Global
 		{DF1BE1FB-30D0-49B7-AA87-3C83F874520D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF1BE1FB-30D0-49B7-AA87-3C83F874520D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF1BE1FB-30D0-49B7-AA87-3C83F874520D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C11B0EC6-FB31-4297-B6E5-B331EFFE2332}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11B0EC6-FB31-4297-B6E5-B331EFFE2332}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C11B0EC6-FB31-4297-B6E5-B331EFFE2332}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C11B0EC6-FB31-4297-B6E5-B331EFFE2332}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30E99ADB-3D05-420F-A554-6BA48B6CA6C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30E99ADB-3D05-420F-A554-6BA48B6CA6C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30E99ADB-3D05-420F-A554-6BA48B6CA6C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30E99ADB-3D05-420F-A554-6BA48B6CA6C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -328,6 +340,8 @@ Global
 		{99327B12-EF07-4B9B-A22E-77BE1B4C98EA} = {73FC2D37-C4FE-4DD4-AA4C-2484EA04769C}
 		{D2F0250F-F9FD-4435-86FC-3D982360B37D} = {73FC2D37-C4FE-4DD4-AA4C-2484EA04769C}
 		{DF1BE1FB-30D0-49B7-AA87-3C83F874520D} = {379B9552-4579-4BFD-A50E-F123587A91AE}
+		{C11B0EC6-FB31-4297-B6E5-B331EFFE2332} = {76FD4AE7-DA80-4244-8A1A-784DD49F9894}
+		{30E99ADB-3D05-420F-A554-6BA48B6CA6C4} = {76FD4AE7-DA80-4244-8A1A-784DD49F9894}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}

@@ -12,8 +12,6 @@ namespace Tenon.AspNetCore.Authentication.Basic;
 /// </summary>
 public abstract class BasicAuthenticationHandler : AuthenticationHandler<BasicSchemeOptions>
 {
-    public const string AuthenticationScheme = "Basic";
-
     protected BasicAuthenticationHandler(IOptionsMonitor<BasicSchemeOptions> options, ILoggerFactory logger,
         UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
     {
@@ -28,9 +26,9 @@ public abstract class BasicAuthenticationHandler : AuthenticationHandler<BasicSc
     {
         AuthenticateResult authResult;
         var authHeader = Request.Headers["Authorization"].ToString();
-        if (!string.IsNullOrWhiteSpace(authHeader) && authHeader.StartsWith(AuthenticationScheme))
+        if (!string.IsNullOrWhiteSpace(authHeader) && authHeader.StartsWith(BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
         {
-            var startIndex = AuthenticationScheme.Length + 1;
+            var startIndex = BasicDefaults.AuthenticationScheme.Length + 1;
             var token = authHeader[startIndex..].Trim();
             if (string.IsNullOrWhiteSpace(token))
             {
@@ -42,10 +40,10 @@ public abstract class BasicAuthenticationHandler : AuthenticationHandler<BasicSc
             var claims = UnPackFromBase64(token);
             if (claims?.Any() ?? false)
             {
-                var identity = new ClaimsIdentity(claims, AuthenticationScheme);
+                var identity = new ClaimsIdentity(claims, BasicDefaults.AuthenticationScheme);
                 var claimsPrincipal = new ClaimsPrincipal(identity);
                 authResult =
-                    AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, AuthenticationScheme));
+                    AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, BasicDefaults.AuthenticationScheme));
                 var validatedContext = new BasicTokenValidatedContext(Context, Scheme, Options)
                 {
                     Principal = claimsPrincipal

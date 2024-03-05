@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Tenon.AspNetCore.Authentication.Bearer;
+using Tenon.AspNetCore.Authentication.Basic;
 
 namespace Tenon.AspNetCore.Authorization.Bearer;
 
@@ -10,7 +10,7 @@ public class BearerAuthorizeAttribute : AuthorizeAttribute
     {
         Codes = codes;
         Policy = AuthorizePolicy.Default;
-        AuthenticationSchemes = BearerAuthenticationHandler.AuthenticationScheme;
+        AuthenticationSchemes = BasicDefaults.AuthenticationScheme;
     }
 
     public string[] Codes { get; set; }

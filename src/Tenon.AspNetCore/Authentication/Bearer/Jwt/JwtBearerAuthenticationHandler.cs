@@ -11,20 +11,20 @@ using Tenon.AspNetCore.Extensions;
 namespace Tenon.AspNetCore.Authentication.Bearer.Jwt;
 
 /// <summary>
-/// Jwt验证(认证)服务
+///     Jwt验证(认证)服务
 /// </summary>
-public class JwtBearerAuthenticationHandler : BearerAuthenticationHandler
+public abstract class JwtBearerAuthenticationHandler : BearerAuthenticationHandler
 {
     protected readonly IOptionsMonitor<JwtOptions> JwtOptions;
 
-    public JwtBearerAuthenticationHandler(IOptionsMonitor<BearerSchemeOptions> options, ILoggerFactory logger,
+    protected JwtBearerAuthenticationHandler(IOptionsMonitor<BearerSchemeOptions> options, ILoggerFactory logger,
         UrlEncoder encoder, ISystemClock clock, IOptionsMonitor<JwtOptions> jwtOptions) : base(options, logger, encoder,
         clock)
     {
         JwtOptions = jwtOptions;
     }
 
-    public JwtBearerAuthenticationHandler(IOptionsMonitor<BearerSchemeOptions> options, ILoggerFactory logger,
+    protected JwtBearerAuthenticationHandler(IOptionsMonitor<BearerSchemeOptions> options, ILoggerFactory logger,
         UrlEncoder encoder, IOptionsMonitor<JwtOptions> jwtOptions) : base(options, logger, encoder)
     {
         JwtOptions = jwtOptions;
@@ -36,16 +36,10 @@ public class JwtBearerAuthenticationHandler : BearerAuthenticationHandler
         var jwtSecurityHandler = new JwtSecurityTokenHandler();
         var principal = jwtSecurityHandler.ValidateToken(token, parameters, out validatedToken);
         return principal;
-
     }
 
     protected override TokenValidationParameters GenerateTokenValidationParameters()
     {
         return JwtOptions.CurrentValue.GenerateTokenValidationParameters();
-    }
-
-    protected override Task<Claim[]> ValidateAsync(ClaimsPrincipal principal)
-    {
-        throw new NotImplementedException();
     }
 }

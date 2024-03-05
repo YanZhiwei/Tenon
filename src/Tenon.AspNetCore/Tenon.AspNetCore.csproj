@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Extensions\Tenon.Extensions\Tenon.Extensions.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
