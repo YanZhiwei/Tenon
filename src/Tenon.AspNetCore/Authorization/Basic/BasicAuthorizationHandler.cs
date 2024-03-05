@@ -14,7 +14,7 @@ public abstract class BasicAuthorizationHandler : AuthorizationHandler<BasicRequ
         {
             var authHeader = httpContext.Request.Headers["Authorization"].ToString();
             if (!string.IsNullOrWhiteSpace(authHeader) &&
-                authHeader.StartsWith(BasicAuthenticationHandler.AuthenticationScheme,
+                authHeader.StartsWith(BasicDefaults.AuthenticationScheme,
                     StringComparison.OrdinalIgnoreCase))
             {
                 var codes = httpContext.GetEndpoint()?.Metadata?.GetMetadata<BasicAuthorizeAttribute>()?.Codes;

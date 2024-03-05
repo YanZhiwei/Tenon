@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Tenon.AspNetCore.Authentication.Basic;
 using Tenon.AspNetCore.Authentication.Bearer;
 
 namespace Tenon.AspNetCore.Authorization.Bearer;
@@ -14,7 +15,7 @@ public abstract class BearAuthorizationHandler : AuthorizationHandler<BearRequir
         {
             var authHeader = httpContext.Request.Headers["Authorization"].ToString();
             if (!string.IsNullOrWhiteSpace(authHeader) &&
-                authHeader.StartsWith(BearerAuthenticationHandler.AuthenticationScheme,
+                authHeader.StartsWith(BasicDefaults.AuthenticationScheme,
                     StringComparison.OrdinalIgnoreCase))
             {
                 var codes = httpContext.GetEndpoint()?.Metadata?.GetMetadata<BearerAuthorizeAttribute>()?.Codes;

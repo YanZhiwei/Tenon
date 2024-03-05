@@ -10,7 +10,7 @@ public class BasicAuthorizeAttribute : AuthorizeAttribute
     {
         Codes = codes;
         Policy = AuthorizePolicy.Default;
-        AuthenticationSchemes = BasicAuthenticationHandler.AuthenticationScheme;
+        AuthenticationSchemes = BasicDefaults.AuthenticationScheme;
     }
 
     public string[] Codes { get; set; }

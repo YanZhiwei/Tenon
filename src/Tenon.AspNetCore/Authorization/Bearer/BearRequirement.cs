@@ -3,8 +3,12 @@ using System.Xml.Linq;
 
 namespace Tenon.AspNetCore.Authorization.Bearer
 {
-    public class BearRequirement(string name) : IAuthorizationRequirement
+    public class BearRequirement : IAuthorizationRequirement
     {
-        public string Name { get; init; } = name;
+        public BearRequirement()
+        {
+        }
+        public BearRequirement(string name) => Name = name;
+        public string Name { get; init; } = string.Empty;
     }
 }
