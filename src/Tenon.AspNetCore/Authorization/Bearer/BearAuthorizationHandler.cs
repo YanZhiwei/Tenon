@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Tenon.AspNetCore.Authentication.Basic;
-using Tenon.AspNetCore.Authentication.Bearer;
 
 namespace Tenon.AspNetCore.Authorization.Bearer;
 
@@ -18,12 +17,13 @@ public abstract class BearAuthorizationHandler : AuthorizationHandler<BearRequir
                 authHeader.StartsWith(BasicDefaults.AuthenticationScheme,
                     StringComparison.OrdinalIgnoreCase))
             {
-                var codes = httpContext.GetEndpoint()?.Metadata?.GetMetadata<BearerAuthorizeAttribute>()?.Codes;
+                var codes = httpContext.GetEndpoint()?.Metadata?.GetMetadata<AuthorizeScopeAttribute>()?.Codes;
                 if (!await CheckUserPermissionsAsync(httpContext, codes))
                     context.Fail();
                 else
                     context.Succeed(requirement);
             }
+
             return;
         }
 

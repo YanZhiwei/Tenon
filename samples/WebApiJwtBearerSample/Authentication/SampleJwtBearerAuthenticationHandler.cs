@@ -27,7 +27,7 @@ public class SampleJwtBearerAuthenticationHandler : JwtBearerAuthenticationHandl
     {
         var claims = principal.Claims;
 
-        var idClaim = claims.FirstOrDefault(x => x.Type == System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.NameId);
+        var idClaim = claims.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
         if (idClaim is null)
             return Array.Empty<Claim>();
 
