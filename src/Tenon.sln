@@ -109,9 +109,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.AspNetCore", "Tenon.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Kafka", "Infrastructures\Tenon.Infra.Kafka\Tenon.Infra.Kafka.csproj", "{DF1BE1FB-30D0-49B7-AA87-3C83F874520D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiSample", "..\samples\WebApiSample\WebApiSample.csproj", "{C11B0EC6-FB31-4297-B6E5-B331EFFE2332}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiSample", "..\samples\WebApiSample\WebApiSample.csproj", "{C11B0EC6-FB31-4297-B6E5-B331EFFE2332}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiJwtBearerSample", "..\samples\WebApiJwtBearerSample\WebApiJwtBearerSample.csproj", "{30E99ADB-3D05-420F-A554-6BA48B6CA6C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiJwtBearerSample", "..\samples\WebApiJwtBearerSample\WebApiJwtBearerSample.csproj", "{30E99ADB-3D05-420F-A554-6BA48B6CA6C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
