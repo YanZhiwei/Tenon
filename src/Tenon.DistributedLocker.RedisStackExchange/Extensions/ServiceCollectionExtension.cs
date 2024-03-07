@@ -2,46 +2,56 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Tenon.DistributedLocker.Abstractions;
+using Tenon.DistributedLocker.Abstractions.Configurations;
 using Tenon.DistributedLocker.Redis;
-using Tenon.DistributedLocker.Redis.Configurations;
 using Tenon.Infra.Redis;
+using Tenon.Infra.Redis.Configurations;
 using Tenon.Infra.Redis.StackExchangeProvider.Extensions;
-
 
 namespace Tenon.DistributedLocker.RedisStackExchange.Extensions;
 
 public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddRedisStackExchangeDistributedLocker(this IServiceCollection services,
-        IConfigurationSection distributedLockerSection)
+        IConfigurationSection redisSection, Action<DistributedLockerOptions>? setupAction = null)
     {
-        if (distributedLockerSection == null)
-            throw new ArgumentNullException(nameof(distributedLockerSection));
-        var distributedLockerConfig = distributedLockerSection.Get<RedisDistributedLockerOptions>();
-        if (distributedLockerConfig == null)
-            throw new ArgumentException(nameof(distributedLockerSection));
-        services.Configure<RedisDistributedLockerOptions>(distributedLockerSection);
-        services.AddRedisStackExchangeProvider(
-            distributedLockerSection.GetSection(nameof(RedisDistributedLockerOptions.Redis)));
+        if (redisSection == null)
+            throw new ArgumentNullException(nameof(redisSection));
+        var redisConfig = redisSection.Get<RedisOptions>();
+        if (redisConfig == null)
+            throw new ArgumentNullException(nameof(redisConfig));
+        if (string.IsNullOrWhiteSpace(redisConfig.ConnectionString))
+            throw new ArgumentNullException(nameof(redisConfig.ConnectionString));
+        services.Configure<RedisOptions>(redisSection);
+        var options = new DistributedLockerOptions();
+        if (setupAction != null)
+            setupAction(options);
+        services.AddSingleton(options);
+        services.AddRedisStackExchangeProvider(redisSection);
         services.TryAddSingleton<IDistributedLocker, RedisDistributedLocker>();
         return services;
     }
 
     public static IServiceCollection AddKeyedRedisStackExchangeDistributedLocker(this IServiceCollection services,
-        string serviceKey, IConfigurationSection distributedLockerSection)
+        string serviceKey, IConfigurationSection redisSection, Action<DistributedLockerOptions>? setupAction = null)
     {
         if (string.IsNullOrEmpty(serviceKey))
             throw new ArgumentNullException(nameof(serviceKey));
-        if (distributedLockerSection == null)
-            throw new ArgumentNullException(nameof(distributedLockerSection));
-        var distributedLockerConfig = distributedLockerSection.Get<RedisDistributedLockerOptions>();
-        if (distributedLockerConfig == null)
-            throw new ArgumentException(nameof(distributedLockerSection));
-        services.AddKeyedRedisStackExchangeProvider(serviceKey,
-            distributedLockerSection.GetSection(nameof(RedisDistributedLockerOptions.Redis)));
+        if (redisSection == null)
+            throw new ArgumentNullException(nameof(redisSection));
+        var redisConfig = redisSection.Get<RedisOptions>();
+        if (redisConfig == null)
+            throw new ArgumentNullException(nameof(redisConfig));
+        if (string.IsNullOrWhiteSpace(redisConfig.ConnectionString))
+            throw new ArgumentNullException(nameof(redisConfig.ConnectionString));
+        services.AddKeyedRedisStackExchangeProvider(serviceKey, redisSection);
+        var options = new DistributedLockerOptions();
+        if (setupAction != null)
+            setupAction(options);
+        services.AddSingleton(options);
         services.TryAddKeyedSingleton<IDistributedLocker>(serviceKey,
             (serviceProvider, key) => new RedisDistributedLocker(serviceProvider.GetKeyedService<IRedisProvider>(key),
-                distributedLockerConfig));
+                options));
         return services;
     }
 }

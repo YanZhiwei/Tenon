@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Tenon.DistributedLocker.Abstractions;
-using Tenon.DistributedLocker.RedisStackExchange.Extensions;
+using Tenon.DistributedLocker.Abstractions.Extensions;
+using Tenon.DistributedLocker.RedisStackExchange.Configurations;
 using Tenon.Helper.Internal;
 
 namespace Tenon.DistributedLocker.RedisStackExchangeTests;
@@ -23,7 +25,19 @@ public class RedisDistributedLockerTests
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddRedisStackExchangeDistributedLocker(configuration.GetSection("DistributedLocker"))
+            .AddDistributedLocker(options =>
+            {
+                using var currentProcess = Process.GetCurrentProcess();
+                options.KeyPrefix = $"locker_{Environment.MachineName}_{currentProcess.Id}";
+                options.UseRedisStackExchange(configuration.GetSection("Redis"));
+            })
+            .AddDistributedLocker(options =>
+            {
+                using var currentProcess = Process.GetCurrentProcess();
+                options.KeyPrefix = $"locker_{Environment.MachineName}_{currentProcess.Id}";
+                options.UseRedisStackExchange(configuration.GetSection("Redis"));
+                options.KeyedServiceKey = _serviceKey;
+            })
             .BuildServiceProvider();
     }
 

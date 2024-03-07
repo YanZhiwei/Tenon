@@ -1,18 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Tenon.BloomFilter.Abstractions.Configurations;
 
-namespace Tenon.BloomFilter.Abstractions
+namespace Tenon.BloomFilter.Abstractions;
+
+public interface IBloomFilter
 {
-    public interface IBloomFilter
-    {
-        Task<bool> AddAsync(string key, string value);
-        bool Add(string key, string value);
-        Task<bool[]> AddAsync(string key, IEnumerable<string> values);
-        bool[] Add(string key, IEnumerable<string> values);
-        Task<bool> ExistsAsync(string key, string value);
-        bool Exists(string key, string value);
-        Task<bool[]> ExistsAsync(string key, IEnumerable<string> values);
-        Task ReserveAsync(string key, double errorRate, int initialCapacity);
-        void Reserve(string key, double errorRate, int initialCapacity);
-    }
+    BloomFilterOptions Options { get; }
+    Task InitAsync();
+    void Init();
+    Task<bool> AddAsync(string value);
+    bool Add(string value);
+    Task<bool[]> AddAsync(IEnumerable<string> values);
+    bool[] Add(IEnumerable<string> values);
+    Task<bool> ExistsAsync(string value);
+    bool Exists(string value);
+    Task<bool[]> ExistsAsync(IEnumerable<string> values);
+    Task<bool> ExistsAsync();
+    bool Exists();
 }

@@ -10,11 +10,11 @@ public interface ICacheProvider
     Task<bool> SetAsync<T>(string cacheKey, T cacheValue, TimeSpan expiration);
     CacheValue<T> Get<T>(string cacheKey);
     Task<CacheValue<T>> GetAsync<T>(string cacheKey);
-    void Remove(string cacheKey);
-    Task RemoveAsync(string cacheKey);
+    bool Remove(string cacheKey);
+    Task<bool> RemoveAsync(string cacheKey);
     Task<bool> ExistsAsync(string cacheKey);
     bool Exists(string cacheKey);
-    void RemoveAll(IEnumerable<string> cacheKeys);
-    Task RemoveAllAsync(IEnumerable<string> cacheKeys);
+    long RemoveAll(IEnumerable<string> cacheKeys);
+    Task<long> RemoveAllAsync(IEnumerable<string> cacheKeys);
     Task KeysExpireAsync(IEnumerable<string> cacheKeys);
 }

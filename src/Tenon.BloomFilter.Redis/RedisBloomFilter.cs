@@ -1,56 +1,96 @@
-﻿using Tenon.BloomFilter.Abstractions;
+﻿using Microsoft.Extensions.Options;
+using Tenon.BloomFilter.Abstractions;
+using Tenon.BloomFilter.Abstractions.Configurations;
 using Tenon.Infra.Redis;
 
 namespace Tenon.BloomFilter.Redis;
 
-public sealed class RedisBloomFilter(IRedisProvider redisProvider) : IBloomFilter
+public sealed class RedisBloomFilter(IRedisProvider redisProvider, BloomFilterOptions options)
+    : IBloomFilter
 {
+    private readonly string _key = options?.Name ?? throw new ArgumentNullException(nameof(Options.Name));
+
     private readonly IRedisProvider _redisProvider =
         redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
 
+    public BloomFilterOptions Options => options ?? throw new ArgumentNullException(nameof(options));
 
-    public async Task<bool> AddAsync(string key, string value)
+    public async Task InitAsync()
     {
-        return await _redisProvider.BfAddAsync(key, value);
+        if (await ExistsAsync())
+            return;
+
+        await _redisProvider.BfReserveAsync(_key, Options.ErrorRate, Options.Capacity);
     }
 
-    public bool Add(string key, string value)
+    public void Init()
     {
-        return _redisProvider.BfAdd(key, value);
+        if (Exists())
+            return;
+
+        _redisProvider.BfReserve(_key, Options.ErrorRate, Options.Capacity);
     }
 
-    public async Task<bool[]> AddAsync(string key, IEnumerable<string> values)
+    public async Task<bool> AddAsync(string value)
     {
-        return await _redisProvider.BfAddAsync(key, values);
+        await CheckInitAsync();
+        return await _redisProvider.BfAddAsync(_key, value);
     }
 
-    public bool[] Add(string key, IEnumerable<string> values)
+    public bool Add(string value)
     {
-        return _redisProvider.BfAdd(key, values);
+        CheckInit();
+        return _redisProvider.BfAdd(_key, value);
     }
 
-    public async Task<bool> ExistsAsync(string key, string value)
+    public async Task<bool[]> AddAsync(IEnumerable<string> values)
     {
-        return await _redisProvider.BfExistsAsync(key, value);
+        await CheckInitAsync();
+        return await _redisProvider.BfAddAsync(_key, values);
     }
 
-    public bool Exists(string key, string value)
+    public bool[] Add(IEnumerable<string> values)
     {
-        return _redisProvider.BfExists(key, value);
+        CheckInit();
+        return _redisProvider.BfAdd(_key, values);
     }
 
-    public async Task<bool[]> ExistsAsync(string key, IEnumerable<string> values)
+    public async Task<bool> ExistsAsync(string value)
     {
-        return await _redisProvider.BfExistsAsync(key, values);
+        return await _redisProvider.BfExistsAsync(_key, value);
     }
 
-    public async Task ReserveAsync(string key, double errorRate, int initialCapacity)
+    public bool Exists(string value)
     {
-        await _redisProvider.BfReserveAsync(key, errorRate, initialCapacity);
+        return _redisProvider.BfExists(_key, value);
     }
 
-    public void Reserve(string key, double errorRate, int initialCapacity)
+    public async Task<bool[]> ExistsAsync(IEnumerable<string> values)
     {
-        _redisProvider.BfReserve(key, errorRate, initialCapacity);
+        return await _redisProvider.BfExistsAsync(_key, values);
+    }
+
+    public async Task<bool> ExistsAsync()
+    {
+        return await _redisProvider.KeyExistsAsync(_key);
+    }
+
+    public bool Exists()
+    {
+        return _redisProvider.KeyExists(_key);
+    }
+
+    private async Task CheckInitAsync()
+    {
+        var exists = await ExistsAsync();
+        if (!exists)
+            throw new InvalidOperationException($"BloomFilter:{Options.Name} not init");
+    }
+
+    private void CheckInit()
+    {
+        var exists = Exists();
+        if (!exists)
+            throw new InvalidOperationException($"BloomFilter:{Options.Name} not init");
     }
 }

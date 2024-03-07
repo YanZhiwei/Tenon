@@ -1,20 +1,19 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Tenon.BloomFilter.Abstractions.Configurations;
+using Tenon.DistributedLocker.Abstractions.Configurations;
 
-namespace Tenon.BloomFilter.Abstractions.Extensions;
+namespace Tenon.DistributedLocker.Abstractions.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddBloomFilter(this IServiceCollection services,
-        Action<BloomFilterOptions> setupAction)
+    public static IServiceCollection AddDistributedLocker(this IServiceCollection services,
+        Action<DistributedLockerOptions> setupAction)
     {
         if (setupAction == null)
             throw new ArgumentNullException(nameof(setupAction));
-        var options = new BloomFilterOptions();
+        var options = new DistributedLockerOptions();
         setupAction(options);
-
 
         foreach (var serviceExtension in options.Extensions)
             serviceExtension.AddServices(services);

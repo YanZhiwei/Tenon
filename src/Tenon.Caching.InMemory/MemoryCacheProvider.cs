@@ -24,15 +24,16 @@ namespace Tenon.Caching.InMemory
             throw new NotImplementedException();
         }
 
-        public void Remove(string cacheKey)
+        public bool Remove(string cacheKey)
         {
             throw new NotImplementedException();
         }
 
-        public Task RemoveAsync(string cacheKey)
+        public Task<bool> RemoveAsync(string cacheKey)
         {
             throw new NotImplementedException();
         }
+
 
         public Task<bool> ExistsAsync(string cacheKey)
         {
@@ -44,15 +45,16 @@ namespace Tenon.Caching.InMemory
             throw new NotImplementedException();
         }
 
-        public void RemoveAll(IEnumerable<string> cacheKeys)
+        public long RemoveAll(IEnumerable<string> cacheKeys)
         {
             throw new NotImplementedException();
         }
 
-        public Task RemoveAllAsync(IEnumerable<string> cacheKeys)
+        public Task<long> RemoveAllAsync(IEnumerable<string> cacheKeys)
         {
             throw new NotImplementedException();
         }
+
 
         public Task KeysExpireAsync(IEnumerable<string> cacheKeys)
         {

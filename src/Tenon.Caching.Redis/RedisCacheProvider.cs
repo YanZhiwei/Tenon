@@ -1,6 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using Tenon.Caching.Abstractions;
-using Tenon.Caching.Redis.Configurations;
+﻿using Tenon.Caching.Abstractions;
+using Tenon.Caching.Abstractions.Configurations;
 using Tenon.Helper;
 using Tenon.Helper.Internal;
 using Tenon.Infra.Redis;
@@ -11,35 +10,25 @@ namespace Tenon.Caching.Redis;
 public sealed class RedisCacheProvider
     : ICacheProvider
 {
-    private readonly RedisCachingOptions _redisCachingOptions;
+    private readonly CachingOptions _redisCachingOptions;
     private readonly IRedisProvider _redisProvider;
     private readonly ISerializer _serializer;
 
-    public RedisCacheProvider(RedisCachingOptions redisCachingOptions, IRedisProvider redisProvider,
-        ISerializer serializer)
+    public RedisCacheProvider(IRedisProvider redisProvider,
+        ISerializer serializer, CachingOptions redisCachingOptions)
     {
         _redisCachingOptions = redisCachingOptions ?? throw new ArgumentNullException(nameof(redisCachingOptions));
         _redisProvider = redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
         _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
     }
 
-    public RedisCacheProvider(IOptionsMonitor<RedisCachingOptions> redisCachingOptions, IRedisProvider redisProvider,
-        ISerializer serializer)
-    {
-        var redisCachingOptionsMonitor =
-            redisCachingOptions ?? throw new ArgumentNullException(nameof(redisCachingOptions));
-        _redisProvider = redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
-        _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
-        _redisCachingOptions = redisCachingOptionsMonitor.CurrentValue;
-    }
-
     public bool Set<T>(string cacheKey, T cacheValue, TimeSpan expiration)
     {
         ArgumentCheck(cacheKey, cacheValue, expiration);
         var cacheStringValue = GetCacheStringValue(cacheValue);
-        expiration = GetExpiration(expiration);
+        expiration = ReCalculateExpiration(expiration);
         return _redisProvider.StringSet(
-            cacheKey,
+            ReNameCacheKey(cacheKey),
             cacheStringValue,
             expiration);
     }
@@ -48,11 +37,9 @@ public sealed class RedisCacheProvider
     {
         ArgumentCheck(cacheKey, cacheValue, expiration);
         var cacheStringValue = GetCacheStringValue(cacheValue);
-        if (_redisCachingOptions?.MaxRandomSecond > 0)
-            expiration =
-                expiration.Add(TimeSpan.FromSeconds(RandomHelper.NextNumber(1, _redisCachingOptions.MaxRandomSecond)));
+        expiration = ReCalculateExpiration(expiration);
         return await _redisProvider.StringSetAsync(
-            cacheKey,
+            ReNameCacheKey(cacheKey),
             cacheStringValue,
             expiration);
     }
@@ -60,7 +47,7 @@ public sealed class RedisCacheProvider
     public CacheValue<T> Get<T>(string cacheKey)
     {
         ArgumentCheck(cacheKey);
-        var result = _redisProvider.StringGet(cacheKey);
+        var result = _redisProvider.StringGet(ReNameCacheKey(cacheKey));
         if (string.IsNullOrEmpty(result)) return CacheValue<T>.NoValue;
         var value = _serializer.DeserializeObject<T>(result);
         return new CacheValue<T>(value, true);
@@ -69,63 +56,86 @@ public sealed class RedisCacheProvider
     public async Task<CacheValue<T>> GetAsync<T>(string cacheKey)
     {
         ArgumentCheck(cacheKey);
-        var result = await _redisProvider.StringGetAsync(cacheKey);
+        var result = await _redisProvider.StringGetAsync(ReNameCacheKey(cacheKey));
         if (string.IsNullOrEmpty(result)) return CacheValue<T>.NoValue;
         var value = _serializer.DeserializeObject<T>(result);
         return new CacheValue<T>(value, true);
     }
 
-    public void Remove(string cacheKey)
+    public bool Remove(string cacheKey)
     {
         ArgumentCheck(cacheKey);
-        _redisProvider.KeyDelete(cacheKey);
+        return _redisProvider.KeyDelete(ReNameCacheKey(cacheKey));
     }
 
-    public async Task RemoveAsync(string cacheKey)
+    public async Task<bool> RemoveAsync(string cacheKey)
     {
         ArgumentCheck(cacheKey);
-        await _redisProvider.KeyDeleteAsync(cacheKey);
+        return await _redisProvider.KeyDeleteAsync(ReNameCacheKey(cacheKey));
     }
 
     public async Task<bool> ExistsAsync(string cacheKey)
     {
         ArgumentCheck(cacheKey);
-        return await _redisProvider.KeyExistsAsync(cacheKey);
+        return await _redisProvider.KeyExistsAsync(ReNameCacheKey(cacheKey));
     }
 
     public bool Exists(string cacheKey)
     {
         ArgumentCheck(cacheKey);
-        return _redisProvider.KeyExists(cacheKey);
+        return _redisProvider.KeyExists(ReNameCacheKey(cacheKey));
     }
 
-    public void RemoveAll(IEnumerable<string> cacheKeys)
+    public long RemoveAll(IEnumerable<string> cacheKeys)
     {
-        _redisProvider.KeyDelete(cacheKeys);
+        ArgumentCheck(cacheKeys);
+        return _redisProvider.KeyDelete(ReNameCacheKeys(cacheKeys));
     }
 
-    public async Task RemoveAllAsync(IEnumerable<string> cacheKeys)
+    public async Task<long> RemoveAllAsync(IEnumerable<string> cacheKeys)
     {
-        await _redisProvider.KeysDeleteAsync(cacheKeys);
+        ArgumentCheck(cacheKeys);
+        return await _redisProvider.KeysDeleteAsync(ReNameCacheKeys(cacheKeys));
     }
 
     public async Task KeysExpireAsync(IEnumerable<string> cacheKeys)
     {
-        await _redisProvider.KeysExpireAsync(cacheKeys);
+        ArgumentCheck(cacheKeys);
+        await _redisProvider.KeysExpireAsync(ReNameCacheKeys(cacheKeys));
+    }
+
+    private string ReNameCacheKey(string cacheKey)
+    {
+        return string.IsNullOrWhiteSpace(_redisCachingOptions.Prefix)
+            ? cacheKey
+            : $"{_redisCachingOptions.Prefix}_{cacheKey}";
+    }
+
+    private IEnumerable<string> ReNameCacheKeys(IEnumerable<string> cacheKeys)
+    {
+        if (string.IsNullOrWhiteSpace(_redisCachingOptions.Prefix))
+            return cacheKeys;
+        return cacheKeys.Select(c => $"{_redisCachingOptions.Prefix}_{c}");
+    }
+
+    private void ArgumentCheck(IEnumerable<string> cacheKeys)
+    {
+        if (!(cacheKeys?.Any() ?? false)) throw new ArgumentNullException(nameof(cacheKeys));
+        if (cacheKeys.Any(string.IsNullOrWhiteSpace))
+            throw new ArgumentException($"{nameof(cacheKeys)} null value exists");
+    }
+
+    private TimeSpan ReCalculateExpiration(TimeSpan expiration)
+    {
+        return _redisCachingOptions?.MaxRandomSecond > 0
+            ? expiration.Add(TimeSpan.FromSeconds(RandomHelper.NextNumber(1, _redisCachingOptions.MaxRandomSecond)))
+            : expiration;
     }
 
     private void ArgumentCheck(string cacheKey)
     {
         Checker.Begin()
             .NotNullOrEmpty(cacheKey, nameof(cacheKey));
-    }
-
-    private TimeSpan GetExpiration(TimeSpan expiration)
-    {
-        if (_redisCachingOptions?.MaxRandomSecond > 0)
-            expiration =
-                expiration.Add(TimeSpan.FromSeconds(RandomHelper.NextNumber(1, _redisCachingOptions.MaxRandomSecond)));
-        return expiration;
     }
 
     private string? GetCacheStringValue<T>(T cacheValue)

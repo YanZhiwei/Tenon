@@ -10,7 +10,7 @@ internal class SerializerOptionsExtension(bool useSystemTextJson, CachingOptions
 {
     public void AddServices(IServiceCollection services)
     {
-        if (options.KeyedServices)
+        if (!string.IsNullOrWhiteSpace(options.KeyedServiceKey))
         {
             if (useSystemTextJson)
                 services.AddKeyedSystemTextJsonSerializer(options.KeyedServiceKey);

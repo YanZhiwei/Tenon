@@ -6,11 +6,15 @@ namespace Tenon.Caching.Abstractions.Configurations;
 
 public class CachingOptions
 {
+    public CachingOptions()
+    {
+        MaxRandomSecond = 5;
+    }
     internal IList<ICachingOptionsExtension> Extensions { get; } = new List<ICachingOptionsExtension>();
 
-    public bool KeyedServices { get; set; } = false;
-
     public string? KeyedServiceKey { get; set; }
+    public int MaxRandomSecond { get; set; }
+    public string Prefix { get; set; }
 
     public void RegisterExtension(ICachingOptionsExtension extension)
     {

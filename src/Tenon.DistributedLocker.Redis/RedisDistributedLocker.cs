@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
-using Microsoft.Extensions.Options;
 using Tenon.DistributedLocker.Abstractions;
 using Tenon.DistributedLocker.Abstractions.Configurations;
 using Tenon.Infra.Redis;
@@ -9,30 +8,25 @@ namespace Tenon.DistributedLocker.Redis;
 
 public sealed class RedisDistributedLocker : IDistributedLocker
 {
-    public static readonly string Prefix;
     private static readonly ConcurrentDictionary<string, Timer> AutoRenewalTimers;
     private readonly DistributedLockerOptions? _distributedLockerOptions;
+    private readonly string _prefix;
     private readonly IRedisProvider _redisProvider;
 
     static RedisDistributedLocker()
     {
         AutoRenewalTimers = new ConcurrentDictionary<string, Timer>();
         using var currentProcess = Process.GetCurrentProcess();
-        Prefix = $"locker_{Environment.MachineName}_{currentProcess.Id}";
     }
 
-    public RedisDistributedLocker(IRedisProvider redisProvider,
-        IOptionsMonitor<DistributedLockerOptions> distributedLockerOptions)
-    {
-        _redisProvider = redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
-        _distributedLockerOptions = distributedLockerOptions?.CurrentValue;
-    }
 
     public RedisDistributedLocker(IRedisProvider redisProvider,
         DistributedLockerOptions distributedLockerOptions)
     {
         _redisProvider = redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
-        _distributedLockerOptions = distributedLockerOptions;
+        _distributedLockerOptions = distributedLockerOptions ??
+                                    throw new ArgumentNullException(nameof(distributedLockerOptions));
+        _prefix = distributedLockerOptions.KeyPrefix;
     }
 
     public async Task<bool> LockTakeAsync(string cacheKey, int timeoutSeconds = 30, bool autoDelay = false)
@@ -103,9 +97,9 @@ public sealed class RedisDistributedLocker : IDistributedLocker
 
     private string CreateLockKey(string cacheKey)
     {
-        return string.IsNullOrWhiteSpace(_distributedLockerOptions?.LockKeyPrefix)
-            ? $"{Prefix}_{cacheKey}"
-            : $"{_distributedLockerOptions.LockKeyPrefix}_{cacheKey}";
+        return string.IsNullOrWhiteSpace(_distributedLockerOptions?.KeyPrefix)
+            ? $"{_prefix}_{cacheKey}"
+            : $"{_distributedLockerOptions.KeyPrefix}_{cacheKey}";
     }
 
     private void RenewalTimerWorker(object? state)
