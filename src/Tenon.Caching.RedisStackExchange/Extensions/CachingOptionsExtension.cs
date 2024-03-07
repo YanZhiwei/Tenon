@@ -15,7 +15,9 @@ internal class CachingOptionsExtension(IConfigurationSection redisSection, Cachi
     : ICachingOptionsExtension
 {
     private readonly CachingOptions _options = options ?? throw new ArgumentNullException(nameof(options));
-    private readonly IConfigurationSection _redisSection = redisSection ?? throw new ArgumentNullException(nameof(redisSection));
+
+    private readonly IConfigurationSection _redisSection =
+        redisSection ?? throw new ArgumentNullException(nameof(redisSection));
 
     public void AddServices(IServiceCollection services)
     {
@@ -24,7 +26,7 @@ internal class CachingOptionsExtension(IConfigurationSection redisSection, Cachi
             throw new ArgumentNullException(nameof(redisConfig));
         if (string.IsNullOrWhiteSpace(redisConfig.ConnectionString))
             throw new ArgumentNullException(nameof(redisConfig.ConnectionString));
-        if (!_options.KeyedServices)
+        if (string.IsNullOrWhiteSpace(options.KeyedServiceKey))
         {
             services.AddRedisStackExchangeProvider(_redisSection);
             services.TryAddSingleton<ICacheProvider, RedisCacheProvider>();
@@ -32,8 +34,6 @@ internal class CachingOptionsExtension(IConfigurationSection redisSection, Cachi
         else
         {
             var serviceKey = _options.KeyedServiceKey;
-            if (string.IsNullOrWhiteSpace(serviceKey))
-                throw new ArgumentNullException(nameof(_options.KeyedServiceKey));
             services.AddKeyedRedisStackExchangeProvider(serviceKey, _redisSection);
             services.TryAddKeyedSingleton<ICacheProvider>(serviceKey, (serviceProvider, key) =>
             {

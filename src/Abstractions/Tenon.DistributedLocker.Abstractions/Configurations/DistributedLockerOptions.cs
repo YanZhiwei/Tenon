@@ -5,8 +5,7 @@ namespace Tenon.DistributedLocker.Abstractions.Configurations;
 
 public class DistributedLockerOptions
 {
-    public string LockKeyPrefix { get; set; } = string.Empty;
-    public bool KeyedServices { get; set; } = false;
+    public string KeyPrefix { get; set; } = string.Empty;
     public string KeyedServiceKey { get; set; }
 
     internal IList<IDistributedLockerOptionsExtension> Extensions { get; } =

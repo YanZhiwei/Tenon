@@ -23,8 +23,6 @@ public sealed class BloomFilterOptions
 
     internal IList<IBloomFilterOptionsExtension> Extensions { get; } = new List<IBloomFilterOptionsExtension>();
 
-    public bool KeyedServices { get; set; } = false;
-
     public string? KeyedServiceKey { get; set; }
 
     public void RegisterExtension(IBloomFilterOptionsExtension extension)

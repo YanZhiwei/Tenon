@@ -58,7 +58,6 @@ public class RedisBloomFilterTests
                 opt.Name = "testKeyed";
                 opt.Capacity = 1000;
                 opt.ErrorRate = 0.01;
-                opt.KeyedServices = true;
                 opt.KeyedServiceKey = "RedisBloomFilterTests";
                 opt.UseRedisStackExchange(configuration.GetSection("Redis"));
             })
@@ -67,7 +66,6 @@ public class RedisBloomFilterTests
                 opt.Name = "testKeyed1";
                 opt.Capacity = 1000;
                 opt.ErrorRate = 0.01;
-                opt.KeyedServices = true;
                 opt.KeyedServiceKey = "RedisBloomFilterTests1";
                 opt.UseRedisStackExchange(configuration.GetSection("Redis"));
             })

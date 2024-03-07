@@ -34,7 +34,6 @@ public class RedisCacheProviderTests
             .AddCaching(opt =>
             {
                 opt.KeyedServiceKey = $"{nameof(CachingOptions).ToLower()}:test";
-                opt.KeyedServices = true;
                 opt.MaxRandomSecond = 10;
                 opt.Prefix = "RedisCacheProviderTests".ToLower();
                 opt.UseSystemTextJsonSerializer();

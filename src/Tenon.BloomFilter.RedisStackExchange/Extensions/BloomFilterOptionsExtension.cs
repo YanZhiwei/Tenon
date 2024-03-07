@@ -20,7 +20,7 @@ internal class BloomFilterOptionsExtension(IConfigurationSection redisSection, B
         var redisConfig = redisSection.Get<RedisOptions>();
         if (redisConfig == null)
             throw new ArgumentNullException(nameof(redisSection));
-        if (!options.KeyedServices)
+        if (string.IsNullOrWhiteSpace(options.KeyedServiceKey))
         {
             services.AddRedisStackExchangeProvider(redisSection);
             services.TryAddSingleton<IBloomFilter, RedisBloomFilter>();
@@ -28,8 +28,6 @@ internal class BloomFilterOptionsExtension(IConfigurationSection redisSection, B
         else
         {
             var serviceKey = options.KeyedServiceKey;
-            if (string.IsNullOrWhiteSpace(serviceKey))
-                throw new ArgumentNullException(nameof(options.KeyedServiceKey));
             services.AddKeyedRedisStackExchangeProvider(serviceKey, redisSection);
             services.TryAddKeyedSingleton<IBloomFilter>(serviceKey, (serviceProvider, key) =>
             {

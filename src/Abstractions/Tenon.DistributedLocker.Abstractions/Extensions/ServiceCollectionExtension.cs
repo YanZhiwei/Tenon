@@ -14,13 +14,11 @@ public static class ServiceCollectionExtension
             throw new ArgumentNullException(nameof(setupAction));
         var options = new DistributedLockerOptions();
         setupAction(options);
-        if (options.KeyedServices && string.IsNullOrWhiteSpace(options.KeyedServiceKey))
-            throw new ArgumentNullException(nameof(options.KeyedServiceKey));
 
         foreach (var serviceExtension in options.Extensions)
             serviceExtension.AddServices(services);
 
-        if (options.KeyedServices)
+        if (!string.IsNullOrWhiteSpace(options.KeyedServiceKey))
             services.TryAddKeyedSingleton(options.KeyedServiceKey, options);
         else
             services.TryAddSingleton(options);
