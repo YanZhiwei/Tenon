@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Tenon.BloomFilter.Abstractions;
 using Tenon.BloomFilter.Abstractions.Configurations;
 using Tenon.BloomFilter.Redis;
 using Tenon.Infra.Redis;
 using Tenon.Infra.Redis.Configurations;
 using Tenon.Infra.Redis.StackExchangeProvider.Extensions;
-
 
 namespace Tenon.BloomFilter.RedisStackExchange.Extensions;
 
@@ -35,7 +35,8 @@ internal class BloomFilterOptionsExtension(IConfigurationSection redisSection, B
             services.TryAddKeyedSingleton<IBloomFilter>(serviceKey, (serviceProvider, key) =>
             {
                 var redisProvider = serviceProvider.GetKeyedService<IRedisProvider>(key);
-                return new RedisBloomFilter(redisProvider);
+                var bloomFilterOptions = serviceProvider.GetKeyedService<BloomFilterOptions>(key);
+                return new RedisBloomFilter(redisProvider, bloomFilterOptions);
             });
         }
     }

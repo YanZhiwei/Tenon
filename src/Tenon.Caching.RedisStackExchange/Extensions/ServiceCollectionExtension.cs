@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Tenon.Caching.Abstractions;
+using Tenon.Caching.Abstractions.Configurations;
 using Tenon.Caching.Redis;
-using Tenon.Caching.Redis.Configurations;
 using Tenon.Infra.Redis;
 using Tenon.Infra.Redis.Configurations;
 using Tenon.Infra.Redis.StackExchangeProvider.Extensions;
@@ -16,54 +16,48 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddKeyedRedisStackExchangeCache(this IServiceCollection services,
         string serviceKey,
-        IConfigurationSection redisCacheSection)
+        IConfigurationSection redisSection, Action<CachingOptions>? setupAction = null)
     {
         if (string.IsNullOrWhiteSpace(serviceKey))
             throw new ArgumentNullException(nameof(serviceKey));
-        if (redisCacheSection == null)
-            throw new ArgumentNullException(nameof(redisCacheSection));
-        var redisCacheConfig = redisCacheSection.Get<RedisCachingOptions>();
-        if (redisCacheConfig == null)
-            throw new ArgumentNullException(nameof(redisCacheConfig));
-        if (redisCacheConfig.Redis == null)
-            throw new ArgumentNullException(nameof(redisCacheConfig.Redis));
-        var redisSection = redisCacheSection.GetSection(nameof(redisCacheConfig.Redis));
+        if (redisSection == null)
+            throw new ArgumentNullException(nameof(redisSection));
         var redisConfig = redisSection.Get<RedisOptions>();
         if (redisConfig == null)
             throw new ArgumentNullException(nameof(redisConfig));
         if (string.IsNullOrWhiteSpace(redisConfig.ConnectionString))
             throw new ArgumentNullException(nameof(redisConfig.ConnectionString));
+        var options = new CachingOptions();
+        if (setupAction != null)
+            setupAction(options);
         services.AddKeyedSystemTextJsonSerializer(serviceKey);
         services.AddKeyedRedisStackExchangeProvider(serviceKey, redisSection);
         services.TryAddKeyedSingleton<ICacheProvider>(serviceKey, (serviceProvider, key) =>
         {
             var redisProvider = serviceProvider.GetKeyedService<IRedisProvider>(key);
             var serializer = serviceProvider.GetKeyedService<ISerializer>(key);
-            return new RedisCacheProvider(redisCacheConfig, redisProvider, serializer);
+            return new RedisCacheProvider(redisProvider, serializer, options);
         });
         return services;
     }
 
 
     public static IServiceCollection AddRedisStackExchangeCache(this IServiceCollection services,
-        IConfigurationSection redisCacheSection)
+        IConfigurationSection redisSection, Action<CachingOptions>? setupAction = null)
     {
-        if (redisCacheSection == null)
-            throw new ArgumentNullException(nameof(redisCacheSection));
-        var redisCacheConfig = redisCacheSection.Get<RedisCachingOptions>();
-        if (redisCacheConfig == null)
-            throw new ArgumentNullException(nameof(redisCacheConfig));
-        if (redisCacheConfig.Redis == null)
-            throw new ArgumentNullException(nameof(redisCacheConfig.Redis));
-        var redisSection = redisCacheSection.GetSection(nameof(redisCacheConfig.Redis));
+        if (redisSection == null)
+            throw new ArgumentNullException(nameof(redisSection));
         var redisConfig = redisSection.Get<RedisOptions>();
         if (redisConfig == null)
             throw new ArgumentNullException(nameof(redisConfig));
         if (string.IsNullOrWhiteSpace(redisConfig.ConnectionString))
             throw new ArgumentNullException(nameof(redisConfig.ConnectionString));
-        services.Configure<RedisCachingOptions>(redisCacheSection);
+        var options = new CachingOptions();
+        if (setupAction != null)
+            setupAction(options);
         services.Configure<RedisOptions>(redisSection);
         services.AddSystemTextJsonSerializer();
+        services.AddSingleton(options);
         services.AddRedisStackExchangeProvider(redisSection);
         services.TryAddSingleton<ICacheProvider, RedisCacheProvider>();
         return services;
