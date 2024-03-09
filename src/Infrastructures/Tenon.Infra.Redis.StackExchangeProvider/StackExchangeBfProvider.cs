@@ -41,11 +41,6 @@ public partial class StackExchangeProvider
         throw new NotImplementedException();
     }
 
-    public async Task<long> BfInfoAsync(string key)
-    {
-        return await _redisDatabase.BfInfoAsync(key);
-    }
-
     public async Task<bool[]> BfExistsAsync(string key, IEnumerable<string> values)
     {
         var redisValues = values.Select(x => (RedisValue)x);
@@ -57,13 +52,18 @@ public partial class StackExchangeProvider
         throw new NotImplementedException();
     }
 
-    public async Task BfReserveAsync(string key, double errorRate, int initialCapacity)
+    public async Task<bool> BfReserveAsync(string key, double errorRate, int initialCapacity)
     {
-        await _redisDatabase.BfReserveAsync(key, errorRate, initialCapacity);
+        return await _redisDatabase.BfReserveAsync(key, errorRate, initialCapacity);
     }
 
-    public void BfReserve(string key, double errorRate, int initialCapacity)
+    public bool BfReserve(string key, double errorRate, int initialCapacity)
     {
-        throw new NotImplementedException();
+        return _redisDatabase.BfReserve(key, errorRate, initialCapacity);
+    }
+
+    public async Task<long> BfInfoAsync(string key)
+    {
+        return await _redisDatabase.BfInfoAsync(key);
     }
 }

@@ -7,8 +7,8 @@ namespace Tenon.BloomFilter.Abstractions;
 public interface IBloomFilter
 {
     BloomFilterOptions Options { get; }
-    Task InitAsync();
-    void Init();
+    Task<bool> InitAsync();
+    bool Init();
     Task<bool> AddAsync(string value);
     bool Add(string value);
     Task<bool[]> AddAsync(IEnumerable<string> values);

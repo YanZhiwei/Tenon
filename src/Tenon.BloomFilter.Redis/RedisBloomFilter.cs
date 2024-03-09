@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Tenon.BloomFilter.Abstractions;
+﻿using Tenon.BloomFilter.Abstractions;
 using Tenon.BloomFilter.Abstractions.Configurations;
 using Tenon.Infra.Redis;
 
@@ -15,20 +14,17 @@ public sealed class RedisBloomFilter(IRedisProvider redisProvider, BloomFilterOp
 
     public BloomFilterOptions Options => options ?? throw new ArgumentNullException(nameof(options));
 
-    public async Task InitAsync()
+    public async Task<bool> InitAsync()
     {
         if (await ExistsAsync())
-            return;
+            return true;
 
-        await _redisProvider.BfReserveAsync(_key, Options.ErrorRate, Options.Capacity);
+        return await _redisProvider.BfReserveAsync(_key, Options.ErrorRate, Options.Capacity);
     }
 
-    public void Init()
+    public bool Init()
     {
-        if (Exists())
-            return;
-
-        _redisProvider.BfReserve(_key, Options.ErrorRate, Options.Capacity);
+        return Exists() || _redisProvider.BfReserve(_key, Options.ErrorRate, Options.Capacity);
     }
 
     public async Task<bool> AddAsync(string value)

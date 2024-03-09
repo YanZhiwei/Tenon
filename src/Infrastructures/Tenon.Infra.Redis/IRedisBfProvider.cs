@@ -53,10 +53,10 @@ public interface IRedisBfProvider
     /// <summary>
     ///     https://redis.io/commands/bf.reserve/
     /// </summary>
-    Task BfReserveAsync(string key, double errorRate, int initialCapacity);
+    Task<bool> BfReserveAsync(string key, double errorRate, int initialCapacity);
 
     /// <summary>
     ///     https://redis.io/commands/bf.reserve/
     /// </summary>
-    void BfReserve(string key, double errorRate, int initialCapacity);
+    bool BfReserve(string key, double errorRate, int initialCapacity);
 }
