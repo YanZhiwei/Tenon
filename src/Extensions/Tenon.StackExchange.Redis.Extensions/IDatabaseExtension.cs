@@ -109,18 +109,20 @@ public static class IDatabaseExtension
     /// <summary>
     ///     https://redis.io/commands/bf.reserve/
     /// </summary>
-    public static async Task BfReserveAsync(this IDatabase redisDb, RedisKey key, double errorRate,
+    public static async Task<bool> BfReserveAsync(this IDatabase redisDb, RedisKey key, double errorRate,
         int initialCapacity)
     {
-        await redisDb.ExecuteAsync("BF.RESERVE", key, errorRate, initialCapacity);
+        var result= await redisDb.ExecuteAsync("BF.RESERVE", key, errorRate, initialCapacity);
+        return !result.IsNull && !result.ToString().StartsWith("ERR", StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>
     ///     https://redis.io/commands/bf.reserve/
     /// </summary>
-    public static void BfReserve(this IDatabase redisDb, RedisKey key, double errorRate,
+    public static bool BfReserve(this IDatabase redisDb, RedisKey key, double errorRate,
         int initialCapacity)
     {
-        redisDb.Execute("BF.RESERVE", key, errorRate, initialCapacity);
+        var result= redisDb.Execute("BF.RESERVE", key, errorRate, initialCapacity);
+        return !result.IsNull && !result.ToString().StartsWith("ERR", StringComparison.OrdinalIgnoreCase);
     }
 }

@@ -55,6 +55,20 @@ public class RedisBloomFilterTests
             })
             .AddBloomFilter(opt =>
             {
+                opt.Name = "test1";
+                opt.Capacity = 1000;
+                opt.ErrorRate = 0.01;
+                opt.UseRedisStackExchange(configuration.GetSection("Redis"));
+            })
+            .AddBloomFilter(opt =>
+            {
+                opt.Name = "test2";
+                opt.Capacity = 1000;
+                opt.ErrorRate = 0.01;
+                opt.UseRedisStackExchange(configuration.GetSection("Redis"));
+            })
+            .AddBloomFilter(opt =>
+            {
                 opt.Name = "testKeyed";
                 opt.Capacity = 1000;
                 opt.ErrorRate = 0.01;
@@ -115,6 +129,9 @@ public class RedisBloomFilterTests
         using (var scope = _serviceProvider.CreateScope())
         {
             var bloomFilter = scope.ServiceProvider.GetService<IBloomFilter>();
+            var bloomFilters = scope.ServiceProvider.GetServices<IBloomFilter>();
+            Assert.AreEqual(3, bloomFilters?.Count());
+
             Console.WriteLine($"AddAsyncTest_1 value {_boomFilterValue}");
             var actual = await bloomFilter.AddAsync(_boomFilterValue);
             Assert.IsTrue(actual);
