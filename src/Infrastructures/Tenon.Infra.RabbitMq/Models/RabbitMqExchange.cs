@@ -4,8 +4,8 @@ public sealed class RabbitMqExchange
 {
     public RabbitMqExchange()
     {
-        IsDurable = true;
-        IsAutoDelete = false;
+        Durable = true;
+        AutoDelete = false;
         Type = ExchangeType.Direct;
     }
 
@@ -13,7 +13,7 @@ public sealed class RabbitMqExchange
 
     public ExchangeType Type { get; set; }
 
-    public bool IsDurable { get; set; }
+    public bool Durable { get; set; }
 
-    public bool IsAutoDelete { get; set; }
+    public bool AutoDelete { get; set; }
 }

@@ -1,10 +1,16 @@
 ﻿namespace Tenon.Infra.RabbitMq.Models;
 
-public class RabbitMqChannel(string name, RabbitMqExchange exchange, IEnumerable<RabbitMqQueue> queues)
+public sealed class RabbitMqChannel
 {
-    public readonly RabbitMqExchange Exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
+    public readonly bool Global;
 
-    public readonly string Name = name ?? throw new ArgumentNullException(nameof(name));
+    public readonly int PrefetchCount;
+    public readonly int PrefetchSize;
 
-    public readonly IEnumerable<RabbitMqQueue> Queues = queues ?? throw new ArgumentNullException(nameof(queues));
+    public RabbitMqChannel(int prefetchSize = 0, int prefetchCount = 1, bool global = true)
+    {
+        PrefetchSize = prefetchSize;
+        PrefetchCount = prefetchCount;
+        Global = global;
+    }
 }
