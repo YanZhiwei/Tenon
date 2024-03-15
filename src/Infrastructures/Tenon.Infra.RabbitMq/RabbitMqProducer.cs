@@ -21,7 +21,7 @@ public sealed class RabbitMqProducer(
     private readonly RabbitMqOptions _rabbitMqOptions =
         rabbitMqConnection?.Options ?? throw new ArgumentNullException(nameof(rabbitMqConnection));
 
-    public void PublishBasicMessage(RabbitMqMessage rabbitMqMessage, IBasicProperties basicProperties = null)
+    public void PublishBasicMessage(RabbitMqMessage rabbitMqMessage, IBasicProperties? basicProperties = null)
     {
         if (rabbitMqMessage == null)
             throw new ArgumentNullException(nameof(rabbitMqMessage));
