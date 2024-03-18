@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Tenon.Infra.RabbitMq.Configurations;
 
-namespace Tenon.Infra.RabbitMq.Extensions
+namespace Tenon.Infra.RabbitMq.Extensions;
+
+public static class ServiceCollectionExtension
 {
-    internal class ServiceCollectionExtension
+    public static IServiceCollection AddRabbitMq(this IServiceCollection services,
+        IConfigurationSection rabbitMqSection)
     {
+        if (services == null)
+            throw new ArgumentNullException(nameof(services));
+
+        var rabbitMqConfig = rabbitMqSection.Get<RabbitMqOptions>();
+        if (rabbitMqConfig == null)
+            throw new NullReferenceException(nameof(rabbitMqConfig));
+        services.Configure<RabbitMqOptions>(rabbitMqSection);
+        return services.AddSingleton<RabbitMqConnection>();
     }
 }

@@ -65,6 +65,7 @@ public sealed class RabbitMqConnection : IDisposable
             UserName = Options.UserName,
             Password = Options.Password,
             VirtualHost = Options.VirtualHost,
+            ClientProvidedName = Options.ClientProvidedName
         };
     }
 

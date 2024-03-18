@@ -5,27 +5,18 @@ using Tenon.Infra.RabbitMq.Models;
 
 namespace Tenon.Infra.RabbitMq;
 
-public sealed class RabbitMqBroker
+public sealed class RabbitMqBroker(
+    RabbitMqConnection rabbitMqConnection,
+    RabbitMqExchange rabbitMqExchange,
+    IEnumerable<RabbitMqQueue> rabbitMqQueues,
+    ILogger<RabbitMqProducer> logger)
 {
-    private readonly ILogger<RabbitMqProducer> _logger;
-    private readonly IConnection _rabbitMqConnection;
-    private readonly RabbitMqOptions _rabbitMqOptions;
-    public readonly RabbitMqExchange Exchange;
-    public readonly string ExchangeName;
-    public readonly IEnumerable<RabbitMqQueue> Queues;
-
-    public RabbitMqBroker(RabbitMqConnection rabbitMqConnection, RabbitMqExchange rabbitMqExchange,
-        IEnumerable<RabbitMqQueue> rabbitMqQueues,
-        ILogger<RabbitMqProducer> logger)
-    {
-        _rabbitMqConnection = rabbitMqConnection?.Connection ??
-                              throw new ArgumentNullException(nameof(rabbitMqConnection));
-        Exchange = rabbitMqExchange ?? throw new ArgumentNullException(nameof(rabbitMqExchange));
-        Queues = rabbitMqQueues ?? throw new ArgumentNullException(nameof(rabbitMqQueues));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _rabbitMqOptions = rabbitMqConnection.Options;
-        ExchangeName = rabbitMqExchange.Name;
-    }
+    private readonly ILogger<RabbitMqProducer> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly IConnection _rabbitMqConnection = rabbitMqConnection != null ? rabbitMqConnection.Connection ?? throw new ArgumentNullException(nameof(rabbitMqConnection)) : throw new ArgumentNullException(nameof(rabbitMqConnection));
+    private readonly RabbitMqOptions _rabbitMqOptions = rabbitMqConnection.Options;
+    public readonly RabbitMqExchange Exchange = rabbitMqExchange ?? throw new ArgumentNullException(nameof(rabbitMqExchange));
+    public readonly string ExchangeName = rabbitMqExchange.Name;
+    public readonly IEnumerable<RabbitMqQueue> Queues = rabbitMqQueues ?? throw new ArgumentNullException(nameof(rabbitMqQueues));
 
     public void Declare()
     {
@@ -35,7 +26,8 @@ public sealed class RabbitMqBroker
                 Exchange.Durable, Exchange.AutoDelete);
             _logger.LogDebug(
                 $"RabbitMq:[{_rabbitMqOptions.Name}] exchangeName:{Exchange.Name} type:{Exchange.Type} declare succeeded.");
-            if (Queues?.Any() ?? false)
+            if (Queues.Any())
+            {
                 foreach (var rabbitMqQueue in Queues)
                 {
                     channel.QueueDeclare(rabbitMqQueue.Name,
@@ -49,41 +41,11 @@ public sealed class RabbitMqBroker
                     _logger.LogDebug(
                         $"RabbitMq:[{_rabbitMqOptions.Name}] queueName {rabbitMqQueue.Name},routeKey:{rabbitMqQueue.RoutingKey} bind succeeded.");
                 }
-        }
-    }
-
-    public IEnumerable<RabbitMqQueue>? Declare(IModel channel, string[] routeKeys)
-    {
-        if (channel == null)
-            throw new ArgumentNullException(nameof(channel));
-        if (!(routeKeys?.Any() ?? false))
-            throw new ArgumentNullException(nameof(routeKeys));
-
-        channel.ExchangeDeclare(Exchange.Name, Exchange.Type.ToString().ToLowerInvariant(),
-            Exchange.Durable, Exchange.AutoDelete);
-        _logger.LogDebug(
-            $"RabbitMq:[{_rabbitMqOptions.Name}] exchangeName:{Exchange.Name} type:{Exchange.Type} declare succeeded.");
-        if (Queues?.Any() ?? false)
-        {
-            var queues = Queues.Where(c => routeKeys.Contains(c.RoutingKey, StringComparer.OrdinalIgnoreCase)).ToList();
-            foreach (var rabbitMqQueue in queues)
-            {
-                channel.QueueDeclare(rabbitMqQueue.Name,
-                    rabbitMqQueue.Durable,
-                    rabbitMqQueue.Exclusive,
-                    rabbitMqQueue.AutoDelete,
-                    rabbitMqQueue.Arguments);
-                _logger.LogDebug(
-                    $"RabbitMq:[{_rabbitMqOptions.Name}] queueName: {rabbitMqQueue.Name} declare succeeded.");
-                channel.QueueBind(rabbitMqQueue.Name, rabbitMqQueue.ExchangeName, rabbitMqQueue.RoutingKey);
-                _logger.LogDebug(
-                    $"RabbitMq:[{_rabbitMqOptions.Name}] queueName {rabbitMqQueue.Name},routeKey:{rabbitMqQueue.RoutingKey} bind succeeded.");
             }
-
-            return queues;
+            else
+            {
+                _logger.LogWarning($"RabbitMq:[{_rabbitMqOptions.Name}] exchangeName:{Exchange.Name} queues is null.");
+            }
         }
-
-        return null;
     }
-
 }
