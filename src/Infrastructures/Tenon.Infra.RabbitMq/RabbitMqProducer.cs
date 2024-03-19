@@ -45,6 +45,7 @@ public abstract class RabbitMqProducer(
     {
         if (rabbitMqMessage == null)
             throw new ArgumentNullException(nameof(rabbitMqMessage));
+        _rabbitMqConnection.TryConnect();
         using (var channel = _rabbitMqConnection.Connection.CreateModel())
         {
             channel.BasicPublish(RabbitMqBroker.ExchangeName, rabbitMqMessage.RoutingKey, basicProperties,

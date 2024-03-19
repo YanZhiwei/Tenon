@@ -9,9 +9,9 @@ public sealed class RabbitMqBroker(
     RabbitMqConnection rabbitMqConnection,
     RabbitMqExchange rabbitMqExchange,
     IEnumerable<RabbitMqQueue> rabbitMqQueues,
-    ILogger<RabbitMqProducer> logger)
+    ILogger logger)
 {
-    private readonly ILogger<RabbitMqProducer> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     private readonly IConnection _rabbitMqConnection = rabbitMqConnection != null ? rabbitMqConnection.Connection ?? throw new ArgumentNullException(nameof(rabbitMqConnection)) : throw new ArgumentNullException(nameof(rabbitMqConnection));
     private readonly RabbitMqOptions _rabbitMqOptions = rabbitMqConnection.Options;
     public readonly RabbitMqExchange Exchange = rabbitMqExchange ?? throw new ArgumentNullException(nameof(rabbitMqExchange));

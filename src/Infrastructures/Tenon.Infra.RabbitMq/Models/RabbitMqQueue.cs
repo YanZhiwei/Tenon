@@ -26,15 +26,15 @@ public class RabbitMqQueue
     public bool AckMultiple { get; set; }
     public RabbitMqQueue(string name, string exchangeName, string routingKey, bool rejectRequeue = false, bool ackMultiple = false, bool autoAck = true, bool durable = true,
         bool autoDelete = false, bool exclusive = false,
-        IDictionary<string, object> arguments = null, string consumerTag = null)
+        IDictionary<string, object>? arguments = null, string? consumerTag = null)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         ExchangeName = exchangeName ?? throw new ArgumentNullException(nameof(exchangeName));
         RoutingKey = routingKey ?? throw new ArgumentNullException(nameof(routingKey));
         RejectRequeue = rejectRequeue;
         AckMultiple = ackMultiple;
-        Arguments = arguments;
-        ConsumerTag = consumerTag;
+        Arguments = arguments ?? new Dictionary<string, object>();
+        ConsumerTag = consumerTag ?? string.Empty;
         AutoAck = autoAck;
         Durable = durable;
         AutoDelete = autoDelete;
