@@ -41,6 +41,6 @@ public sealed class PolicyHelper
                     //todo
                 }
             );
-        return circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>()
+        return circuitBreakerPolicy.AsAsyncPolicy<HttpResponseMessage>();
     }
 }
