@@ -3,7 +3,7 @@ using Yitter.IdGenerator;
 
 namespace Tenon.DistributedId.Snowflake;
 
-public sealed class YitterIdGenerator : IDGenerator
+public sealed class SnowflakeIdGenerator : IDGenerator
 {
     private static readonly object SyncRoot = new();
     private readonly byte _seqBitLength = 6;
