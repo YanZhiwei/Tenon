@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abstractions\Tenon.DistributedId.Abstractions\Tenon.DistributedId.Abstractions.csproj" />
+    <ProjectReference Include="..\Abstractions\Tenon.MessageTracker.Abstractions\Tenon.MessageTracker.Abstractions.csproj" />
+    <ProjectReference Include="..\Tenon.Repository.EfCore\Tenon.Repository.EfCore.csproj" />
+  </ItemGroup>
+
+</Project>
