@@ -6,21 +6,26 @@ namespace Tenon.DistributedId.Snowflake;
 public sealed class SnowflakeIdGenerator : IDGenerator
 {
     private static readonly object SyncRoot = new();
-    private readonly byte _seqBitLength = 6;
-    private readonly byte _workerIdBitLength = 6;
-    public short CurrentWorkerId { get; private set; } = -1;
+    private readonly IdGeneratorOptions _options;
+
+    public SnowflakeIdGenerator()
+    {
+        _options = new IdGeneratorOptions
+        {
+            WorkerIdBitLength = 6,
+            SeqBitLength = 6
+        };
+    }
+
 
     public void SetWorkerId(ushort workerId)
     {
         lock (SyncRoot)
         {
-            YitIdHelper.SetIdGenerator(new IdGeneratorOptions(workerId)
-            {
-                WorkerIdBitLength = _workerIdBitLength,
-                SeqBitLength = _seqBitLength
-            });
+            _options.WorkerId = workerId;
+            YitIdHelper.SetIdGenerator(_options);
 
-            CurrentWorkerId = (short)workerId;
+            WorkerId = (short)workerId;
         }
     }
 
@@ -28,4 +33,8 @@ public sealed class SnowflakeIdGenerator : IDGenerator
     {
         return YitIdHelper.NextId();
     }
+
+    public short WorkerId { get; private set; } = -1;
+
+    public short MaxWorkerId => (short)(Math.Pow(2.0, _options.WorkerIdBitLength) - 1);
 }

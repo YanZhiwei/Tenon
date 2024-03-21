@@ -5,5 +5,9 @@
         void SetWorkerId(ushort workerId);
 
         long GetNextId();
+
+        short WorkerId { get; }
+
+        short MaxWorkerId { get; }
     }
 }
