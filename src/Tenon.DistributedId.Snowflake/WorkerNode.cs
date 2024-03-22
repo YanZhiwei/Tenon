@@ -84,11 +84,11 @@ public class WorkerNode
     {
         if (_renewalRefreshTimer != null)
         {
-            _logger.LogWarning(
-                $"Service:{_options.ServiceName} workId:{CurrentWorkId} start cancelling the heartbeat.");
             _idGenerator.ResetWorkerId();
             _logger.LogWarning(
                 $"Service:{_options.ServiceName} workId:{CurrentWorkId} reset succeeded.");
+            _logger.LogWarning(
+                $"Service:{_options.ServiceName} workId:{CurrentWorkId} start cancelling the heartbeat.");
             await _renewalRefreshTimer.DisposeAsync();
             _logger.LogWarning($"Service:{_options.ServiceName} workId:{CurrentWorkId} heartbeat cancelled.");
         }
