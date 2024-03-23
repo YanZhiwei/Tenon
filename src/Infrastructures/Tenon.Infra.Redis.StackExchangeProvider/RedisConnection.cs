@@ -5,7 +5,7 @@ using Tenon.Infra.Redis.Configurations;
 
 namespace Tenon.Infra.Redis.StackExchangeProvider;
 
-public sealed class RedisConnection
+sealed class RedisConnection
 {
     private readonly Lazy<ConnectionMultiplexer> _connectionMultiplexer;
     private readonly RedisOptions _redisOptions;

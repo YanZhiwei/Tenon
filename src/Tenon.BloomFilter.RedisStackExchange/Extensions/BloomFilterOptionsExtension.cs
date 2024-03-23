@@ -23,7 +23,7 @@ internal class BloomFilterOptionsExtension(IConfigurationSection redisSection, B
         if (string.IsNullOrWhiteSpace(options.KeyedServiceKey))
         {
             services.AddRedisStackExchangeProvider(redisSection);
-            services.AddSingleton<IBloomFilter, RedisBloomFilter>();
+            services.TryAddSingleton<IBloomFilter, RedisBloomFilter>();
         }
         else
         {

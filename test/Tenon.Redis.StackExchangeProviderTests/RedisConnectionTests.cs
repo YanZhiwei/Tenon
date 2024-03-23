@@ -31,17 +31,17 @@ public class RedisConnectionTests
             .BuildServiceProvider();
     }
 
-    [TestMethod]
-    public void GetDatabaseTest()
-    {
-        using (var scope = _serviceProvider.CreateScope())
-        {
-            var redisDataBase = scope.ServiceProvider.GetService<RedisConnection>();
-            Assert.IsNotNull(redisDataBase);
-            var database = redisDataBase.GetDatabase();
-            Assert.AreEqual(0, database.Database);
-        }
-    }
+    //[TestMethod]
+    //public void GetDatabaseTest()
+    //{
+    //    using (var scope = _serviceProvider.CreateScope())
+    //    {
+    //        var redisDataBase = scope.ServiceProvider.GetService<RedisConnection>();
+    //        Assert.IsNotNull(redisDataBase);
+    //        var database = redisDataBase.GetDatabase();
+    //        Assert.AreEqual(0, database.Database);
+    //    }
+    //}
 
     [TestMethod]
     public void GetKeyedDatabaseTest()

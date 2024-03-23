@@ -1,4 +1,6 @@
-﻿namespace Tenon.DistributedId.Snowflake.Configurations;
+﻿using Tenon.Infra.Redis.Configurations;
+
+namespace Tenon.DistributedId.Snowflake.Configurations;
 
 public sealed class WorkerNodeOptions
 {
@@ -7,4 +9,6 @@ public sealed class WorkerNodeOptions
     public int ExpireTimeInSeconds { get; set; } = 60;
 
     public int RefreshTimeInSeconds { get; set; }
+
+    public RedisOptions Redis { get; set; }
 }
