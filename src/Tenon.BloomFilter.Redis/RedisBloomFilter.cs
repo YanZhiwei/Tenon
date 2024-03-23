@@ -7,6 +7,8 @@ namespace Tenon.BloomFilter.Redis;
 public sealed class RedisBloomFilter(IRedisProvider redisProvider, BloomFilterOptions options)
     : IBloomFilter
 {
+    
+
     private readonly string _key = options?.Name ?? throw new ArgumentNullException(nameof(Options.Name));
 
     private readonly IRedisProvider _redisProvider =

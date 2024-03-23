@@ -125,9 +125,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMq", "RabbitMq", "{D5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMqDirectExchangeSample", "..\samples\RabbitMq\RabbitMqDirectExchangeSample\RabbitMqDirectExchangeSample.csproj", "{079DF071-5EBA-4FA6-85AA-C0BC71361EF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Infra.Polly", "Infrastructures\Tenon.Infra.Polly\Tenon.Infra.Polly.csproj", "{25AA4890-D87B-4637-9415-54D8501D167C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Polly", "Infrastructures\Tenon.Infra.Polly\Tenon.Infra.Polly.csproj", "{25AA4890-D87B-4637-9415-54D8501D167C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.MessageTracker.EfCore", "Tenon.MessageTracker.EfCore\Tenon.MessageTracker.EfCore.csproj", "{6B935A34-EB9E-414B-B58E-98803B54B6B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.MessageTracker.EfCore", "Tenon.MessageTracker.EfCore\Tenon.MessageTracker.EfCore.csproj", "{6B935A34-EB9E-414B-B58E-98803B54B6B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnowflakeSample", "..\samples\SnowflakeSample\SnowflakeSample.csproj", "{32A28DB1-AF13-4C61-816D-1215279E408C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -351,6 +353,10 @@ Global
 		{6B935A34-EB9E-414B-B58E-98803B54B6B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B935A34-EB9E-414B-B58E-98803B54B6B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B935A34-EB9E-414B-B58E-98803B54B6B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32A28DB1-AF13-4C61-816D-1215279E408C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A28DB1-AF13-4C61-816D-1215279E408C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A28DB1-AF13-4C61-816D-1215279E408C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A28DB1-AF13-4C61-816D-1215279E408C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -393,6 +399,7 @@ Global
 		{D5D373F5-4063-4B5B-84E8-F1A8FC1DB52D} = {76FD4AE7-DA80-4244-8A1A-784DD49F9894}
 		{079DF071-5EBA-4FA6-85AA-C0BC71361EF6} = {D5D373F5-4063-4B5B-84E8-F1A8FC1DB52D}
 		{25AA4890-D87B-4637-9415-54D8501D167C} = {379B9552-4579-4BFD-A50E-F123587A91AE}
+		{32A28DB1-AF13-4C61-816D-1215279E408C} = {76FD4AE7-DA80-4244-8A1A-784DD49F9894}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}

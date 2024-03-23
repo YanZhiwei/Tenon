@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Tenon.DistributedId.Abstractions;
 using Tenon.DistributedId.Snowflake.Configurations;
+using Tenon.DistributedId.Snowflake.Exceptions;
 using Tenon.DistributedId.Snowflake.Models;
 using Tenon.Infra.Redis;
 
@@ -32,7 +33,7 @@ public class WorkerNode
         CurrentWorkId = -1;
     }
 
-    public int CurrentWorkId { get;private set; }
+    public int CurrentWorkId { get; private set; }
 
     public string WorkIdCacheKey { get; private set; }
 
@@ -77,7 +78,7 @@ public class WorkerNode
         }
 
         if (CurrentWorkId == -1)
-            throw new InvalidOperationException($"Service: {_options.ServiceName} Worker node registration failed");
+            throw new IdGeneratorWorkerNodeException($"Service: {_options.ServiceName} Worker node registration failed");
     }
 
     private async Task CleanRenewalRefreshTimerAsync()
@@ -133,6 +134,8 @@ public class WorkerNode
             {
                 _logger.LogError(ex,
                     $"Service: {_options.ServiceName},workIdCacheKey:{workerNode.WorkerKey} renewal exception");
+                if (ex is IdGeneratorWorkerNodeException)
+                    throw;
             }
         }
     }
