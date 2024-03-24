@@ -16,6 +16,7 @@ public static class ServiceCollectionExtension
             throw new NullReferenceException(nameof(redisConfig));
 
         services.Configure<RedisOptions>(redisSection);
+        services.TryAddSingleton<RedisConnection>();
         services.TryAddSingleton<ISerializer, TSerializer>();
         services.TryAddSingleton<IRedisProvider, Infra.Redis.StackExchangeProvider.StackExchangeProvider>();
         return services;
@@ -29,6 +30,7 @@ public static class ServiceCollectionExtension
             throw new NullReferenceException(nameof(redisConfig));
 
         services.Configure<RedisOptions>(redisSection);
+        services.TryAddSingleton<RedisConnection>();
         services.TryAddSingleton<IRedisProvider, Infra.Redis.StackExchangeProvider.StackExchangeProvider>();
         return services;
     }
@@ -44,11 +46,14 @@ public static class ServiceCollectionExtension
             throw new NullReferenceException(nameof(redisConfig));
         services.AddOptions();
         services.TryAddKeyedSingleton<ISerializer, TSerializer>(serviceKey);
+        services.TryAddKeyedSingleton<RedisConnection>(serviceKey,
+            (_, _) => new RedisConnection(redisConfig));
         services.TryAddKeyedSingleton<IRedisProvider>(serviceKey, (serviceProvider, key) =>
         {
+            var redisConnection = serviceProvider.GetKeyedService<RedisConnection>(key);
             var serializer = serviceProvider.GetKeyedService<ISerializer>(key);
 #pragma warning disable CS8604 // Possible null reference argument.
-            return new Infra.Redis.StackExchangeProvider.StackExchangeProvider(redisConfig, serializer);
+            return new Infra.Redis.StackExchangeProvider.StackExchangeProvider(redisConnection, serializer);
 #pragma warning restore CS8604 // Possible null reference argument.
         });
         return services;
@@ -65,10 +70,15 @@ public static class ServiceCollectionExtension
         if (redisConfig == null)
             throw new NullReferenceException(nameof(redisConfig));
         services.AddOptions();
+        services.TryAddKeyedSingleton<RedisConnection>(serviceKey,
+            (_, _) => new RedisConnection(redisConfig));
         services.TryAddKeyedSingleton<IRedisProvider>(serviceKey, (serviceProvider, key) =>
         {
+            var redisConnection = serviceProvider.GetKeyedService<RedisConnection>(key);
             var serializer = serviceProvider.GetKeyedService<ISerializer>(key);
-            return new StackExchangeProvider(redisConfig, serializer);
+#pragma warning disable CS8604 // Possible null reference argument.
+            return new Infra.Redis.StackExchangeProvider.StackExchangeProvider(redisConnection, serializer);
+#pragma warning restore CS8604 // Possible null reference argument.
         });
         return services;
     }

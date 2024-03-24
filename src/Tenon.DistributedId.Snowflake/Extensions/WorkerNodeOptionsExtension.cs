@@ -28,7 +28,7 @@ public sealed class WorkerNodeOptionsExtension<TRedisProvider>(IConfigurationSec
         if (redisConfig == null)
             throw new NullReferenceException(nameof(redisConfig));
 
-        services.Configure<RedisOptions>(redisSection);
+        services.AddSingleton<RedisOptions>(redisConfig);
         services.AddSingleton<IRedisProvider, TRedisProvider>();
         services.AddSingleton<WorkerNode>();
     }

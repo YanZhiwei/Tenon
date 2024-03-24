@@ -5,19 +5,21 @@ using Tenon.Infra.Redis.Configurations;
 
 namespace Tenon.Infra.Redis.StackExchangeProvider;
 
-sealed class RedisConnection
+public sealed class RedisConnection
 {
     private readonly Lazy<ConnectionMultiplexer> _connectionMultiplexer;
     private readonly RedisOptions _redisOptions;
 
     public RedisConnection(RedisOptions redisOptions)
     {
-        _redisOptions = redisOptions;
+        _redisOptions = redisOptions ?? throw new ArgumentNullException(nameof(redisOptions));
         _connectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
     }
 
     public RedisConnection(IOptionsMonitor<RedisOptions> redisOptions)
     {
+        if (redisOptions == null)
+            throw new ArgumentNullException(nameof(redisOptions));
         _redisOptions = redisOptions.CurrentValue;
         _connectionMultiplexer = new Lazy<ConnectionMultiplexer>(CreateConnectionMultiplexer);
     }
