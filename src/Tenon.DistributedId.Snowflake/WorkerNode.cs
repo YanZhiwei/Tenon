@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Tenon.DistributedId.Abstractions;
 using Tenon.DistributedId.Snowflake.Configurations;
 using Tenon.DistributedId.Snowflake.Exceptions;
@@ -21,14 +22,14 @@ public class WorkerNode
         "local lock = redis.call('setnx',KEYS[1],ARGV[1]);if lock == 1 then redis.call('pexpire',KEYS[1],ARGV[2]);return 1;else return 0;end;";
 
     public WorkerNode(IDGenerator idGenerator, ILogger<WorkerNode> logger, IRedisProvider redisProvider,
-        SnowflakeIdOptions options)
+        IOptionsMonitor<SnowflakeIdOptions> options)
     {
         _idGenerator = idGenerator ?? throw new ArgumentNullException(nameof(idGenerator));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _redisProvider = redisProvider ?? throw new ArgumentNullException(nameof(redisProvider));
-        _options = options ?? throw new ArgumentNullException(nameof(options));
+        _options = options?.CurrentValue ?? throw new ArgumentNullException(nameof(options));
         if (_options.WorkerNode == null)
-            throw new ArgumentNullException(nameof(options.WorkerNode));
+            throw new ArgumentNullException(nameof(_options.WorkerNode));
         _options.WorkerNode.RefreshTimeInSeconds = (int)(_options.WorkerNode.ExpireTimeInSeconds / 2.0);
         CurrentWorkId = -1;
     }

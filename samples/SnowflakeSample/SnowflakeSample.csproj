@@ -17,6 +17,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\..\src\Abstractions\Tenon.DistributedId.Abstractions\Tenon.DistributedId.Abstractions.csproj" />
 	  <ProjectReference Include="..\..\src\Tenon.Caching.RedisStackExchange\Tenon.Caching.RedisStackExchange.csproj" />
 	  <ProjectReference Include="..\..\src\Tenon.DistributedId.Snowflake\Tenon.DistributedId.Snowflake.csproj" />
 	</ItemGroup>
