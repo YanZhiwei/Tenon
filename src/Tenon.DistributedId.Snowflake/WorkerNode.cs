@@ -15,7 +15,7 @@ public class WorkerNode
     private readonly SnowflakeIdOptions _options;
     private readonly IRedisProvider _redisProvider;
     private Timer? _renewalRefreshTimer;
-
+    private readonly int _refreshTimeInMilliseconds;
     private const string RenewalWorkerScript = "if redis.call('GET', @key)==@value then redis.call('pexpire', @key, @milliseconds) return 1 end return 0";
 
     private const string UnRegisterWorkerScript =
@@ -31,6 +31,7 @@ public class WorkerNode
         if (_options.WorkerNode == null)
             throw new ArgumentNullException(nameof(_options.WorkerNode));
         _options.WorkerNode.RefreshTimeInSeconds = (int)(_options.WorkerNode.ExpireTimeInSeconds / 2.0);
+        _refreshTimeInMilliseconds = (int)TimeSpan.FromSeconds(_options.WorkerNode.RefreshTimeInSeconds).TotalMilliseconds;
         CurrentWorkId = -1;
     }
 
@@ -41,7 +42,7 @@ public class WorkerNode
     public async Task RegisterAsync()
     {
         _logger.LogDebug($"Service:{_options.ServiceName} starts registering work nodes");
-        await CleanRenewalRefreshTimerAsync();
+        CleanRenewalRefreshTimer();
         var expiration = TimeSpan.FromSeconds(_options.WorkerNode.ExpireTimeInSeconds);
         _logger.LogDebug(
             $"Service:{_options.ServiceName} maxWorkerId:{_idGenerator.MaxWorkerId},expireTimeInSeconds:{_options.WorkerNode.ExpireTimeInSeconds} refreshTimeInSeconds:{_options.WorkerNode.RefreshTimeInSeconds}");
@@ -49,9 +50,9 @@ public class WorkerNode
         {
             try
             {
-                WorkIdCacheKey = $"{_options.WorkerNode.Prefix}_{i}";
-
-                var flag = await _redisProvider.StringSetAsync(WorkIdCacheKey, CurrentWorkId.ToString(),
+                WorkIdCacheKey = $"{_options.WorkerNode.Prefix}{i}";
+                var workIdValue = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                var flag = await _redisProvider.StringSetAsync(WorkIdCacheKey, workIdValue,
                     expiration, StringSetWhen.NotExists);
 
                 if (flag)
@@ -61,28 +62,28 @@ public class WorkerNode
                         $"Service:{_options.ServiceName} successful registration of work node,workId={CurrentWorkId} and heartbeat initiated.");
                     _idGenerator.SetWorkerId(i);
                     _renewalRefreshTimer = new Timer(RenewalTimerWorker,
-                        new WorkerNodeState(WorkIdCacheKey, CurrentWorkId.ToString(),
+                        new WorkerNodeState(WorkIdCacheKey, workIdValue,
                             (int)expiration.TotalMilliseconds),
-                        _options.WorkerNode.RefreshTimeInSeconds,
-                        _options.WorkerNode.RefreshTimeInSeconds);
+                        _refreshTimeInMilliseconds,
+                        _refreshTimeInMilliseconds);
+                    break;
                 }
-                else
-                {
-                    _logger.LogDebug(
-                        $"Service:{_options.ServiceName} worker node registration failed and continues to be attempted");
-                }
+
+                _logger.LogDebug(
+                    $"Service:{_options.ServiceName} worker node:{i} registration failed and continues to be attempted");
+
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Service: {_options.ServiceName} worker node registration exception");
+                _logger.LogError(ex, $"Service: {_options.ServiceName} worker node:{i} registration exception");
             }
         }
 
         if (CurrentWorkId == -1)
-            throw new IdGeneratorWorkerNodeException($"Service: {_options.ServiceName} Worker node registration failed");
+            throw new IdGeneratorWorkerNodeException($"Service: {_options.ServiceName} Worker all nodes registration failed");
     }
 
-    private async Task CleanRenewalRefreshTimerAsync()
+    private void CleanRenewalRefreshTimer()
     {
         if (_renewalRefreshTimer != null)
         {
@@ -91,7 +92,7 @@ public class WorkerNode
                 $"Service:{_options.ServiceName} workId:{CurrentWorkId} reset succeeded.");
             _logger.LogWarning(
                 $"Service:{_options.ServiceName} workId:{CurrentWorkId} start cancelling the heartbeat.");
-            await _renewalRefreshTimer.DisposeAsync();
+            _renewalRefreshTimer.Dispose();
             _logger.LogWarning($"Service:{_options.ServiceName} workId:{CurrentWorkId} heartbeat cancelled.");
         }
     }
@@ -126,10 +127,6 @@ public class WorkerNode
                     _logger.LogDebug(
                         $"Service: {_options.ServiceName},workIdCacheKey:{workerNode.WorkerKey} renewal succeeded.");
                 }
-                if (renewalWorkerResult == false)
-                {
-                    RegisterAsync().ConfigureAwait(true).GetAwaiter().GetResult();
-                }
             }
             catch (Exception ex)
             {
@@ -137,6 +134,13 @@ public class WorkerNode
                     $"Service: {_options.ServiceName},workIdCacheKey:{workerNode.WorkerKey} renewal exception");
                 if (ex is IdGeneratorWorkerNodeException)
                     throw;
+            }
+            finally
+            {
+                if (renewalWorkerResult == false)
+                {
+                    RegisterAsync().ConfigureAwait(true).GetAwaiter().GetResult();
+                }
             }
         }
     }
