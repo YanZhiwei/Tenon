@@ -26,8 +26,10 @@ public sealed class RedisConnection
 
     private ConnectionMultiplexer CreateConnectionMultiplexer()
     {
-        _ = ConfigurationOptions.Parse(_redisOptions.ConnectionString);
-        return ConnectionMultiplexer.Connect(_redisOptions.ConnectionString);
+        var config = ConfigurationOptions.Parse(_redisOptions.ConnectionString);
+        //当设置了 AbortOnConnectFail 为 true 时，如果在尝试连接服务时失败了，客户端会立即抛出异常并中断后续的操作。如果设置为 false，则即使连接失败，客户端也会尝试一些重连策略。
+        //config.AbortOnConnectFail = false;
+        return ConnectionMultiplexer.Connect(config);
     }
 
     public IDatabase GetDatabase()
