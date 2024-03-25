@@ -145,6 +145,25 @@ public class WorkerNode
         }
     }
 
+    public async Task UnRegisterAsync()
+    {
+        _logger.LogDebug($"Service:{_options.ServiceName} start cancellation node: {WorkIdCacheKey} registration");
+        try
+        {
+            CleanRenewalRefreshTimer();
+            var parameters = new { key = WorkIdCacheKey };
+            var resultCode = await _redisProvider.EvalAsync(UnRegisterWorkerScript, parameters);
+            var result = (int)resultCode == 1;
+            _logger.LogDebug(result
+                ? $"Service: {_options.ServiceName},workIdCacheKey:{WorkIdCacheKey} unRegister succeeded"
+                : $"Service: {_options.ServiceName},workIdCacheKey:{WorkIdCacheKey} unRegister failed");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Service: {_options.ServiceName},workIdCacheKey:{WorkIdCacheKey} unRegister exception");
+        }
+    }
+
     private void UnRegister(string workIdCacheKey)
     {
         try
