@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Tenon.AspNetCore.Controllers;
 
-public abstract class BaseApiController : ControllerBase
+public abstract class ApiControllerBase : ControllerBase
 {
     [NonAction]
     protected virtual ActionResult Problem(string error, int statusCode)

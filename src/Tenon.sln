@@ -133,6 +133,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowflakeSample", "..\sampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.FluentValidation.Extensions", "Extensions\Tenon.FluentValidation.Extensions\Tenon.FluentValidation.Extensions.csproj", "{1FDCA674-EE23-4AD9-A8E3-8DF54B42B27B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.AspNetCore.Abstractions", "Tenon.AspNetCore.Abstractions\Tenon.AspNetCore.Abstractions.csproj", "{74C1507E-A040-43D0-A177-BF884982786D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -363,6 +365,10 @@ Global
 		{1FDCA674-EE23-4AD9-A8E3-8DF54B42B27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FDCA674-EE23-4AD9-A8E3-8DF54B42B27B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FDCA674-EE23-4AD9-A8E3-8DF54B42B27B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74C1507E-A040-43D0-A177-BF884982786D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74C1507E-A040-43D0-A177-BF884982786D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74C1507E-A040-43D0-A177-BF884982786D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74C1507E-A040-43D0-A177-BF884982786D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
