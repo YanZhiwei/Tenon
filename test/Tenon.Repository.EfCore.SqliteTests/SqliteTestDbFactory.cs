@@ -18,6 +18,6 @@ public class SqliteTestDbFactory : IDesignTimeDbContextFactory<SqliteTestDbConte
             //.UseLazyLoadingProxies()
             .UseSqlite(connectString)
             .Options;
-        return new SqliteTestDbContext(options, null);
+        return new SqliteTestDbContext(options);
     }
 }

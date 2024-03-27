@@ -131,9 +131,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.MessageTracker.EfCore
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowflakeSample", "..\samples\SnowflakeSample\SnowflakeSample.csproj", "{32A28DB1-AF13-4C61-816D-1215279E408C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.FluentValidation.Extensions", "Extensions\Tenon.FluentValidation.Extensions\Tenon.FluentValidation.Extensions.csproj", "{1FDCA674-EE23-4AD9-A8E3-8DF54B42B27B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.FluentValidation.Extensions", "Extensions\Tenon.FluentValidation.Extensions\Tenon.FluentValidation.Extensions.csproj", "{1FDCA674-EE23-4AD9-A8E3-8DF54B42B27B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.AspNetCore.Abstractions", "Tenon.AspNetCore.Abstractions\Tenon.AspNetCore.Abstractions.csproj", "{74C1507E-A040-43D0-A177-BF884982786D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.AspNetCore.Abstractions", "Tenon.AspNetCore.Abstractions\Tenon.AspNetCore.Abstractions.csproj", "{74C1507E-A040-43D0-A177-BF884982786D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{393D37F7-A29E-4222-840A-F29D420A9A4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApiCleanArchitecture", "WebApiCleanArchitecture", "{340CE2E4-0FF5-48EE-87E5-171BB4E0382C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Blog.Api", "..\templates\WebApiCleanArchitecture\CleanArchitecture.Blog.Api\CleanArchitecture.Blog.Api.csproj", "{C93F742A-C790-4F82-A3FD-5C7DC5BA521C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Blog.Application", "..\templates\WebApiCleanArchitecture\CleanArchitecture.Blog.Application\CleanArchitecture.Blog.Application.csproj", "{F3045842-7023-4F3C-B603-63E226D10E67}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Blog.Repository", "..\templates\WebApiCleanArchitecture\CleanArchitecture.Blog.Repository\CleanArchitecture.Blog.Repository.csproj", "{9E14DDAA-0CFE-416C-869B-13FAC8AE3A3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -369,6 +379,18 @@ Global
 		{74C1507E-A040-43D0-A177-BF884982786D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74C1507E-A040-43D0-A177-BF884982786D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74C1507E-A040-43D0-A177-BF884982786D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C93F742A-C790-4F82-A3FD-5C7DC5BA521C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C93F742A-C790-4F82-A3FD-5C7DC5BA521C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C93F742A-C790-4F82-A3FD-5C7DC5BA521C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C93F742A-C790-4F82-A3FD-5C7DC5BA521C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3045842-7023-4F3C-B603-63E226D10E67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3045842-7023-4F3C-B603-63E226D10E67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3045842-7023-4F3C-B603-63E226D10E67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3045842-7023-4F3C-B603-63E226D10E67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E14DDAA-0CFE-416C-869B-13FAC8AE3A3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E14DDAA-0CFE-416C-869B-13FAC8AE3A3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E14DDAA-0CFE-416C-869B-13FAC8AE3A3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E14DDAA-0CFE-416C-869B-13FAC8AE3A3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -413,6 +435,10 @@ Global
 		{25AA4890-D87B-4637-9415-54D8501D167C} = {379B9552-4579-4BFD-A50E-F123587A91AE}
 		{32A28DB1-AF13-4C61-816D-1215279E408C} = {76FD4AE7-DA80-4244-8A1A-784DD49F9894}
 		{1FDCA674-EE23-4AD9-A8E3-8DF54B42B27B} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
+		{340CE2E4-0FF5-48EE-87E5-171BB4E0382C} = {393D37F7-A29E-4222-840A-F29D420A9A4A}
+		{C93F742A-C790-4F82-A3FD-5C7DC5BA521C} = {340CE2E4-0FF5-48EE-87E5-171BB4E0382C}
+		{F3045842-7023-4F3C-B603-63E226D10E67} = {340CE2E4-0FF5-48EE-87E5-171BB4E0382C}
+		{9E14DDAA-0CFE-416C-869B-13FAC8AE3A3F} = {340CE2E4-0FF5-48EE-87E5-171BB4E0382C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}

@@ -2,8 +2,8 @@
 
 namespace Tenon.Repository.EfCore.MySql;
 
-public abstract class MySqlDbContext(DbContextOptions options, IAuditContextAccessor auditContext)
-    : AuditDbContext(options, auditContext)
+public abstract class MySqlDbContext(DbContextOptions options)
+    : AbstractDbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

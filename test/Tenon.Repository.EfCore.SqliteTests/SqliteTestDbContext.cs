@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using Tenon.Repository.EfCore.Sqlite;
 using Tenon.Repository.EfCore.SqliteTests.Entities;
@@ -8,8 +9,7 @@ namespace Tenon.Repository.EfCore.SqliteTests;
 
 public sealed class SqliteTestDbContext : SqliteDbContext
 {
-    public SqliteTestDbContext(DbContextOptions options, EfCore.IAuditContextAccessor auditContext) : base(options,
-        auditContext)
+    public SqliteTestDbContext(DbContextOptions options) : base(options)
     {
     }
 
@@ -30,7 +30,18 @@ public sealed class SqliteTestDbContext : SqliteDbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    protected override long GetUserId(EfCore.IAuditContextAccessor context)
+
+    protected override void OnModifiedEntity(EntityEntry<EfBasicAuditEntity> modifiedEntity)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void OnAddedEntity(EntityEntry<EfBasicAuditEntity> addedEntity)
+    {
+        throw new NotImplementedException();
+    }
+
+    private  long GetUserId(EfCore.IAuditContextAccessor context)
     {
         var claims = new List<Claim>
         {
