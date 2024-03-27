@@ -1,34 +1,57 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Tenon.Repository.EfCore;
 
-public abstract class AuditDbContext(DbContextOptions options, IAuditContextAccessor auditContext) : DbContext(options)
+public abstract class AuditDbContext : DbContext
 {
-    private readonly IAuditContextAccessor _contextAccessor = auditContext;
+    private readonly IEnumerable<AbstractEntityTypeConfiguration>? _entityTypeConfigurations;
+
+    protected AuditDbContext(DbContextOptions options,
+        IEnumerable<AbstractEntityTypeConfiguration>? entityTypeConfigurations = null) : base(options)
+    {
+        _entityTypeConfigurations = entityTypeConfigurations;
+        Database.AutoTransactionsEnabled = false;
+    }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        SetAuditFields();
+        if (ChangeTracker.Entries<EfEntity>().Any())
+        {
+            var addEntityEntries =
+                ChangeTracker.Entries<EfBasicAuditEntity>().Where(x => x.State == EntityState.Added);
+            foreach (var addedEntity in addEntityEntries)
+            {
+                addedEntity.Entity.CreateTime = DateTime.UtcNow;
+                OnAddedEntity(addedEntity);
+            }
+
+            var modifiedEntities =
+                ChangeTracker.Entries<EfBasicAuditEntity>().Where(x => x.State == EntityState.Modified);
+            foreach (var modifiedEntity in modifiedEntities)
+            {
+                modifiedEntity.Entity.ModifyTime = DateTime.UtcNow;
+                OnModifiedEntity(modifiedEntity);
+            }
+        }
+
         return await base.SaveChangesAsync(cancellationToken);
     }
 
-    protected abstract long GetUserId(IAuditContextAccessor context);
 
-    protected virtual void SetAuditFields()
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var allBasicAuditEntities =
-            ChangeTracker.Entries<EfBasicAuditEntity>().Where(x => x.State == EntityState.Added);
-        foreach (var addedEntity in allBasicAuditEntities)
-        {
-            addedEntity.Entity.CreateTime = DateTime.UtcNow;
-            addedEntity.Entity.CreateBy = GetUserId(_contextAccessor);
-        }
-
-        var allModifiedEntities = ChangeTracker.Entries<EfBasicAuditEntity>().Where(x => x.State == EntityState.Modified);
-        foreach (var modifiedEntity in allModifiedEntities)
-        {
-            modifiedEntity.Entity.ModifyTime = DateTime.UtcNow;
-            modifiedEntity.Entity.ModifyBy = GetUserId(_contextAccessor);
-        }
+        //https://github.com/dotnet/efcore/issues/23103
+        base.OnModelCreating(modelBuilder);
+        if (_entityTypeConfigurations != null)
+            foreach (var entityTypeConfiguration in _entityTypeConfigurations)
+                entityTypeConfiguration.Configure(modelBuilder);
     }
+
+    protected virtual void SetComment(ModelBuilder modelBuilder)
+    {
+    }
+
+    protected abstract void OnModifiedEntity(EntityEntry<EfBasicAuditEntity> modifiedEntity);
+    protected abstract void OnAddedEntity(EntityEntry<EfBasicAuditEntity> addedEntity);
 }

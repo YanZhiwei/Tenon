@@ -2,8 +2,8 @@
 
 namespace Tenon.Repository.EfCore.Sqlite
 {
-    public abstract class SqliteDbContext(DbContextOptions options, IAuditContextAccessor auditContext)
-        : AuditDbContext(options, auditContext)
+    public abstract class SqliteDbContext(DbContextOptions options)
+        : AuditDbContext(options)
     {
 
     }

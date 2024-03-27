@@ -22,6 +22,6 @@ public class MysqlDbContextFactory : IDesignTimeDbContextFactory<MySqlTestDbCont
         var options = new DbContextOptionsBuilder<MySqlDbContext>()
             .UseMySql(mysqlConfig.ConnectionString, serverVersion)
             .Options;
-        return new MySqlTestDbContext(options, null);
+        return new MySqlTestDbContext(options);
     }
 }
