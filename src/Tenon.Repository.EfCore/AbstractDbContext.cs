@@ -5,12 +5,14 @@ namespace Tenon.Repository.EfCore;
 
 public abstract class AbstractDbContext : DbContext
 {
-    private readonly IEnumerable<AbstractEntityTypeConfiguration>? _entityTypeConfigurations;
+    protected readonly IEnumerable<AbstractEntityTypeConfiguration>? EntityTypeConfigurations;
 
-    protected AbstractDbContext(DbContextOptions options,
-        IEnumerable<AbstractEntityTypeConfiguration>? entityTypeConfigurations = null) : base(options)
+    protected readonly AbstractDbContextConfiguration? DbContextConfiguration;
+
+    protected AbstractDbContext(DbContextOptions options, AbstractDbContextConfiguration? dbContextConfiguration = null, IEnumerable<AbstractEntityTypeConfiguration>? entityTypeConfigurations = null) : base(options)
     {
-        _entityTypeConfigurations = entityTypeConfigurations;
+        this.DbContextConfiguration = dbContextConfiguration;
+        EntityTypeConfigurations = entityTypeConfigurations;
         Database.AutoTransactionsEnabled = false;
     }
 
@@ -43,8 +45,8 @@ public abstract class AbstractDbContext : DbContext
     {
         //https://github.com/dotnet/efcore/issues/23103
         base.OnModelCreating(modelBuilder);
-        if (_entityTypeConfigurations != null)
-            foreach (var entityTypeConfiguration in _entityTypeConfigurations)
+        if (EntityTypeConfigurations != null)
+            foreach (var entityTypeConfiguration in EntityTypeConfigurations)
                 entityTypeConfiguration.Configure(modelBuilder);
     }
 
