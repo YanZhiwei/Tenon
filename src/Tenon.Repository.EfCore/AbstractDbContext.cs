@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Tenon.Repository.EfCore;
 
-public abstract class AuditDbContext : DbContext
+public abstract class AbstractDbContext : DbContext
 {
     private readonly IEnumerable<AbstractEntityTypeConfiguration>? _entityTypeConfigurations;
 
-    protected AuditDbContext(DbContextOptions options,
+    protected AbstractDbContext(DbContextOptions options,
         IEnumerable<AbstractEntityTypeConfiguration>? entityTypeConfigurations = null) : base(options)
     {
         _entityTypeConfigurations = entityTypeConfigurations;
