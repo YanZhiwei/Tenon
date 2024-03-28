@@ -1,17 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Tenon.Repository.EfCore;
 
 public abstract class AbstractDbContext : DbContext
 {
+    protected readonly AbstractDbContextConfiguration? DbContextConfiguration;
     protected readonly IEnumerable<AbstractEntityTypeConfiguration>? EntityTypeConfigurations;
 
-    protected readonly AbstractDbContextConfiguration? DbContextConfiguration;
-
-    protected AbstractDbContext(DbContextOptions options, AbstractDbContextConfiguration? dbContextConfiguration = null, IEnumerable<AbstractEntityTypeConfiguration>? entityTypeConfigurations = null) : base(options)
+    protected AbstractDbContext(DbContextOptions options, AbstractDbContextConfiguration? dbContextConfiguration = null,
+        IEnumerable<AbstractEntityTypeConfiguration>? entityTypeConfigurations = null) : base(options)
     {
-        this.DbContextConfiguration = dbContextConfiguration;
+        DbContextConfiguration = dbContextConfiguration;
         EntityTypeConfigurations = entityTypeConfigurations;
         Database.AutoTransactionsEnabled = false;
     }
@@ -25,7 +24,7 @@ public abstract class AbstractDbContext : DbContext
             foreach (var addedEntity in addEntityEntries)
             {
                 addedEntity.Entity.CreateTime = DateTime.UtcNow;
-                OnAddedEntity(addedEntity);
+                DbContextConfiguration?.OnAddedEntity(addedEntity);
             }
 
             var modifiedEntities =
@@ -33,7 +32,7 @@ public abstract class AbstractDbContext : DbContext
             foreach (var modifiedEntity in modifiedEntities)
             {
                 modifiedEntity.Entity.ModifyTime = DateTime.UtcNow;
-                OnModifiedEntity(modifiedEntity);
+                DbContextConfiguration?.OnModifiedEntity(modifiedEntity);
             }
         }
 
@@ -48,12 +47,7 @@ public abstract class AbstractDbContext : DbContext
         if (EntityTypeConfigurations != null)
             foreach (var entityTypeConfiguration in EntityTypeConfigurations)
                 entityTypeConfiguration.Configure(modelBuilder);
+        DbContextConfiguration?.SetTableName(modelBuilder);
+        DbContextConfiguration?.SetComment(modelBuilder);
     }
-
-    protected virtual void SetComment(ModelBuilder modelBuilder)
-    {
-    }
-
-    protected abstract void OnModifiedEntity(EntityEntry<EfBasicAuditEntity> modifiedEntity);
-    protected abstract void OnAddedEntity(EntityEntry<EfBasicAuditEntity> addedEntity);
 }

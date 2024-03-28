@@ -2,11 +2,14 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Tenon.Repository.EfCore;
+
 public abstract class AbstractEntityTypeConfiguration
 {
     public abstract void Configure(ModelBuilder modelBuilder);
 }
-public abstract class AbstractEntityTypeConfiguration<TEntity> : AbstractEntityTypeConfiguration, IEntityTypeConfiguration<TEntity>
+
+public abstract class AbstractEntityTypeConfiguration<TEntity> : AbstractEntityTypeConfiguration,
+    IEntityTypeConfiguration<TEntity>
     where TEntity : EfEntity
 {
     protected const int MaxLength16 = 16;
@@ -22,10 +25,15 @@ public abstract class AbstractEntityTypeConfiguration<TEntity> : AbstractEntityT
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
         var entityType = typeof(TEntity);
-        Configure(builder);
         ConfigureKey(builder, entityType);
         ConfigureConcurrency(builder, entityType);
         ConfigureQueryFilter(builder, entityType);
+    }
+    //public abstract void Configure(EntityTypeBuilder<TEntity> builder);
+
+    public override void Configure(ModelBuilder modelBuilder)
+    {
+        Configure(modelBuilder.Entity<TEntity>());
     }
 
     protected void ConfigureQueryFilter(EntityTypeBuilder<TEntity> builder, Type entityType)

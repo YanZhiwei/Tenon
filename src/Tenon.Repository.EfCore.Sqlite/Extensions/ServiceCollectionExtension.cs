@@ -23,8 +23,14 @@ public static class ServiceCollectionExtension
         {
             options.UseSqlite(sqliteConfig.ConnectionString, sqliteOptionsAction);
         });
-        services.TryAddScoped<IUnitOfWork, SqliteUnitOfWork>();
-        services.TryAddScoped(typeof(IEfRepository<EfEntity, long>), typeof(EfRepository<EfEntity>));
+        foreach (var type in typeof(TDbContext).Assembly.DefinedTypes
+                     .Where(t => t is { IsAbstract: false, IsGenericTypeDefinition: false }
+                                 && typeof(AbstractEntityTypeConfiguration).IsAssignableFrom(t)))
+        {
+            services.AddSingleton(typeof(AbstractEntityTypeConfiguration), type);
+        }
+        services.AddScoped<IUnitOfWork, SqliteUnitOfWork>();
+        services.AddScoped(typeof(IEfRepository<EfEntity, long>), typeof(EfRepository<EfEntity>));
         return services;
     }
 }

@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Tenon.Repository.EfCore
+namespace Tenon.Repository.EfCore;
+
+public abstract class AbstractDbContextConfiguration
 {
-    public abstract class AbstractDbContextConfiguration
-    {
-    }
+    public abstract void OnModifiedEntity(EntityEntry<EfBasicAuditEntity> modifiedEntity);
+    public abstract void OnAddedEntity(EntityEntry<EfBasicAuditEntity> addedEntity);
+
+    public abstract void SetTableName(ModelBuilder modelBuilder);
+
+    public abstract void SetComment(ModelBuilder modelBuilder);
 }

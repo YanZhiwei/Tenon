@@ -27,15 +27,7 @@ public sealed class MySqlTestDbContext(DbContextOptions options)
         base.OnModelCreating(modelBuilder);
     }
 
-    protected override void OnModifiedEntity(EntityEntry<EfBasicAuditEntity> modifiedEntity)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override void OnAddedEntity(EntityEntry<EfBasicAuditEntity> addedEntity)
-    {
-        throw new NotImplementedException();
-    }
+   
 
     //protected override long GetUserId(IAuditContextAccessor context)
     //{

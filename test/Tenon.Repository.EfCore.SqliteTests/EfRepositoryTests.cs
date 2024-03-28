@@ -23,7 +23,7 @@ public class EfRepositoryTests
         _serviceProvider = new ServiceCollection()
             .AddLogging(loggingBuilder => loggingBuilder
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddScoped<IAuditContextAccessor, AuditContextAccessor>()
+            .AddSingleton<AbstractDbContextConfiguration, BlogDbContextConfiguration>()
             .AddEfCoreSqlite<SqliteTestDbContext>(configuration.GetSection("Sqlite"))
             .BuildServiceProvider();
     }
@@ -38,7 +38,7 @@ public class EfRepositoryTests
                 await context.Database.EnsureDeletedAsync();
                 await context.Database.EnsureCreatedAsync();
                 var blog1 = new Blog { Url = "http://sample.com", Id = 1 };
-                var post1 = new Post { Blog = blog1, Content = "test", Title = "test" };
+                var post1 = new Post { Blog = blog1, Content = "test", Title = "test", Id = 1 };
                 var blogRepository = new EfRepository<Blog>(context);
                 var result = await blogRepository.InsertAsync(blog1);
                 Assert.AreEqual(result > 0, true);
@@ -47,21 +47,21 @@ public class EfRepositoryTests
                 Assert.AreEqual(result > 0, true);
 
                 var blog2 = new Blog { Url = "http://sample2.com", Id = 2 };
-                var post2 = new Post { Blog = blog2, Content = "test2", Title = "test2" };
+                var post2 = new Post { Blog = blog2, Content = "test2", Title = "test2", Id = 2 };
                 result = await blogRepository.InsertAsync(blog2);
                 Assert.AreEqual(result > 0, true);
                 result = await postRepository.InsertAsync(post2);
                 Assert.AreEqual(result > 0, true);
 
                 var blog3 = new Blog { Url = "http://sample4.com", Id = 3 };
-                var post3 = new Post { Blog = blog3, Content = "test3", Title = "test3" };
+                var post3 = new Post { Blog = blog3, Content = "test3", Title = "test3", Id = 3 };
                 result = await blogRepository.InsertAsync(blog3);
                 Assert.AreEqual(result > 0, true);
                 result = await postRepository.InsertAsync(post3);
                 Assert.AreEqual(result > 0, true);
 
                 var blog4 = new Blog { Url = "http://sample4.com", Id = 4 };
-                var post4 = new Post { Blog = blog4, Content = "test4", Title = "test4" };
+                var post4 = new Post { Blog = blog4, Content = "test4", Title = "test4", Id = 4 };
                 result = await blogRepository.InsertAsync(blog4);
                 Assert.AreEqual(result > 0, true);
                 result = await postRepository.InsertAsync(post4);
