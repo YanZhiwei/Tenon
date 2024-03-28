@@ -33,7 +33,7 @@ public sealed class Post : EfBasicAuditEntity, ISoftDelete
     /// <summary>
     ///     标签列表
     /// </summary>
-    public List<Tag> Tags { get; set; }
+    public ICollection<Tag> Tags { get; set; }
 
     public bool IsDeleted { get; set; }
 }

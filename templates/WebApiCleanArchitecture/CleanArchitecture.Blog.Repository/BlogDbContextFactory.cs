@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Tenon.Repository.EfCore;
+using Tenon.Repository.EfCore.Sqlite.Extensions;
 
 namespace CleanArchitecture.Blog.Repository;
 
@@ -8,9 +11,18 @@ public sealed class BlogDbContextFactory : IDesignTimeDbContextFactory<BlogDbCon
 {
     public BlogDbContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<BlogDbContext>();
-        optionsBuilder.UseSqlite("DataSource=blog.db; Cache=Shared",
-            b => b.MigrationsAssembly("CleanArchitecture.Blog.Repository"));
-        return new BlogDbContext(optionsBuilder.Options);
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false)
+            .Build();
+
+        var serviceProvider = new ServiceCollection()
+            .AddLogging(loggingBuilder => loggingBuilder
+                .SetMinimumLevel(LogLevel.Debug))
+            .AddSingleton<AbstractDbContextConfiguration, BlogDbContextConfiguration>()
+            .AddEfCoreSqlite<BlogDbContext>(configuration.GetSection("Sqlite"))
+            .BuildServiceProvider();
+        var scope = serviceProvider.CreateScope();
+        return scope.ServiceProvider.GetService<BlogDbContext>();
     }
 }

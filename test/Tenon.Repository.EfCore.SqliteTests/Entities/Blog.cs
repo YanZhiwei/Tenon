@@ -3,7 +3,7 @@
 namespace Tenon.Repository.EfCore.SqliteTests.Entities
 {
     [PrimaryKey(nameof(Id))]
-    public class Blog : EfBasicAuditEntity, IFullAuditable
+    public class Blog : EfBasicAuditEntity
     {
         public string Url { get; set; }
         public int Rating { get; set; }
