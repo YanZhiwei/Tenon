@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Tenon.Repository.EfCore;
 
+namespace CleanArchitecture.Blog.Repository;
+
 public sealed class BlogDbContextConfiguration : AbstractDbContextConfiguration
 {
     public override void OnModifiedEntity(EntityEntry<EfBasicAuditEntity> modifiedEntity)

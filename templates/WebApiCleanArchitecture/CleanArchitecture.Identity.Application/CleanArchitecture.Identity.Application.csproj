@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Caching\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Extensions\Tenon.FluentValidation.Extensions\Tenon.FluentValidation.Extensions.csproj" />
+    <ProjectReference Include="..\..\..\src\Tenon.AspNetCore.Abstractions\Tenon.AspNetCore.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

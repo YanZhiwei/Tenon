@@ -6,7 +6,7 @@ namespace WebApiSample.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController : ApiControllerBase
+public class WeatherForecastController : AbstractController
 {
     private static readonly string[] Summaries =
     {
