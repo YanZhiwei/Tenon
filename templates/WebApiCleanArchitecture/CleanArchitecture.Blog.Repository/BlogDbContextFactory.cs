@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using Tenon.Repository.EfCore;
 using Tenon.Repository.EfCore.Sqlite.Extensions;
 
@@ -11,6 +12,7 @@ public sealed class BlogDbContextFactory : IDesignTimeDbContextFactory<BlogDbCon
 {
     public BlogDbContext CreateDbContext(string[] args)
     {
+        //Debugger.Launch();
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", false)
