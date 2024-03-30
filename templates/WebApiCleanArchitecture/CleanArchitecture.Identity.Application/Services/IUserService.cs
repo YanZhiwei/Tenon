@@ -1,9 +1,18 @@
 ﻿using CleanArchitecture.Identity.Application.Dtos;
 using Tenon.AspNetCore.Abstractions.Application;
+using Tenon.Models.Dtos;
 
 namespace CleanArchitecture.Identity.Application.Services;
 
 public interface IUserService
 {
     Task<ServiceResult<UserLoginResultDto>> LoginAsync(UserLoginDto input);
+
+    Task<ServiceResult<long>> CreateAsync(UserCreationDto input);
+
+    Task<ServiceResult> UpdateAsync(long id, UserUpdationDto input);
+
+    Task<ServiceResult> DeleteAsync(long id);
+
+    Task<PagedListDto<UserDto>> GetPagedAsync(UserSearchPagedDto search);
 }

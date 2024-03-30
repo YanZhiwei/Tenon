@@ -6,6 +6,8 @@ using Tenon.AspNetCore.Controllers;
 
 namespace CleanArchitecture.Identity.Api.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public sealed class AccountController(IUserService userService) : AbstractController
 {
     [AllowAnonymous]

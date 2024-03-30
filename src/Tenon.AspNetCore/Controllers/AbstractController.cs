@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Tenon.AspNetCore.Abstractions.Application;
 
 namespace Tenon.AspNetCore.Controllers;
 
@@ -40,6 +41,14 @@ public abstract class AbstractController : ControllerBase
     protected virtual ActionResult<T> CreatedResult<T>(T data)
     {
         return Created(Request.Path, data);
+    }
+
+    [NonAction]
+    protected virtual ActionResult<T> CreatedResult<T>(ServiceResult<T> serviceResult)
+    {
+        if (serviceResult.IsSuccess)
+            return Created(Request.Path, serviceResult.Content);
+        return Problem(serviceResult.ProblemDetails);
     }
 
     [NonAction]
