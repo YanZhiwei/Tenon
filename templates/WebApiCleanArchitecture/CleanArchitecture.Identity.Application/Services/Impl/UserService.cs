@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Tenon.AspNetCore.Abstractions.Application;
 using Tenon.Models.Dtos;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CleanArchitecture.Identity.Application.Services.Impl;
 
@@ -64,7 +65,11 @@ public sealed class UserService : ServiceBase, IUserService
         user.SecurityStamp = Guid.NewGuid().ToString();
         var createdResult = await _userManager.CreateAsync(user);
         if (!createdResult.Succeeded)
-            return Problem(HttpStatusCode.BadRequest, createdResult.Errors.FirstOrDefault().Description);
+        {
+            var errorDetails = string.Join(", ", createdResult.Errors.Select(x => "Code " + x.Code + " Description" + x.Description));
+            return Problem(HttpStatusCode.BadRequest, errorDetails);
+        }
+
         return user.Id;
     }
 
