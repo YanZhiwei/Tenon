@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Identity.Repository.Migrations
 {
     [DbContext(typeof(UserIdentityDbContext))]
-    [Migration("20240401085757_CreateIdentitySchema")]
+    [Migration("20240401141327_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
@@ -72,12 +72,6 @@ namespace CleanArchitecture.Identity.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Avatar")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -87,9 +81,6 @@ namespace CleanArchitecture.Identity.Repository.Migrations
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("TEXT");
-
-                    b.Property<long?>("DeptId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -129,9 +120,6 @@ namespace CleanArchitecture.Identity.Repository.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Sex")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
