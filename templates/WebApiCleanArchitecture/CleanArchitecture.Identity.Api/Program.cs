@@ -3,7 +3,8 @@ using CleanArchitecture.Identity.Application.Services.Impl;
 using CleanArchitecture.Identity.Repository;
 using CleanArchitecture.Identity.Repository.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Tenon.AspNetCore.Identity.EfCore.Sqlite.Extensions.Extensions;
+using Tenon.Repository.EfCore;
 
 namespace CleanArchitecture.Identity.Api;
 
@@ -20,13 +21,10 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddScoped<IUserService, UserService>();
-        builder.Services.AddDbContext<UserIdentityDbContext>(opt =>
-        {
-            var connStr = builder.Configuration.GetSection("Sqlite:ConnectionString").Value;
-
-            opt.UseSqlite(connStr);
-        });
+        builder.Services.AddIdentityEfCoreSqlite<UserIdentityDbContext, User, Role, long>(
+            builder.Configuration.GetSection("Sqlite"));
         builder.Services.AddDataProtection();
+        builder.Services.AddSingleton<AbstractDbContextConfiguration, IdentityDbContextConfiguration>();
         builder.Services.AddIdentityCore<User>(options =>
         {
             options.Password.RequireDigit = false;

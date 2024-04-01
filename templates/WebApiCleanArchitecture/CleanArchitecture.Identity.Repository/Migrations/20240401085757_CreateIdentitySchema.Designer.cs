@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Identity.Repository.Migrations
 {
     [DbContext(typeof(UserIdentityDbContext))]
-    [Migration("20240330145648_CreateIdentitySchema")]
+    [Migration("20240401085757_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />

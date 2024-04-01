@@ -46,7 +46,7 @@ public abstract class AbstractController : ControllerBase
     [NonAction]
     protected virtual ActionResult<T> CreatedResult<T>(ServiceResult<T> serviceResult)
     {
-        if (serviceResult.IsSuccess)
+        if (serviceResult.Succeeded)
             return Created(Request.Path, serviceResult.Content);
         return Problem(serviceResult.ProblemDetails);
     }

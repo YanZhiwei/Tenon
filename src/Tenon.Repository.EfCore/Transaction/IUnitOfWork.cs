@@ -1,10 +1,12 @@
-﻿using System.Data;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System.Data;
+using System.Data.Common;
 
 namespace Tenon.Repository.EfCore.Transaction;
 
 public interface IUnitOfWork
 {
-    void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
+    IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
 
     void Rollback();
 

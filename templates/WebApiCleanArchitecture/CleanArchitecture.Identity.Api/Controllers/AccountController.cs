@@ -16,7 +16,7 @@ public sealed class AccountController(IUserService userService) : AbstractContro
     public async Task<ActionResult<UserTokenInfoDto>> LoginAsync([FromBody] UserLoginDto input)
     {
         var result = await userService.LoginAsync(input);
-        if (result.IsSuccess)
+        if (result.Succeeded)
         {
             var validatedInfo = result.Content;
             return Created("/auth/session", null);
