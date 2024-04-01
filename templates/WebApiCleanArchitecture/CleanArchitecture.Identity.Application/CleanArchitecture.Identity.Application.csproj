@@ -11,15 +11,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Abstractions\Tenon.Abstractions\Tenon.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\src\Abstractions\Tenon.Mapper.Abstractions\Tenon.Mapper.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\src\Extensions\Tenon.FluentValidation.Extensions\Tenon.FluentValidation.Extensions.csproj" />
     <ProjectReference Include="..\..\..\src\Helpers\Tenon.Helper\Tenon.Helper.csproj" />
     <ProjectReference Include="..\..\..\src\Models\Tenon.Models\Tenon.Models.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.AspNetCore.Abstractions\Tenon.AspNetCore.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\src\Tenon.Mapper.AutoMapper\Tenon.Mapper.AutoMapper.csproj" />
     <ProjectReference Include="..\CleanArchitecture.Identity.Repository\CleanArchitecture.Identity.Repository.csproj" />
   </ItemGroup>
 

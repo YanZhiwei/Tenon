@@ -69,12 +69,6 @@ namespace CleanArchitecture.Identity.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Avatar")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -84,9 +78,6 @@ namespace CleanArchitecture.Identity.Repository.Migrations
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("TEXT");
-
-                    b.Property<long?>("DeptId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -126,9 +117,6 @@ namespace CleanArchitecture.Identity.Repository.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Sex")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");

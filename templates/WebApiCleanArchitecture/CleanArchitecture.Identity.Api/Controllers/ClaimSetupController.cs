@@ -6,7 +6,7 @@ namespace CleanArchitecture.Identity.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoleController : AbstractController
+    public class ClaimSetupController :  AbstractController
     {
     }
 }

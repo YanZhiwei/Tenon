@@ -10,6 +10,12 @@ namespace CleanArchitecture.Identity.Repository;
 
 public sealed class UserIdentityDbContextFactory : IDesignTimeDbContextFactory<UserIdentityDbContext>
 {
+    /// <summary>
+    ///  add-migration CreateIdentitySchema -Context UserIdentityDbContext
+    ///  update-database -Context UserIdentityDbContext
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     public UserIdentityDbContext CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()
