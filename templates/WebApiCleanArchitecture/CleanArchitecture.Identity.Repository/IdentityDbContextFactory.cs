@@ -1,16 +1,15 @@
-﻿using CleanArchitecture.Identity.Repository.Entities;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Tenon.AspNetCore.Identity.EfCore.Sqlite.Extensions.Extensions;
-using Tenon.Repository.EfCore;
 
 namespace CleanArchitecture.Identity.Repository;
 
-public sealed class UserIdentityDbContextFactory : IDesignTimeDbContextFactory<UserIdentityDbContext>
+public sealed class IdentityDbContextFactory : IDesignTimeDbContextFactory<IdentityDbContext>
 {
-    public UserIdentityDbContext CreateDbContext(string[] args)
+    public IdentityDbContext CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -20,10 +19,13 @@ public sealed class UserIdentityDbContextFactory : IDesignTimeDbContextFactory<U
         var serviceProvider = new ServiceCollection()
             .AddLogging(loggingBuilder => loggingBuilder
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddSingleton<AbstractDbContextConfiguration, IdentityDbContextConfiguration>()
-            .AddIdentityEfCoreSqlite<UserIdentityDbContext, User, Role, long>(configuration.GetSection("Sqlite"))
+            .AddDbContext<IdentityDbContext>(options =>
+            {
+                options.UseSqlite(configuration.GetSection("Sqlite:ConnectionString").Value,
+                    setup => { setup.MigrationsAssembly("CleanArchitecture.Identity.Repository"); });
+            })
             .BuildServiceProvider();
         var scope = serviceProvider.CreateScope();
-        return scope.ServiceProvider.GetService<UserIdentityDbContext>();
+        return scope.ServiceProvider.GetService<IdentityDbContext>();
     }
 }

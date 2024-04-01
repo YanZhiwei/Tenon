@@ -31,10 +31,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Identity.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

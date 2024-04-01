@@ -17,7 +17,7 @@ public sealed class ServiceResult
     public long Timestamp { get; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     public ProblemDetails? ProblemDetails { get; set; }
 
-    public bool IsSuccess => ProblemDetails == null;
+    public bool Succeeded => ProblemDetails == null;
 
     public static implicit operator ServiceResult(ProblemDetails problemDetails)
     {
@@ -47,7 +47,7 @@ public sealed class ServiceResult<TValue>
 
     public long Timestamp { get; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
-    public bool IsSuccess => ProblemDetails == null && Content != null;
+    public bool Succeeded => ProblemDetails == null && Content != null;
 
     public TValue Content { get; set; } = default!;
 

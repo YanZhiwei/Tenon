@@ -14,14 +14,14 @@ public abstract class UnitOfWork : IUnitOfWork
     }
 
     protected IDbContextTransaction?
-        DbTransaction
-    { get; set; }
+        DbTransaction { get; set; }
 
-    public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+    public IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
     {
         if (DbContext.Database.CurrentTransaction is not null)
             throw new InvalidOperationException($"{nameof(DbContext.Database.CurrentTransaction)} is not null");
         DbTransaction = GetDbTransaction(isolationLevel);
+        return DbTransaction;
     }
 
     public void Rollback()

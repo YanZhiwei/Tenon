@@ -151,7 +151,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Identity.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Identity.Api", "..\templates\WebApiCleanArchitecture\CleanArchitecture.Identity.Api\CleanArchitecture.Identity.Api.csproj", "{A8ECB65C-14CD-4EBD-86DD-32BC374ACFEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.AspNetCore.Identity.Extensions", "Extensions\Tenon.AspNetCore.Identity.Extensions\Tenon.AspNetCore.Identity.Extensions.csproj", "{9FDB8FC6-72BA-4496-9362-62631DE9AEC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.AspNetCore.Identity.Extensions", "Extensions\Tenon.AspNetCore.Identity.Extensions\Tenon.AspNetCore.Identity.Extensions.csproj", "{9FDB8FC6-72BA-4496-9362-62631DE9AEC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.AspNetCore.Identity.EfCore.Extensions", "Extensions\Tenon.AspNetCore.Identity.EfCore.Extensions\Tenon.AspNetCore.Identity.EfCore.Extensions.csproj", "{AF913A78-D859-4E38-B0FD-2D26EB3F8A90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.AspNetCore.Identity.EfCore.Sqlite.Extensions", "Extensions\Tenon.AspNetCore.Identity.EfCore.Sqlite.Extensions\Tenon.AspNetCore.Identity.EfCore.Sqlite.Extensions.csproj", "{6B765DBA-BC7C-4EA0-841F-183B703B43C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -415,6 +419,14 @@ Global
 		{9FDB8FC6-72BA-4496-9362-62631DE9AEC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FDB8FC6-72BA-4496-9362-62631DE9AEC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FDB8FC6-72BA-4496-9362-62631DE9AEC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF913A78-D859-4E38-B0FD-2D26EB3F8A90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF913A78-D859-4E38-B0FD-2D26EB3F8A90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF913A78-D859-4E38-B0FD-2D26EB3F8A90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF913A78-D859-4E38-B0FD-2D26EB3F8A90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B765DBA-BC7C-4EA0-841F-183B703B43C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B765DBA-BC7C-4EA0-841F-183B703B43C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B765DBA-BC7C-4EA0-841F-183B703B43C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B765DBA-BC7C-4EA0-841F-183B703B43C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -467,6 +479,8 @@ Global
 		{816AA992-52D0-46DE-B1DB-342BD62EA5B1} = {340CE2E4-0FF5-48EE-87E5-171BB4E0382C}
 		{A8ECB65C-14CD-4EBD-86DD-32BC374ACFEC} = {340CE2E4-0FF5-48EE-87E5-171BB4E0382C}
 		{9FDB8FC6-72BA-4496-9362-62631DE9AEC9} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
+		{AF913A78-D859-4E38-B0FD-2D26EB3F8A90} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
+		{6B765DBA-BC7C-4EA0-841F-183B703B43C2} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}

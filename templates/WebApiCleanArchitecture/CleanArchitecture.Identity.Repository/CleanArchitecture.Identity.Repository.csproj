@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Extensions\Tenon.AspNetCore.Identity.EfCore.Sqlite.Extensions\Tenon.AspNetCore.Identity.EfCore.Sqlite.Extensions.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.Repository\Tenon.Repository.csproj" />
   </ItemGroup>
 
