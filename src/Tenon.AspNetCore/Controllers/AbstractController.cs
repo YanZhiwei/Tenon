@@ -38,6 +38,15 @@ public abstract class AbstractController : ControllerBase
     }
 
     [NonAction]
+    protected virtual ActionResult Result(ServiceResult serviceResult)
+    {
+        if (serviceResult.Succeeded)
+            return NoContent();
+        return Problem(serviceResult.ProblemDetails);
+    }
+
+
+    [NonAction]
     protected virtual ActionResult<T> CreatedResult<T>(T data)
     {
         return Created(Request.Path, data);

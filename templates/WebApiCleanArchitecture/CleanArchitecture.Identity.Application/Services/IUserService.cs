@@ -14,5 +14,5 @@ public interface IUserService
 
     Task<ServiceResult> DeleteAsync(long id);
 
-    Task<PagedListDto<UserDto>> GetPagedAsync(UserSearchPagedDto search);
+    Task<PagedResultDto<UserDto>> GetPagedAsync(UserSearchPagedDto search);
 }

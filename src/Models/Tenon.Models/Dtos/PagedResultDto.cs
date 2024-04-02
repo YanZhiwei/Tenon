@@ -5,26 +5,26 @@ using Tenon.Abstractions;
 namespace Tenon.Models.Dtos;
 
 [Serializable]
-public class PagedListDto<T> : IDto
+public class PagedResultDto<T> : IDto
     where T : class, new()
 {
     private IReadOnlyList<T> _data = Array.Empty<T>();
 
-    public PagedListDto()
+    public PagedResultDto()
     {
     }
 
-    public PagedListDto(SearchPagedDto search)
+    public PagedResultDto(SearchPagedDto search)
         : this(search, Array.Empty<T>(), default)
     {
     }
 
-    public PagedListDto(SearchPagedDto search, IReadOnlyList<T> data, int count)
+    public PagedResultDto(SearchPagedDto search, IReadOnlyList<T> data, int count)
         : this(search.PageIndex, search.PageSize, data, count)
     {
     }
 
-    public PagedListDto(int pageIndex, int pageSize, IReadOnlyList<T> data, int count)
+    public PagedResultDto(int pageIndex, int pageSize, IReadOnlyList<T> data, int count)
     {
         PageIndex = pageIndex;
         PageSize = pageSize;
