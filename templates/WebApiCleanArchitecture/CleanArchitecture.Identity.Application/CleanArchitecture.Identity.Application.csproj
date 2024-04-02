@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Abstractions\Tenon.Abstractions\Tenon.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\src\Abstractions\Tenon.Mapper.Abstractions\Tenon.Mapper.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\Tenon.EntityFrameworkCore.Extensions\Tenon.EntityFrameworkCore.Extensions.csproj" />
     <ProjectReference Include="..\..\..\src\Extensions\Tenon.FluentValidation.Extensions\Tenon.FluentValidation.Extensions.csproj" />
     <ProjectReference Include="..\..\..\src\Helpers\Tenon.Helper\Tenon.Helper.csproj" />
     <ProjectReference Include="..\..\..\src\Models\Tenon.Models\Tenon.Models.csproj" />

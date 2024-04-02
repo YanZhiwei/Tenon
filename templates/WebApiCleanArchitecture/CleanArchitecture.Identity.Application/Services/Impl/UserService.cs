@@ -4,8 +4,11 @@ using System.Security.Claims;
 using CleanArchitecture.Identity.Application.Dtos;
 using CleanArchitecture.Identity.Repository.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Tenon.AspNetCore.Abstractions.Application;
+using Tenon.EntityFrameworkCore.Extensions;
+using Tenon.Helper.Internal;
 using Tenon.Mapper.Abstractions;
 using Tenon.Models.Dtos;
 using Tenon.Repository.EfCore.Transaction;
@@ -52,55 +55,79 @@ public sealed class UserService : ServiceBase, IUserService
         if (existUser != null)
             return Problem(HttpStatusCode.BadRequest, $"UserName:{input.Name} is exist");
 
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            var user = _mapper.Map<User>(input);
-            user.PasswordHash = _passwordHasher.HashPassword(user, input.Password);
-            user.CreateTime = DateTime.UtcNow;
-            user.CreateBy = 2;
-            user.SecurityStamp = Guid.NewGuid().ToString();
-            var createdResult = await _userManager.CreateAsync(user);
-            if (!createdResult.Succeeded)
-                return Problem(HttpStatusCode.BadRequest, $"Create user:{input.Name} failed");
 
-            var claims = new List<Claim>
-            {
-                new(JwtRegisteredClaimNames.Email, input.Email),
-                new(JwtRegisteredClaimNames.Birthdate, input.Birthday.ToString()),
-                new(JwtRegisteredClaimNames.Gender, input.Sex.ToString()),
-                new(IdentityRegisteredClaimNames.DeptId, input.DeptId.ToString())
-            };
-            var addClaimsResult = await _userManager.AddClaimsAsync(user, claims);
-            if (!addClaimsResult.Succeeded)
-            {
-                await _unitOfWork.RollbackAsync();
-                return Problem(HttpStatusCode.BadRequest, $"Create user:{input.Name} failed");
-            }
+        _unitOfWork.BeginTransaction();
+        var user = _mapper.Map<User>(input);
+        user.PasswordHash = _passwordHasher.HashPassword(user, input.Password);
+        user.CreateTime = DateTime.UtcNow;
+        user.CreateBy = RandomHelper.NextNumber(1, 10000);
+        user.SecurityStamp = Guid.NewGuid().ToString();
+        var createdResult = await _userManager.CreateAsync(user);
+        if (!createdResult.Succeeded)
+            return Problem(HttpStatusCode.BadRequest, $"Create user:{input.Name} failed");
 
-            await _unitOfWork.CommitAsync();
-            return user.Id;
-        }
-        catch (Exception ex)
+        var claims = new List<Claim>
         {
-            _logger.LogError(ex, $"Create user:{input.Name} failed");
+            new(JwtRegisteredClaimNames.Email, input.Email),
+            new(JwtRegisteredClaimNames.Birthdate, input.Birthday.ToString()),
+            new(JwtRegisteredClaimNames.Gender, input.Sex.ToString()),
+            new(IdentityRegisteredClaimNames.DeptId, input.DeptId.ToString())
+        };
+        var addClaimsResult = await _userManager.AddClaimsAsync(user, claims);
+        if (!addClaimsResult.Succeeded)
+        {
             await _unitOfWork.RollbackAsync();
             return Problem(HttpStatusCode.BadRequest, $"Create user:{input.Name} failed");
         }
+
+        await _unitOfWork.CommitAsync();
+        return user.Id;
     }
 
-    public Task<ServiceResult> UpdateAsync(long id, UserUpdationDto input)
+    public async Task<ServiceResult> UpdateAsync(long id, UserUpdationDto input)
     {
-        throw new NotImplementedException();
+        var user = _mapper.Map<User>(input);
+        user.Id = id;
+        await _userManager.UpdateAsync(user);
+        return ServiceResult();
     }
 
-    public Task<ServiceResult> DeleteAsync(long id)
+    public async Task<ServiceResult> DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        var existUser = await _userManager.FindByIdAsync(id.ToString());
+        if (existUser != null)
+            return Problem(HttpStatusCode.BadRequest, $"UserId:{id} is exist");
+        await _userManager.DeleteAsync(existUser);
+        return ServiceResult();
     }
 
-    public Task<PagedListDto<UserDto>> GetPagedAsync(UserSearchPagedDto search)
+    public async Task<PagedResultDto<UserDto>> GetPagedAsync(UserSearchPagedDto search)
     {
-        throw new NotImplementedException();
+        var userPagedList = await _userManager.Users
+            .WhereIf(!string.IsNullOrWhiteSpace(search.Account),
+                x => EF.Functions.Like(x.Account, $"%{search.Account}%"))
+            .WhereIf(!string.IsNullOrWhiteSpace(search.Name), x => EF.Functions.Like(x.UserName, $"%{search.Name}%"))
+            .ToPagedListAsync(search.PageIndex, search.PageSize);
+
+        var userDtos = _mapper.Map<List<UserDto>>(userPagedList.Data);
+        if (userDtos?.Any() ?? false)
+        {
+            foreach (var user in userPagedList.Data)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                var userDto = userDtos.FirstOrDefault(c => c.Account == user.Account);
+                if (userDto == null) continue;
+                userDto.Email = userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)
+                    ?.ToString();
+                userDto.Sex = Convert.ToInt32(userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Gender)?.Value);
+                userDto.Birthday = Convert.ToDateTime(userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Birthdate)?.Value);
+                userDto.Sex = Convert.ToInt32(userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Gender)?.Value);
+                userDto.DeptId =
+                    Convert.ToInt64(userClaims.FirstOrDefault(c => c.Type == IdentityRegisteredClaimNames.DeptId)?.Value);
+
+            }
+        }
+        return new PagedResultDto<UserDto>(userPagedList.CurrentPage, userPagedList.PageSize, userDtos,
+            userPagedList.TotalCount);
     }
 }
