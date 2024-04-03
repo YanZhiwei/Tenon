@@ -95,8 +95,8 @@ public sealed class UserService : ServiceBase, IUserService
     public async Task<ServiceResult> DeleteAsync(long id)
     {
         var existUser = await _userManager.FindByIdAsync(id.ToString());
-        if (existUser != null)
-            return Problem(HttpStatusCode.BadRequest, $"UserId:{id} is exist");
+        if (existUser == null)
+            return Problem(HttpStatusCode.BadRequest, $"UserId:{id} is not exist");
         await _userManager.DeleteAsync(existUser);
         return ServiceResult();
     }
