@@ -10,6 +10,4 @@ public sealed class UserLoginDtoValidator : AbstractValidator<UserLoginDto>
         RuleFor(x => x.Account).Required().Length(6, 16);
         RuleFor(x => x.Password).Required().Length(6, 16);
     }
-
-
 }
