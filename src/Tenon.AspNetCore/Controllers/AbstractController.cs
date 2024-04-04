@@ -64,6 +64,7 @@ public abstract class AbstractController : ControllerBase
     protected virtual ObjectResult Problem(ProblemDetails problemDetails)
     {
         problemDetails.Instance ??= Request.Path.ToString();
+
         return Problem(problemDetails.Detail
             , problemDetails.Instance
             , problemDetails.Status

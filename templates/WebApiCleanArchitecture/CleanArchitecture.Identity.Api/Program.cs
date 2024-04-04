@@ -1,12 +1,12 @@
-using AutoMapper;
 using CleanArchitecture.Identity.Application;
+using CleanArchitecture.Identity.Application.Dtos.Validators;
 using CleanArchitecture.Identity.Application.Services;
 using CleanArchitecture.Identity.Application.Services.Impl;
 using CleanArchitecture.Identity.Repository;
 using CleanArchitecture.Identity.Repository.Entities;
 using Microsoft.AspNetCore.Identity;
-using System.Reflection;
 using Tenon.AspNetCore.Identity.EfCore.Sqlite.Extensions.Extensions;
+using Tenon.FluentValidation.AspNetCore.Extensions.Extensions;
 using Tenon.Mapper.AutoMapper.Extensions;
 using Tenon.Repository.EfCore;
 
@@ -39,6 +39,8 @@ public class Program
             options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
             options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
         });
+        builder.Services.AddFluentValidationSetup(
+            typeof(UserLoginDtoValidator).Assembly);
         builder.Services.AddAutoMapperSetup(typeof(AutoMapperProfile).Assembly);
         var userIdentityBuilder = new IdentityBuilder(typeof(User), typeof(Role), builder.Services);
         userIdentityBuilder.AddEntityFrameworkStores<UserIdentityDbContext>()
