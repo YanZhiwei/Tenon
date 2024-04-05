@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tenon.AspNetCore.Abstractions.Application;
 
@@ -64,7 +65,8 @@ public abstract class AbstractController : ControllerBase
     protected virtual ObjectResult Problem(ProblemDetails problemDetails)
     {
         problemDetails.Instance ??= Request.Path.ToString();
-
+        if (problemDetails is HttpValidationProblemDetails)
+            return new BadRequestObjectResult(problemDetails);
         return Problem(problemDetails.Detail
             , problemDetails.Instance
             , problemDetails.Status
