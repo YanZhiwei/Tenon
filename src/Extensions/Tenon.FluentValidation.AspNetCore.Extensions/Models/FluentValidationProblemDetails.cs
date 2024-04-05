@@ -1,51 +1,20 @@
 ﻿using FluentValidation.Results;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Tenon.FluentValidation.AspNetCore.Extensions.Models;
 
-public class FluentValidationProblemDetails : ValidationProblemDetails
+public class FluentValidationProblemDetails : HttpValidationProblemDetails
 {
-    public FluentValidationProblemDetails()
-    {
-    }
-
-
-    public FluentValidationProblemDetails(IEnumerable<ValidationError> errors)
-    {
-        Errors = errors;
-    }
-
     public FluentValidationProblemDetails(IEnumerable<ValidationFailure> error)
     {
-        Errors = ConvertValidationFailureToValidationErrors(error);
-    }
-
-    public new IEnumerable<ValidationError> Errors { get; } = new List<ValidationError>();
-
-    private List<ValidationError> ConvertValidationFailureToValidationErrors(IEnumerable<ValidationFailure> errors)
-    {
-        List<ValidationError> validationErrors = new();
-
-        switch (errors.Count())
+        if (error == null)
+            throw new ArgumentNullException(nameof(error));
+        Errors = error.Select(c => new ValidationError
         {
-            case 0:
-                break;
-
-            case 1:
-                validationErrors.Add(new ValidationError
-                {
-                    Code = null,
-                    Message = errors.ElementAtOrDefault(0).ErrorMessage
-                });
-                break;
-
-            default:
-                var errorMessage = string.Join(Environment.NewLine, errors.Select(e => e.ErrorMessage));
-                validationErrors.Add(new ValidationError { Message = errorMessage });
-                break;
-        }
-
-
-        return validationErrors;
+            PropertyName = c.PropertyName,
+            ErrorMessage = c.ErrorMessage
+        }).ToArray();
     }
+
+    public new IEnumerable<ValidationError> Errors { get; }
 }

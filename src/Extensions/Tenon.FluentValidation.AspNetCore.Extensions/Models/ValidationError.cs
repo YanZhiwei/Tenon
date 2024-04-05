@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace Tenon.FluentValidation.AspNetCore.Extensions.Models
 {
-    public class ValidationError
+    public sealed class ValidationError
     {
-        public int? Code { get; set; }
+        /// <summary>
+        /// The name of the property.
+        /// </summary>
+        public string PropertyName { get; set; }
 
-        public string Message { get; set; }
+        /// <summary>
+        /// The error message
+        /// </summary>
+        public string ErrorMessage { get; set; }
     }
 }
