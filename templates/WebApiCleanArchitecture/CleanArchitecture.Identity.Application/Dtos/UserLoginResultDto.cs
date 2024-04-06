@@ -1,16 +1,15 @@
 ﻿namespace CleanArchitecture.Identity.Application.Dtos;
 
-public class UserLoginResultDto
+public class UserLoginResultDto(string token, DateTime expire, string refreshToken, DateTime refreshExpire)
 {
-    public long Id { get; init; }
+    public string Token { get; set; } = token;
 
-    public string Account { get; init; }
 
-    public string Name { get; init; }
+    public DateTime Expire { get; set; } = expire;
 
-    public string Email { get; set; }
 
-    public string RoleIds { get; init; }
+    public string RefreshToken { get; set; } = refreshToken;
 
-    public int Status { get; init; }
+
+    public DateTime RefreshExpire { get; set; } = refreshExpire;
 }

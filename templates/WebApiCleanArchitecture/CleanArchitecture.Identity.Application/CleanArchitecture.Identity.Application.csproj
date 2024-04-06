@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\..\src\Helpers\Tenon.Helper\Tenon.Helper.csproj" />
     <ProjectReference Include="..\..\..\src\Models\Tenon.Models\Tenon.Models.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.AspNetCore.Abstractions\Tenon.AspNetCore.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\src\Tenon.AspNetCore\Tenon.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.Mapper.AutoMapper\Tenon.Mapper.AutoMapper.csproj" />
     <ProjectReference Include="..\CleanArchitecture.Identity.Repository\CleanArchitecture.Identity.Repository.csproj" />
   </ItemGroup>

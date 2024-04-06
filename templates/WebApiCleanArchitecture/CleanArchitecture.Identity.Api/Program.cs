@@ -1,3 +1,5 @@
+using CleanArchitecture.Identity.Api.Authentication;
+using CleanArchitecture.Identity.Api.Models;
 using CleanArchitecture.Identity.Application;
 using CleanArchitecture.Identity.Application.Dtos.Validators;
 using CleanArchitecture.Identity.Application.Services;
@@ -5,6 +7,10 @@ using CleanArchitecture.Identity.Application.Services.Impl;
 using CleanArchitecture.Identity.Repository;
 using CleanArchitecture.Identity.Repository.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.OpenApi.Models;
+using Tenon.AspNetCore.Authentication.Bearer;
+using Tenon.AspNetCore.Extensions;
 using Tenon.AspNetCore.Identity.EfCore.Sqlite.Extensions.Extensions;
 using Tenon.FluentValidation.AspNetCore.Extensions.Extensions;
 using Tenon.Mapper.AutoMapper.Extensions;
@@ -47,6 +53,50 @@ public class Program
             .AddDefaultTokenProviders()
             .AddRoleManager<RoleManager<Role>>()
             .AddUserManager<UserManager<User>>();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "CleanArchitecture.Identity.Api",
+                Version = "v1"
+            });
+            var securityScheme = new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = BearerDefaults.AuthenticationScheme
+                }
+            };
+            builder.Services.ConfigureJwtBearerAuthenticationOptions<IdentityAuthenticationHandler>(
+                builder.Configuration.GetSection("Jwt"), options => options.OnTokenValidated =
+                    context =>
+                    {
+                        var userContext = context.HttpContext.RequestServices.GetService<UserContext>() ??
+                                          throw new NullReferenceException(nameof(UserContext));
+
+                        var principal = context.Principal ?? throw new NullReferenceException(nameof(context.Principal));
+                        var claims = principal.Claims;
+                        userContext.Id = long.Parse(claims.First(x =>
+                            x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value);
+                        userContext.Account = claims.First(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value;
+                        userContext.Name = claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
+                        userContext.RoleIds = claims.First(x => x.Type == "roleids").Value;
+                        Console.WriteLine("OnTokenValidated");
+                        return Task.CompletedTask;
+                    });
+            c.AddSecurityDefinition(BearerDefaults.AuthenticationScheme, securityScheme);
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                { securityScheme, new string[] { } }
+            });
+        });
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -55,12 +105,10 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        app.UseRouting();
         app.UseAuthorization();
-
-
+        app.UseAuthentication();
         app.MapControllers();
-
         app.Run();
     }
 }
