@@ -6,7 +6,10 @@ using CleanArchitecture.Identity.Repository.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Tenon.AspNetCore.Abstractions.Application;
+using Tenon.AspNetCore.Configuration;
+using Tenon.AspNetCore.Extensions;
 using Tenon.EntityFrameworkCore.Extensions;
 using Tenon.Helper.Internal;
 using Tenon.Mapper.Abstractions;
@@ -17,6 +20,7 @@ namespace CleanArchitecture.Identity.Application.Services.Impl;
 
 public sealed class UserService : ServiceBase, IUserService
 {
+    private readonly JwtOptions _jwtOptions;
     private readonly ILogger<UserService> _logger;
     private readonly IObjectMapper _mapper;
     private readonly IPasswordHasher<User> _passwordHasher;
@@ -25,7 +29,8 @@ public sealed class UserService : ServiceBase, IUserService
     private readonly UserManager<User> _userManager;
 
     public UserService(ILogger<UserService> logger, UserManager<User> userManager, RoleManager<Role> roleManager,
-        IPasswordHasher<User> passwordHasher, IUnitOfWork unitOfWork, IObjectMapper mapper)
+        IPasswordHasher<User> passwordHasher, IUnitOfWork unitOfWork, IObjectMapper mapper,
+        IOptionsMonitor<JwtOptions> jwtOptions)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
@@ -33,6 +38,7 @@ public sealed class UserService : ServiceBase, IUserService
         _passwordHasher = passwordHasher;
         _unitOfWork = unitOfWork;
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _jwtOptions = jwtOptions.CurrentValue;
     }
 
     public async Task<ServiceResult<UserLoginResultDto>> LoginAsync(UserLoginDto input)
@@ -40,13 +46,19 @@ public sealed class UserService : ServiceBase, IUserService
         var existingUser = await _userManager.FindByIdAsync(input.Account);
         if (existingUser != null) return Problem(HttpStatusCode.BadRequest, "Incorrect username or password");
 
-        return new UserLoginResultDto
+        var claims = new Claim[]
         {
-            Account = existingUser.NormalizedUserName,
-            Email = existingUser.Email,
-            Id = existingUser.Id,
-            Name = existingUser.UserName
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+            new(JwtRegisteredClaimNames.UniqueName, input.Account),
+            new(JwtRegisteredClaimNames.NameId, "1"),
+            new(JwtRegisteredClaimNames.Name, input.Account),
+            new(ClaimTypes.Role, "admin")
         };
+        var accessToken = _jwtOptions.CreateAccessToken(claims);
+        var refreshToken = _jwtOptions.CreateRefreshToken(claims);
+        var tokenInfo = new UserLoginResultDto(accessToken.Token, accessToken.Expire, refreshToken.Token,
+            refreshToken.Expire);
+        return tokenInfo;
     }
 
     public async Task<ServiceResult<long>> CreateAsync(UserCreationDto input)
@@ -111,7 +123,6 @@ public sealed class UserService : ServiceBase, IUserService
 
         var userDtos = _mapper.Map<List<UserDto>>(userPagedList.Data);
         if (userDtos?.Any() ?? false)
-        {
             foreach (var user in userPagedList.Data)
             {
                 var userClaims = await _userManager.GetClaimsAsync(user);
@@ -119,14 +130,18 @@ public sealed class UserService : ServiceBase, IUserService
                 if (userDto == null) continue;
                 userDto.Email = userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)
                     ?.ToString();
-                userDto.Sex = Convert.ToInt32(userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Gender)?.Value);
-                userDto.Birthday = Convert.ToDateTime(userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Birthdate)?.Value);
-                userDto.Sex = Convert.ToInt32(userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Gender)?.Value);
+                userDto.Sex =
+                    Convert.ToInt32(userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Gender)?.Value);
+                userDto.Birthday =
+                    Convert.ToDateTime(userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Birthdate)
+                        ?.Value);
+                userDto.Sex =
+                    Convert.ToInt32(userClaims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Gender)?.Value);
                 userDto.DeptId =
-                    Convert.ToInt64(userClaims.FirstOrDefault(c => c.Type == IdentityRegisteredClaimNames.DeptId)?.Value);
-
+                    Convert.ToInt64(
+                        userClaims.FirstOrDefault(c => c.Type == IdentityRegisteredClaimNames.DeptId)?.Value);
             }
-        }
+
         return new PagedResultDto<UserDto>(userPagedList.CurrentPage, userPagedList.PageSize, userDtos,
             userPagedList.TotalCount);
     }

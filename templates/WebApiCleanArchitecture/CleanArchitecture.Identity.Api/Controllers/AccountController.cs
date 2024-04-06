@@ -25,7 +25,7 @@ public sealed class AccountController(IUserService userService, IValidator<UserL
         if (result.Succeeded)
         {
             var validatedInfo = result.Content;
-            return Created("/auth/session", null);
+            return Created("/auth/session", validatedInfo);
         }
 
         return Problem(result.ProblemDetails);
