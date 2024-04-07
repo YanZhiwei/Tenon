@@ -1,4 +1,5 @@
 using CleanArchitecture.Identity.Api.Authentication;
+using CleanArchitecture.Identity.Api.Authorization;
 using CleanArchitecture.Identity.Api.Filters;
 using CleanArchitecture.Identity.Api.Models;
 using CleanArchitecture.Identity.Application;
@@ -7,6 +8,7 @@ using CleanArchitecture.Identity.Application.Services;
 using CleanArchitecture.Identity.Application.Services.Impl;
 using CleanArchitecture.Identity.Repository;
 using CleanArchitecture.Identity.Repository.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.OpenApi.Models;
@@ -32,6 +34,17 @@ public class Program
         // Add services to the container.
 
         builder.Services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilter)));
+        // 注册自定义的AuthorizationHandler
+        builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+        // 配置授权策略，使用自定义的AuthorizationRequirement
+        builder.Services.AddAuthorization(options =>
+        {
+            //options.AddPolicy("CustomPolicy", policy =>
+            //{
+            //    policy.Requirements.Add(new CustomRequirement());
+            //});
+        });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
