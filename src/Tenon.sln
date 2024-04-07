@@ -159,7 +159,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Mapper.Mapster", "Ten
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.EntityFrameworkCore.Extensions", "Extensions\Tenon.EntityFrameworkCore.Extensions\Tenon.EntityFrameworkCore.Extensions.csproj", "{06E35103-6016-41A1-89D1-3C32E37B0C6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.FluentValidation.AspNetCore.Extensions", "Extensions\Tenon.FluentValidation.AspNetCore.Extensions\Tenon.FluentValidation.AspNetCore.Extensions.csproj", "{B54F3368-4E83-4925-A178-CC0A8FFB879D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.FluentValidation.AspNetCore.Extensions", "Extensions\Tenon.FluentValidation.AspNetCore.Extensions\Tenon.FluentValidation.AspNetCore.Extensions.csproj", "{B54F3368-4E83-4925-A178-CC0A8FFB879D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching.Interceptor.Castle", "Tenon.Caching.Interceptor.Castle\Tenon.Caching.Interceptor.Castle.csproj", "{3B1F59E2-D444-4A3D-86A7-32FA01113EBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Infra.Mongo", "Infrastructures\Tenon.Infra.Mongo\Tenon.Infra.Mongo.csproj", "{FD7E6765-B090-4DA8-BBE0-778B11CC98C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -439,6 +443,14 @@ Global
 		{B54F3368-4E83-4925-A178-CC0A8FFB879D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B54F3368-4E83-4925-A178-CC0A8FFB879D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B54F3368-4E83-4925-A178-CC0A8FFB879D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B1F59E2-D444-4A3D-86A7-32FA01113EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B1F59E2-D444-4A3D-86A7-32FA01113EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B1F59E2-D444-4A3D-86A7-32FA01113EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B1F59E2-D444-4A3D-86A7-32FA01113EBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD7E6765-B090-4DA8-BBE0-778B11CC98C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD7E6765-B090-4DA8-BBE0-778B11CC98C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD7E6765-B090-4DA8-BBE0-778B11CC98C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD7E6765-B090-4DA8-BBE0-778B11CC98C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -493,6 +505,7 @@ Global
 		{9A2F975E-47C3-48C2-B28A-7D6C856D37DC} = {73FC2D37-C4FE-4DD4-AA4C-2484EA04769C}
 		{06E35103-6016-41A1-89D1-3C32E37B0C6F} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
 		{B54F3368-4E83-4925-A178-CC0A8FFB879D} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
+		{FD7E6765-B090-4DA8-BBE0-778B11CC98C0} = {379B9552-4579-4BFD-A50E-F123587A91AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}
