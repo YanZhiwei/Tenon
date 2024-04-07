@@ -11,9 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Abstractions\Tenon.DistributedId.Abstractions\Tenon.DistributedId.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\src\Extensions\Tenon.FluentValidation.AspNetCore.Extensions\Tenon.FluentValidation.AspNetCore.Extensions.csproj" />
     <ProjectReference Include="..\..\..\src\Extensions\Tenon.FluentValidation.Extensions\Tenon.FluentValidation.Extensions.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructures\Tenon.Infra.Redis.StackExchangeProvider\Tenon.Infra.Redis.StackExchangeProvider.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.AspNetCore\Tenon.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\..\src\Tenon.DistributedId.Snowflake\Tenon.DistributedId.Snowflake.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.Mapper.AutoMapper\Tenon.Mapper.AutoMapper.csproj" />
     <ProjectReference Include="..\CleanArchitecture.Identity.Application\CleanArchitecture.Identity.Application.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />

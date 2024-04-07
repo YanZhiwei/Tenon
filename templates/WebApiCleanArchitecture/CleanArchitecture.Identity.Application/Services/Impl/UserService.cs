@@ -10,8 +10,8 @@ using Microsoft.Extensions.Options;
 using Tenon.AspNetCore.Abstractions.Application;
 using Tenon.AspNetCore.Configuration;
 using Tenon.AspNetCore.Extensions;
+using Tenon.DistributedId.Abstractions;
 using Tenon.EntityFrameworkCore.Extensions;
-using Tenon.Helper.Internal;
 using Tenon.Mapper.Abstractions;
 using Tenon.Models.Dtos;
 using Tenon.Repository.EfCore.Transaction;
@@ -20,6 +20,7 @@ namespace CleanArchitecture.Identity.Application.Services.Impl;
 
 public sealed class UserService : ServiceBase, IUserService
 {
+    private readonly IDGenerator _idGenerator;
     private readonly JwtOptions _jwtOptions;
     private readonly ILogger<UserService> _logger;
     private readonly IObjectMapper _mapper;
@@ -30,7 +31,7 @@ public sealed class UserService : ServiceBase, IUserService
 
     public UserService(ILogger<UserService> logger, UserManager<User> userManager, RoleManager<Role> roleManager,
         IPasswordHasher<User> passwordHasher, IUnitOfWork unitOfWork, IObjectMapper mapper,
-        IOptionsMonitor<JwtOptions> jwtOptions)
+        IOptionsMonitor<JwtOptions> jwtOptions, IDGenerator idGenerator)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
@@ -38,6 +39,7 @@ public sealed class UserService : ServiceBase, IUserService
         _passwordHasher = passwordHasher;
         _unitOfWork = unitOfWork;
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _idGenerator = idGenerator;
         _jwtOptions = jwtOptions.CurrentValue;
     }
 
@@ -72,7 +74,8 @@ public sealed class UserService : ServiceBase, IUserService
         var user = _mapper.Map<User>(input);
         user.PasswordHash = _passwordHasher.HashPassword(user, input.Password);
         user.CreateTime = DateTime.UtcNow;
-        user.CreateBy = RandomHelper.NextNumber(1, 10000);
+        user.CreateBy = _idGenerator.GetNextId();
+        user.Id = _idGenerator.GetNextId();
         user.SecurityStamp = Guid.NewGuid().ToString();
         var createdResult = await _userManager.CreateAsync(user);
         if (!createdResult.Succeeded)
