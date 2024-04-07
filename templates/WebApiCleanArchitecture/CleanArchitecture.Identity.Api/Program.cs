@@ -1,4 +1,5 @@
 using CleanArchitecture.Identity.Api.Authentication;
+using CleanArchitecture.Identity.Api.Filters;
 using CleanArchitecture.Identity.Api.Models;
 using CleanArchitecture.Identity.Application;
 using CleanArchitecture.Identity.Application.Dtos.Validators;
@@ -30,7 +31,7 @@ public class Program
 
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilter)));
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
