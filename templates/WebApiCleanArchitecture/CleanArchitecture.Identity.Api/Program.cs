@@ -12,7 +12,11 @@ using Microsoft.OpenApi.Models;
 using Tenon.AspNetCore.Authentication.Bearer;
 using Tenon.AspNetCore.Extensions;
 using Tenon.AspNetCore.Identity.EfCore.Sqlite.Extensions.Extensions;
+using Tenon.DistributedId.Abstractions.Extensions;
+using Tenon.DistributedId.Snowflake;
+using Tenon.DistributedId.Snowflake.Configurations;
 using Tenon.FluentValidation.AspNetCore.Extensions.Extensions;
+using Tenon.Infra.Redis.StackExchangeProvider;
 using Tenon.Mapper.AutoMapper.Extensions;
 using Tenon.Repository.EfCore;
 
@@ -53,6 +57,7 @@ public class Program
             .AddDefaultTokenProviders()
             .AddRoleManager<RoleManager<Role>>()
             .AddUserManager<UserManager<User>>();
+        builder.Services.AddHostedService<SnowflakeWorkerNodeHostedService>();
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo
@@ -74,6 +79,12 @@ public class Program
                     Id = BearerDefaults.AuthenticationScheme
                 }
             };
+            builder.Services.AddDistributedId(options =>
+            {
+                options.UseSnowflake(builder.Configuration.GetSection("DistributedId"));
+                options.UseWorkerNode<StackExchangeProvider>(builder.Configuration.GetSection("DistributedId")
+                    .GetSection("WorkerNode"));
+            });
             builder.Services.ConfigureJwtBearerAuthenticationOptions<IdentityAuthenticationHandler>(
                 builder.Configuration.GetSection("Jwt"), options => options.OnTokenValidated =
                     context =>
@@ -98,7 +109,7 @@ public class Program
             });
         });
         var app = builder.Build();
-
+        
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
