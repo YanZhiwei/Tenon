@@ -2,6 +2,10 @@
 
 namespace Tenon.Caching.Interceptor.Castle.Attributes;
 
-public class CachingEvictAttribute : InterceptAttribute
+public sealed class CachingEvictAttribute : InterceptAttribute
 {
+    public string CacheKeyPrefix { get; set; } = string.Empty;
+    public string[] CacheKeys { get; set; } = new string[] { };
+
+    public string CacheKey { get; set; } = string.Empty;
 }

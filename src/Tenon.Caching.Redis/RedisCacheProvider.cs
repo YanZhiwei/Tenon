@@ -104,6 +104,11 @@ public sealed class RedisCacheProvider
         await _redisProvider.KeysExpireAsync(ReNameCacheKeys(cacheKeys));
     }
 
+    public async Task KeysExpireAsync(IEnumerable<string> cacheKeys, TimeSpan expiration)
+    {
+     
+    }
+
     private string ReNameCacheKey(string cacheKey)
     {
         return string.IsNullOrWhiteSpace(_redisCachingOptions.Prefix)

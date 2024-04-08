@@ -34,10 +34,10 @@ public class Program
         // Add services to the container.
 
         builder.Services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilter)));
-        // ×¢²á×Ô¶¨ÒåµÄAuthorizationHandler
+        // ×¢ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½AuthorizationHandler
         builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
-        // ÅäÖÃÊÚÈ¨²ßÂÔ£¬Ê¹ÓÃ×Ô¶¨ÒåµÄAuthorizationRequirement
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½Ô£ï¿½Ê¹ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½AuthorizationRequirement
         builder.Services.AddAuthorization(options =>
         {
             //options.AddPolicy("CustomPolicy", policy =>

@@ -101,6 +101,7 @@ public abstract class InterceptorBase : IAsyncInterceptor
         var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
         var metadata = new InterceptMetadata
         {
+            MethodInfo = methodInfo,
             MethodName = methodInfo.Name,
             ClassName = methodInfo.DeclaringType?.FullName ?? string.Empty,
             Arguments = invocation.Arguments

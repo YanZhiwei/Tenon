@@ -17,4 +17,6 @@ public interface ICacheProvider
     long RemoveAll(IEnumerable<string> cacheKeys);
     Task<long> RemoveAllAsync(IEnumerable<string> cacheKeys);
     Task KeysExpireAsync(IEnumerable<string> cacheKeys);
+
+    Task KeysExpireAsync(IEnumerable<string> cacheKeys, TimeSpan expiration);
 }
