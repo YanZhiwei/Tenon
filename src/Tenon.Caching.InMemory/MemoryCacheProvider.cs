@@ -60,5 +60,10 @@ namespace Tenon.Caching.InMemory
         {
             throw new NotImplementedException();
         }
+
+        public Task KeysExpireAsync(IEnumerable<string> cacheKeys, TimeSpan expiration)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
