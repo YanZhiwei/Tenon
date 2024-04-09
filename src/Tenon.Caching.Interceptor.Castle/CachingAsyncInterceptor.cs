@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Reflection;
+using Castle.DynamicProxy;
+using Microsoft.Extensions.Logging;
 using Tenon.Caching.Abstractions;
 using Tenon.Caching.Interceptor.Castle.Attributes;
 using Tenon.Caching.Interceptor.Castle.Configurations;
-using Tenon.Infra.Castle.Attributes;
-using Tenon.Infra.Castle.Interceptors;
-using Tenon.Infra.Castle.Models;
+using Tenon.Caching.Interceptor.Castle.Models;
 
 namespace Tenon.Caching.Interceptor.Castle;
 
@@ -13,7 +13,7 @@ public sealed class CachingAsyncInterceptor(
     ICacheKeyBuilder cacheKeyBuilder,
     CachingInterceptorOptions options,
     ILogger<CachingAsyncInterceptor> logger)
-    : InterceptorBase
+    : IAsyncInterceptor
 {
     private readonly ICacheKeyBuilder _cacheKeyBuilder =
         cacheKeyBuilder ?? throw new ArgumentNullException(nameof(cacheKeyBuilder));
@@ -26,33 +26,69 @@ public sealed class CachingAsyncInterceptor(
 
     private readonly CachingInterceptorOptions _options = options ?? throw new ArgumentNullException(nameof(options));
 
-    protected override async Task InterceptedAsync(InterceptAttribute attribute, InterceptMetadata metadata,
-        Exception? ex)
+    /// <summary>
+    ///     同步拦截器
+    /// </summary>
+    /// <param name="invocation">IInvocation</param>
+    public void InterceptSynchronous(IInvocation invocation)
     {
-        if (attribute is CachingEvictAttribute cachingEvict)
+        var metaData = GetMetadata(invocation);
+        if (metaData.Attribute == null)
         {
-            var needRemovedKeys = new HashSet<string>();
-            if (cachingEvict.CacheKeys.Any())
-                needRemovedKeys.UnionWith(needRemovedKeys);
-            if (!string.IsNullOrWhiteSpace(cachingEvict.CacheKeyPrefix))
-            {
-                var cacheKeys = _cacheKeyBuilder.GetCacheKeys(metadata.MethodInfo, metadata.Arguments,
-                    cachingEvict.CacheKeyPrefix);
-                if (cacheKeys?.Any() ?? false)
-                    needRemovedKeys.UnionWith(needRemovedKeys);
-            }
-
-            if (!string.IsNullOrEmpty(cachingEvict.CacheKey))
-                needRemovedKeys.Add(cachingEvict.CacheKey);
-
-            await _cacheProvider.KeysExpireAsync(needRemovedKeys);
+            invocation.Proceed();
+            return;
         }
 
-        await Task.CompletedTask;
+        CachingAblIntercept(metaData);
     }
 
-    protected override void Intercepted(InterceptAttribute attribute, InterceptMetadata metadata, Exception? ex)
+    private void CachingAblIntercept(InvocationMetadata metaData)
     {
-        throw new NotImplementedException();
+        if (metaData.Attribute is CachingAblAttribute attribute)
+        {
+            var cacheKey = string.IsNullOrEmpty(attribute.CacheKey)
+                ? _cacheKeyBuilder.GetCacheKey(metaData.MethodInfo, metaData.Arguments, attribute.CacheKeyPrefix)
+                : attribute.CacheKey;
+            try
+            {
+                var cacheValue = _cacheProvider.Get<object>(cacheKey);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+    }
+
+    /// <summary>
+    ///     异步拦截器 无返回值
+    /// </summary>
+    /// <param name="invocation">IInvocation</param>
+    public void InterceptAsynchronous(IInvocation invocation)
+    {
+    }
+
+    /// <summary>
+    ///     异步拦截器 有返回值
+    /// </summary>
+    /// <typeparam name="TResult">TResult</typeparam>
+    /// <param name="invocation">IInvocation</param>
+    public void InterceptAsynchronous<TResult>(IInvocation invocation)
+    {
+    }
+
+    private InvocationMetadata GetMetadata(IInvocation invocation)
+    {
+        var methodInfo = invocation.Method ?? invocation.MethodInvocationTarget;
+        var attribute = methodInfo.GetCustomAttribute<CachingInterceptorAttribute>();
+
+        var metadata = new InvocationMetadata
+        {
+            Arguments = invocation.Arguments,
+            Attribute = attribute,
+            ClassName = methodInfo.DeclaringType?.FullName ?? string.Empty,
+            MethodInfo = methodInfo
+        };
+        return metadata;
     }
 }

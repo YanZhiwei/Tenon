@@ -19,7 +19,4 @@
 		<PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
 	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\..\src\Infrastructures\Tenon.Infra.Castle\Tenon.Infra.Castle.csproj" />
-	</ItemGroup>
 </Project>
