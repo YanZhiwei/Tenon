@@ -20,7 +20,7 @@ namespace Tenon.Caching.Interceptor.CastleTests
             _serviceProvider = new ServiceCollection()
                 .AddLogging(loggingBuilder => loggingBuilder
                     .SetMinimumLevel(LogLevel.Debug))
-                .AddSingleton<ICacheKeyBuilder, DefaultCacheKeyBuilder>()
+                .AddSingleton<ICacheKeyGenerator, DefaultCacheKeyGenerator>()
                 .BuildServiceProvider();
         }
 
@@ -29,7 +29,7 @@ namespace Tenon.Caching.Interceptor.CastleTests
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var cacheKeyBuilder = scope.ServiceProvider.GetService<ICacheKeyBuilder>();
+                var cacheKeyBuilder = scope.ServiceProvider.GetService<ICacheKeyGenerator>();
                 MethodInfo interfaceMethod = typeof(TestService).GetInterfaces()
                     .Where(i => i.GetMethod("CreateAsync") != null)
                     .Select(m => m.GetMethod("CreateAsync")).FirstOrDefault();

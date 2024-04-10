@@ -4,7 +4,7 @@ using Tenon.Caching.Interceptor.Castle.Attributes;
 
 namespace Tenon.Caching.Interceptor.Castle;
 
-public sealed class DefaultCacheKeyBuilder : ICacheKeyBuilder
+public sealed class DefaultCacheKeyGenerator : ICacheKeyGenerator
 {
     private const char SeparatorChar = ':';
 
