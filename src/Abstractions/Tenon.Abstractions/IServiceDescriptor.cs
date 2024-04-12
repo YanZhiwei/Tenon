@@ -1,8 +1,6 @@
-﻿using System.Reflection;
+﻿namespace Tenon.Abstractions;
 
-namespace Tenon.Abstractions;
-
-public interface IServiceInfo
+public interface IServiceDescriptor
 {
     public string Id { get; }
 

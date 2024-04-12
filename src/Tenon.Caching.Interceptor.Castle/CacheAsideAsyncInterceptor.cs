@@ -91,12 +91,12 @@ public sealed class CacheAsideAsyncInterceptor(
                 result = await CachingEvictInterceptAsync<TResult>(metaData, invocation, evictAttribute);
                 break;
             default:
-                {
-                    invocation.Proceed();
-                    var task = (Task<TResult>)invocation.ReturnValue;
-                    result = await task;
-                    break;
-                }
+            {
+                invocation.Proceed();
+                var task = (Task<TResult>)invocation.ReturnValue;
+                result = await task;
+                break;
+            }
         }
 
         return result;
@@ -151,7 +151,7 @@ public sealed class CacheAsideAsyncInterceptor(
         {
             var cacheKey = GetCachingAblKey(metaData, attribute);
             _logger.LogDebug($"[{interceptName}] cacheKey:{cacheKey} interceptor starting.");
-            var cacheValue = await GetCacheValueAsync<TResult>(interceptName, cacheKey);
+            var cacheValue = await GetCacheValueAsync<TResult>(interceptName, cacheKey, !attribute.IsHighAvailability);
             if (cacheValue.HasValue)
             {
                 result = cacheValue.Value;
@@ -160,15 +160,7 @@ public sealed class CacheAsideAsyncInterceptor(
             else
             {
                 invocation.Proceed();
-                var task = (Task<TResult>)invocation.ReturnValue;
-                var invocationResult = await task;
-                if (invocationResult != null)
-                {
-                    await _cacheProvider.SetAsync(cacheKey, invocationResult,
-                        TimeSpan.FromSeconds(attribute.ExpirationInSec));
-                    _logger.LogDebug($"[{interceptName}] cacheKey:{cacheKey} set cache succeeded");
-                    result = invocationResult;
-                }
+                result = await SetCacheAsync<TResult>(interceptName, cacheKey, invocation, attribute);
             }
         }
         catch (CachingAblException ex)
@@ -181,6 +173,34 @@ public sealed class CacheAsideAsyncInterceptor(
             _logger.LogError(ex, $"[{interceptName}] intercept failed.");
             if (!attribute.IsHighAvailability)
                 throw;
+        }
+
+        return result;
+    }
+
+    private async Task<TResult> SetCacheAsync<TResult>(string interceptName, string cacheKey, IInvocation invocation,
+        CachingAblAttribute attribute)
+    {
+        TResult result = default;
+        try
+        {
+            var task = (Task<TResult>)invocation.ReturnValue;
+            result = await task;
+            if (result != null)
+            {
+                await _cacheProvider.SetAsync<TResult>(cacheKey, result,
+                    TimeSpan.FromSeconds(attribute.ExpirationInSec));
+                _logger.LogDebug($"[{interceptName}] cacheKey:{cacheKey} set cache succeeded");
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                $"[{interceptName}] set cache key:{cacheKey} failed.");
+            if (!attribute.IsHighAvailability)
+                throw new CachingAblException(ex.Message, cacheKey, ex.InnerException ?? ex);
         }
 
         return result;
@@ -311,7 +331,7 @@ public sealed class CacheAsideAsyncInterceptor(
             _logger.LogDebug($"[{interceptName}] cacheKey:{cacheKey} interceptor starting.");
             try
             {
-                var cacheValue = GetCacheValue(interceptName, cacheKey);
+                var cacheValue = GetCacheValue(interceptName, cacheKey, !attribute.IsHighAvailability);
                 if (cacheValue.HasValue)
                 {
                     invocation.ReturnValue = cacheValue.Value;
@@ -320,12 +340,7 @@ public sealed class CacheAsideAsyncInterceptor(
                 else
                 {
                     invocation.Proceed();
-                    if (invocation.ReturnValue != null)
-                    {
-                        _cacheProvider.Set(cacheKey, invocation.ReturnValue,
-                            TimeSpan.FromSeconds(attribute.ExpirationInSec));
-                        _logger.LogDebug($"[{interceptName}] cacheKey:{cacheKey} set cache succeeded");
-                    }
+                    SetCache(interceptName, cacheKey, invocation, attribute);
                 }
             }
             catch (CachingAblException ex)
@@ -342,7 +357,28 @@ public sealed class CacheAsideAsyncInterceptor(
         }
     }
 
-    private async Task<CacheValue<TResult>> GetCacheValueAsync<TResult>(string interceptName, string cacheKey)
+    private void SetCache(string interceptName, string cacheKey, IInvocation invocation, CachingAblAttribute attribute)
+    {
+        try
+        {
+            if (invocation.ReturnValue != null)
+            {
+                _cacheProvider.Set(cacheKey, invocation.ReturnValue,
+                    TimeSpan.FromSeconds(attribute.ExpirationInSec));
+                _logger.LogDebug($"[{interceptName}] cacheKey:{cacheKey} set cache succeeded");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                $"[{interceptName}] set cache key:{cacheKey} failed.");
+            if (!attribute.IsHighAvailability)
+                throw new CachingAblException(ex.Message, cacheKey, ex.InnerException ?? ex);
+        }
+    }
+
+    private async Task<CacheValue<TResult>> GetCacheValueAsync<TResult>(string interceptName, string cacheKey,
+        bool throwException = true)
     {
         try
         {
@@ -355,11 +391,13 @@ public sealed class CacheAsideAsyncInterceptor(
         {
             _logger.LogError(ex,
                 $"[{interceptName}] get cache key:{cacheKey} failed.");
-            throw new CachingAblException(ex.Message, cacheKey, ex.InnerException ?? ex);
+            if (throwException)
+                throw new CachingAblException(ex.Message, cacheKey, ex.InnerException ?? ex);
+            return CacheValue<TResult>.NoValue;
         }
     }
 
-    private CacheValue<object> GetCacheValue(string interceptName, string cacheKey)
+    private CacheValue<object> GetCacheValue(string interceptName, string cacheKey, bool throwException = true)
     {
         try
         {
@@ -372,7 +410,9 @@ public sealed class CacheAsideAsyncInterceptor(
         {
             _logger.LogError(ex,
                 $"[{interceptName}] get cache key:{cacheKey} failed.");
-            throw new CachingAblException(ex.Message, cacheKey, ex.InnerException ?? ex);
+            if (throwException)
+                throw new CachingAblException(ex.Message, cacheKey, ex.InnerException ?? ex);
+            return CacheValue<object>.NoValue;
         }
     }
 

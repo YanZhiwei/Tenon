@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Tenon.Caching.Abstractions;
 using Tenon.DistributedId.Abstractions;
 using Tenon.DistributedId.Abstractions.Extensions;
 using Tenon.DistributedId.Snowflake;
@@ -44,7 +43,7 @@ internal class Program
                         .GetSection("WorkerNode"));
                 })
                 .BuildServiceProvider();
-            SnowflakeIdGenerator idGenerator = new SnowflakeIdGenerator();
+            var idGenerator = new SnowflakeIdGenerator();
             idGenerator.SetWorkerId(63);
             Console.WriteLine(idGenerator.GetNextId());
             using (var scope = _serviceProvider.CreateScope())

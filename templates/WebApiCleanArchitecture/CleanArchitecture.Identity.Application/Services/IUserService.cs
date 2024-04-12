@@ -1,10 +1,11 @@
 ﻿using CleanArchitecture.Identity.Application.Dtos;
+using Tenon.Abstractions;
 using Tenon.AspNetCore.Abstractions.Application;
 using Tenon.Models.Dtos;
 
 namespace CleanArchitecture.Identity.Application.Services;
 
-public interface IUserService
+public interface IUserService : IAppService
 {
     Task<ServiceResult<UserLoginResultDto>> LoginAsync(UserLoginDto input);
 
