@@ -20,9 +20,9 @@ namespace ConsulSample
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             var startAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var serviceInfo = ServiceInfo.CreateInstance(startAssembly);
+            var serviceInfo = WebServiceDescriptor.CreateInstance(startAssembly);
             builder.Services.AddConsul(builder.Configuration.GetSection("Consul"));
-            builder.Services.AddSingleton<IWebServiceInfo>(serviceInfo);
+            builder.Services.AddSingleton<IWebServiceDescriptor>(serviceInfo);
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             var app = builder.Build();
            

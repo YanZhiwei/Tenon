@@ -3,18 +3,16 @@ using Tenon.Abstractions;
 
 namespace Tenon.AspNetCore;
 
-public class ServiceInfo
-    : IWebServiceInfo
+public class WebServiceDescriptor
+    : IWebServiceDescriptor
 {
     public string Id { get; private init; }
     public string ServiceName { get; private init; }
     public string Version { get; private init; }
     public string Description { get; private init; }
-
     public string CorsPolicy { get; private init; }
 
-
-    public static IWebServiceInfo CreateInstance(Assembly startAssembly, string? serviceName = null,
+    public static IWebServiceDescriptor CreateInstance(Assembly startAssembly, string? serviceName = null,
         string? serviceInternalId = null,
         string corsPolicy = "default")
     {
@@ -38,7 +36,7 @@ public class ServiceInfo
             _ => $"{serviceName}-{envName}-{serviceInternalId}"
         };
 
-        return new ServiceInfo
+        return new WebServiceDescriptor
         {
             Id = serviceId,
             ServiceName = serviceName,

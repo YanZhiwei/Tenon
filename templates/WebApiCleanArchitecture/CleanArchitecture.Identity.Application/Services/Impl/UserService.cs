@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Tenon.AspNetCore.Abstractions.Application;
 using Tenon.AspNetCore.Configuration;
 using Tenon.AspNetCore.Extensions;
+using Tenon.AspNetCore.Identity.Extensions;
 using Tenon.DistributedId.Abstractions;
 using Tenon.EntityFrameworkCore.Extensions;
 using Tenon.Mapper.Abstractions;
@@ -45,19 +46,16 @@ public sealed class UserService : ServiceBase, IUserService
 
     public async Task<ServiceResult<UserLoginResultDto>> LoginAsync(UserLoginDto input)
     {
-        var existingUser = await _userManager.FindByIdAsync(input.Account);
-        if (existingUser != null) return Problem(HttpStatusCode.BadRequest, "Incorrect username or password");
+        var loginUser = await _userManager.FindByEmailAsync(input.Email);
+        if (loginUser == null)
+            return Problem(HttpStatusCode.BadRequest, "Incorrect username or password");
 
-        var claims = new Claim[]
-        {
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-            new(JwtRegisteredClaimNames.UniqueName, input.Account),
-            new(JwtRegisteredClaimNames.NameId, "1"),
-            new(JwtRegisteredClaimNames.Name, input.Account),
-            new(ClaimTypes.Role, "admin")
-        };
-        var accessToken = _jwtOptions.CreateAccessToken(claims);
-        var refreshToken = _jwtOptions.CreateRefreshToken(claims);
+        if (!await _userManager.CheckPasswordAsync(loginUser, input.Password))
+            return Problem(HttpStatusCode.Forbidden, "Invalid credentials");
+
+        var claims = await _userManager.GetClaimsAsync(loginUser);
+        var accessToken = _jwtOptions.CreateAccessToken(claims.ToArray());
+        var refreshToken = _jwtOptions.CreateRefreshToken(claims.ToArray());
         var tokenInfo = new UserLoginResultDto(accessToken.Token, accessToken.Expire, refreshToken.Token,
             refreshToken.Expire);
         return tokenInfo;
@@ -79,7 +77,7 @@ public sealed class UserService : ServiceBase, IUserService
         user.SecurityStamp = Guid.NewGuid().ToString();
         var createdResult = await _userManager.CreateAsync(user);
         if (!createdResult.Succeeded)
-            return Problem(HttpStatusCode.BadRequest, $"Create user:{input.Name} failed");
+            return Problem(HttpStatusCode.BadRequest, createdResult.GetErrorMessage());
 
         var claims = new List<Claim>
         {

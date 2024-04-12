@@ -1,5 +1,5 @@
 ﻿namespace Tenon.Abstractions;
 
-public interface IInterceptorService
+public interface IAppService
 {
 }
