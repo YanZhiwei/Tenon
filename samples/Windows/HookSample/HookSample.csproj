@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Infrastructures\Windows\Tenon.Infra.Windows.Form\Tenon.Infra.Windows.Form.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructures\Windows\Tenon.Infra.Windows.Win32\Tenon.Infra.Windows.Win32.csproj" />
+  </ItemGroup>
+
+</Project>
