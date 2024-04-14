@@ -53,7 +53,7 @@ public partial class Form1 : Form
     {
         lsOutput.UIThread(ls =>
             ls.AddItemSelected(
-                $"[{DateTime.Now.ToShortDateString()}] MouseHook x:{e.X},x:{e.Y},Button:{e.Button},Clicks:{e.Clicks}"));
+                $"[{DateTime.Now.ToShortDateString()}] MouseHook x:{e.X},x:{e.Y},Button:{e.Button.ToString()},Clicks:{e.Clicks}"));
     }
 
     private void button4_Click(object sender, EventArgs e)
@@ -68,6 +68,6 @@ public partial class Form1 : Form
         MouseHook.MouseWheel -= MouseHook_Click;
         MouseHook.RightButtonDown -= MouseHook_Click;
         MouseHook.RightButtonUp -= MouseHook_Click;
-        MouseHook.Install();
+        MouseHook.Uninstall();
     }
 }

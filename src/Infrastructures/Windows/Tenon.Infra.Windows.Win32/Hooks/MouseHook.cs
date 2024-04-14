@@ -16,11 +16,11 @@ public static class MouseHook
         return !_hookExSafeHandle.IsInvalid || _hookExSafeHandle.IsClosed;
     }
 
-    public static void Uninstall()
+    public static bool Uninstall()
     {
         if (!_hookExSafeHandle.IsInvalid)
-            return;
-        CsWin32.PInvoke.UnhookWindowsHookEx(new HHOOK(_hookExSafeHandle.DangerousGetHandle()));
+            return true;
+        return CsWin32.PInvoke.UnhookWindowsHookEx(new HHOOK(_hookExSafeHandle.DangerousGetHandle()));
     }
 
     private static CsWin32.UnhookWindowsHookExSafeHandle SetHook(HOOKPROC proc)
@@ -35,10 +35,7 @@ public static class MouseHook
     private static LRESULT HookCallback(int code, WPARAM wParam, LPARAM lParam)
     {
         if (code < 0) return CsWin32.PInvoke.CallNextHookEx(_hookExSafeHandle, code, wParam, lParam);
-        var aa = typeof(MOUSEHOOKSTRUCT);
-        var hookStruct = (MOUSEHOOKSTRUCT) Marshal.PtrToStructure(lParam, typeof(MOUSEHOOKSTRUCT))!;
-        if (hookStruct.hwnd == IntPtr.Zero)
-            return CsWin32.PInvoke.CallNextHookEx(_hookExSafeHandle, code, wParam, lParam);
+        var hookStruct = (MOUSEHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MOUSEHOOKSTRUCT))!;
         switch (wParam.Value)
         {
             case CsWin32.PInvoke.WM_LBUTTONDOWN:
