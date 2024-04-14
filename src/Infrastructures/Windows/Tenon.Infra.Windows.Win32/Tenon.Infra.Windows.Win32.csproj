@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	  <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
+	  <EnableWindowsTargeting>true</EnableWindowsTargeting>
 	  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
