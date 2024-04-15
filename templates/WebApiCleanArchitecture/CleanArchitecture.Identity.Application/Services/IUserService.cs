@@ -9,6 +9,8 @@ public interface IUserService : IAppService
 {
     Task<ServiceResult<UserLoginResultDto>> LoginAsync(UserLoginDto input);
 
+    Task<ServiceResult<UserTokenInfoDto>> RefreshAccessTokenAsync(UserRefreshTokenDto input);
+
     Task<ServiceResult<long>> CreateAsync(UserCreationDto input);
 
     Task<ServiceResult> UpdateAsync(long id, UserUpdationDto input);
@@ -16,4 +18,6 @@ public interface IUserService : IAppService
     Task<ServiceResult> DeleteAsync(long id);
 
     Task<PagedResultDto<UserDto>> GetPagedAsync(UserSearchPagedDto search);
+
+
 }
