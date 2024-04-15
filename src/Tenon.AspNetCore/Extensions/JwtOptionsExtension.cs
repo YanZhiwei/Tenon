@@ -27,6 +27,17 @@ public static class JwtOptionsExtension
         };
     }
 
+    public static Claim[]? GetClaimsFromRefreshToken(this JwtOptions jwtOptions, string refreshToken)
+    {
+        if (string.IsNullOrEmpty(refreshToken)) throw new ArgumentNullException(nameof(refreshToken));
+        var parameters = GenerateTokenValidationParameters(jwtOptions);
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var result = tokenHandler.ValidateToken(refreshToken, parameters, out var securityToken);
+        if (result.Identity is null || !result.Identity.IsAuthenticated)
+            return null;
+        return result.Claims.ToArray();
+    }
+
     public static JwtBearerToken CreateAccessToken(this JwtOptions jwtOptions, Claim[] claims)
     {
         if (jwtOptions == null) throw new ArgumentNullException(nameof(jwtOptions));

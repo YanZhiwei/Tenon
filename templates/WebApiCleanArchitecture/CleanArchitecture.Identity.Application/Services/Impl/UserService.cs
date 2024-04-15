@@ -3,6 +3,7 @@ using System.Net;
 using System.Security.Claims;
 using CleanArchitecture.Identity.Application.Dtos;
 using CleanArchitecture.Identity.Repository.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -53,10 +54,40 @@ public sealed class UserService : ServiceBase, IUserService
         if (!await _userManager.CheckPasswordAsync(loginUser, input.Password))
             return Problem(HttpStatusCode.Forbidden, "Invalid credentials");
 
-        var claims = await _userManager.GetClaimsAsync(loginUser);
+        var claims = new Claim[2];
+        var jtiValue = Guid.NewGuid().ToString("N");
+        claims[0] = new Claim(JwtRegisteredClaimNames.Sub, loginUser.Id.ToString());
+        claims[1] = new Claim(JwtRegisteredClaimNames.Jti, jtiValue);
         var accessToken = _jwtOptions.CreateAccessToken(claims.ToArray());
         var refreshToken = _jwtOptions.CreateRefreshToken(claims.ToArray());
         var tokenInfo = new UserLoginResultDto(accessToken.Token, accessToken.Expire, refreshToken.Token,
+            refreshToken.Expire);
+        return tokenInfo;
+    }
+
+    public async Task<ServiceResult<UserTokenInfoDto>> RefreshAccessTokenAsync(UserRefreshTokenDto input)
+    {
+        var userClaims = _jwtOptions.GetClaimsFromRefreshToken(input.RefreshToken);
+        if (!(userClaims?.Any() ?? false))
+            return Problem(HttpStatusCode.Forbidden);
+
+        var nameIdClaim = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        if (nameIdClaim == null)
+            return Problem(HttpStatusCode.Forbidden);
+        if (!long.TryParse(nameIdClaim.Value, out var subId))
+        {
+            return Problem(HttpStatusCode.Forbidden);
+        }
+        var loginUser = await _userManager.FindByIdAsync(subId.ToString());
+        if (loginUser == null)
+            return Problem(HttpStatusCode.Forbidden);
+        var claims = new Claim[2];
+        var jtiValue = Guid.NewGuid().ToString("N");
+        claims[0] = new Claim(JwtRegisteredClaimNames.Sub, loginUser.Id.ToString());
+        claims[1] = new Claim(JwtRegisteredClaimNames.Jti, jtiValue);
+        var accessToken = _jwtOptions.CreateAccessToken(claims.ToArray());
+        var refreshToken = _jwtOptions.CreateRefreshToken(claims.ToArray());
+        var tokenInfo = new UserTokenInfoDto(accessToken.Token, accessToken.Expire, refreshToken.Token,
             refreshToken.Expire);
         return tokenInfo;
     }
@@ -66,13 +97,12 @@ public sealed class UserService : ServiceBase, IUserService
         var existUser = await _userManager.FindByNameAsync(input.Name);
         if (existUser != null)
             return Problem(HttpStatusCode.BadRequest, $"UserName:{input.Name} is exist");
-
-
+        existUser = await _userManager.FindByEmailAsync(input.Email);
+        if (existUser != null)
+            return Problem(HttpStatusCode.BadRequest, $"Email:{input.Email} is exist");
         _unitOfWork.BeginTransaction();
         var user = _mapper.Map<User>(input);
         user.PasswordHash = _passwordHasher.HashPassword(user, input.Password);
-        user.CreateTime = DateTime.UtcNow;
-        user.CreateBy = _idGenerator.GetNextId();
         user.Id = _idGenerator.GetNextId();
         user.SecurityStamp = Guid.NewGuid().ToString();
         var createdResult = await _userManager.CreateAsync(user);

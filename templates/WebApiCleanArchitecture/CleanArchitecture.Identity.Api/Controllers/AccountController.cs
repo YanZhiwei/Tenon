@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Identity.Application.Dtos;
 using CleanArchitecture.Identity.Application.Services;
+using CleanArchitecture.Identity.Application.Services.Impl;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,10 @@ public sealed class AccountController(IUserService userService, IValidator<UserL
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<UserTokenInfoDto>> LoginAsync([FromBody] UserLoginDto input)
     {
-        //https://lurumad.github.io/problem-details-an-standard-way-for-specifying-errors-in-http-api-responses-asp.net-core
+        //{
+        //    "email": "testuser@example.com",
+        //    "password": "password123"
+        //}
         var validationResult = await validator.ValidateAsync(input);
         if (!validationResult.IsValid)
             return Problem(validationResult.ToFluentValidationProblemDetails());
@@ -29,5 +33,12 @@ public sealed class AccountController(IUserService userService, IValidator<UserL
         }
 
         return Problem(result.ProblemDetails);
+    }
+
+    [AllowAnonymous, HttpPut()]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
+    {
+        return Result(await userService.RefreshAccessTokenAsync(input));
     }
 }
