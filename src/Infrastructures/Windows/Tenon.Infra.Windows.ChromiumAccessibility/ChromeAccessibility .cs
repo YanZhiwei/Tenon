@@ -24,20 +24,27 @@ public sealed class ChromeAccessibility
         return IntPtr.Zero;
     }
 
-    public async Task OpenAsync(ChromeOpenOption option, CancellationToken token = default)
+    public async Task LaunchAsync(LaunchOptions? option = null, CancellationToken token = default)
     {
         try
         {
+            option = option ?? new LaunchOptions();
+            option.Args ??= [];
             var chromeProcess = new Process();
             chromeProcess.StartInfo.FileName = InstallPath;
-            chromeProcess.StartInfo.Arguments = option.Url.ToString();
-            option.Args = option.Args ?? ["--new-window"];
+            if (option.Url != null)
+            {
+                option.Args.Add(option.Url.ToString());
+                option.Args.Add("--new-window");
+            }
+
             if (option.Maximized)
                 option.Args.Add("--start-maximized");
             if (option.Incognito)
                 option.Args.Add("--incognito");
 
-            foreach (var arg in option.Args) chromeProcess.StartInfo.Arguments += " " + arg;
+            foreach (var arg in option.Args)
+                chromeProcess.StartInfo.Arguments += " " + arg;
             if (!string.IsNullOrEmpty(option.AppLocalData))
                 chromeProcess.StartInfo.Environment["LOCALAPPDATA"] = option.AppLocalData;
 

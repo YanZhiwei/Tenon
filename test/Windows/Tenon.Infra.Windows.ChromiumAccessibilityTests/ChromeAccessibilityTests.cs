@@ -24,9 +24,9 @@ public class ChromeAccessibilityTests
     }
 
     [TestMethod]
-    public async Task OpenAsyncTest()
+    public async Task LaunchAsyncTest()
     {
-        await _chromeAccessibility.OpenAsync(new ChromeOpenOption
+        await _chromeAccessibility.LaunchAsync(new LaunchOptions
         {
             Url = new Uri("https://www.google.com/"),
             WaitForPageLoad = true
