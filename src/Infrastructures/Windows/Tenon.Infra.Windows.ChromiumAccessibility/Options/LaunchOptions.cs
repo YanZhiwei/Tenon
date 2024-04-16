@@ -1,8 +1,8 @@
 ﻿namespace Tenon.Infra.Windows.ChromiumAccessibility.Options;
 
-public sealed class ChromeOpenOption
+public sealed class LaunchOptions
 {
-    public Uri Url { get; set; }
+    public Uri? Url { get; set; }
 
     public string AppLocalData { get; set; }
 

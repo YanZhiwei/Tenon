@@ -175,13 +175,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HookSample", "..\samples\Wi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.Form", "Infrastructures\Windows\Tenon.Infra.Windows.Form\Tenon.Infra.Windows.Form.csproj", "{4DE89E88-BC4D-4CE0-A013-8C1F5D3CDAB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Infra.Windows.ChromiumAccessibility", "Infrastructures\Windows\Tenon.Infra.Windows.ChromiumAccessibility\Tenon.Infra.Windows.ChromiumAccessibility.csproj", "{06B24A75-1AEA-41C6-8312-6FE73A1E4D83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.ChromiumAccessibility", "Infrastructures\Windows\Tenon.Infra.Windows.ChromiumAccessibility\Tenon.Infra.Windows.ChromiumAccessibility.csproj", "{06B24A75-1AEA-41C6-8312-6FE73A1E4D83}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{DE01E264-E91F-40B4-8950-6689AEA0009A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.ChromiumAccessibilityTests", "..\test\Windows\Tenon.Infra.Windows.ChromiumAccessibilityTests\Tenon.Infra.Windows.ChromiumAccessibilityTests.csproj", "{57F2017B-9738-4423-B65E-EB4BC197C04F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Infra.Windows.ChromiumAccessibility.Win32NativeBridge", "Infrastructures\Windows\Tenon.Infra.Windows.ChromiumAccessibility.Win32NativeBridge\Tenon.Infra.Windows.ChromiumAccessibility.Win32NativeBridge.csproj", "{AFB2D6EB-8532-434D-832B-98B0E940FEDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Puppeteer.Extensions", "Extensions\Tenon.Puppeteer.Extensions\Tenon.Puppeteer.Extensions.csproj", "{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -493,6 +495,10 @@ Global
 		{AFB2D6EB-8532-434D-832B-98B0E940FEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFB2D6EB-8532-434D-832B-98B0E940FEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFB2D6EB-8532-434D-832B-98B0E940FEDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -557,6 +563,7 @@ Global
 		{DE01E264-E91F-40B4-8950-6689AEA0009A} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{57F2017B-9738-4423-B65E-EB4BC197C04F} = {DE01E264-E91F-40B4-8950-6689AEA0009A}
 		{AFB2D6EB-8532-434D-832B-98B0E940FEDE} = {623C2599-C6CE-4179-98A4-EEA505F38E31}
+		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}
