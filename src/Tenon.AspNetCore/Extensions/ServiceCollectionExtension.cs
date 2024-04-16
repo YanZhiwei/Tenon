@@ -21,24 +21,27 @@ public static class ServiceCollectionExtension
         var jwtOptions = jwtSection.Get<JwtOptions>();
         if (jwtOptions == null)
             throw new ArgumentNullException(nameof(jwtSection));
-
+        services.Configure<JwtOptions>(jwtSection);
         services.AddAuthentication(BearerDefaults.AuthenticationScheme)
             .AddScheme<BearerSchemeOptions, TBearerAuthenticationHandler>(BearerDefaults.AuthenticationScheme,
                 displayName,
                 configureOptions);
-        return services.Configure<JwtOptions>(jwtSection);
+        return services;
     }
 
     public static IServiceCollection AddAuthorization<TAuthorizationHandler, TAuthorizationRequirement>(
-        this IServiceCollection services) where TAuthorizationRequirement : IAuthorizationRequirement, new()
+        this IServiceCollection services, string? policyName = null)
+        where TAuthorizationRequirement : IAuthorizationRequirement, new()
         where TAuthorizationHandler : class, IAuthorizationHandler
     {
+        if (string.IsNullOrEmpty(policyName))
+            policyName = AuthorizePolicy.Default;
         services
             .AddScoped<IAuthorizationHandler, TAuthorizationHandler>();
         return services
             .AddAuthorization(options =>
             {
-                options.AddPolicy(AuthorizePolicy.Default,
+                options.AddPolicy(policyName,
                     policy => { policy.Requirements.Add(new TAuthorizationRequirement()); });
             });
     }

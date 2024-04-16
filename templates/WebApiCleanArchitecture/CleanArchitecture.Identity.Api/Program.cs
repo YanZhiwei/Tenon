@@ -7,10 +7,8 @@ using CleanArchitecture.Identity.Api.Models;
 using CleanArchitecture.Identity.Application;
 using CleanArchitecture.Identity.Application.Extensions;
 using CleanArchitecture.Identity.Repository.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using Tenon.AspNetCore.Authentication.Bearer;
-using Tenon.AspNetCore.Authorization;
 using Tenon.AspNetCore.Authorization.Bearer;
 using Tenon.AspNetCore.Extensions;
 
@@ -22,11 +20,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilter)));
-        builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>()
-            .AddAuthorization(options =>
-            {
-                options.AddPolicy(AuthorizePolicy.Default, policy => { policy.Requirements.Add(new BearRequirement()); });
-            });
+        builder.Services.AddAuthorization<PermissionAuthorizationHandler, BearRequirement>();
         builder.Services.AddLogging(loggingBuilder =>
         {
             loggingBuilder.ClearProviders();
