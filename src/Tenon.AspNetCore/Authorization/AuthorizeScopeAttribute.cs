@@ -5,10 +5,10 @@ namespace Tenon.AspNetCore.Authorization;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class AuthorizeScopeAttribute : AuthorizeAttribute
 {
-    public AuthorizeScopeAttribute(string[] codes)
+    public AuthorizeScopeAttribute(string[] codes, string? policyName = null)
     {
         Codes = codes;
-        Policy = AuthorizePolicy.Default;
+        Policy = string.IsNullOrEmpty(policyName) ? AuthorizePolicy.Default : policyName;
     }
     public string[] Codes { get; set; }
 }
