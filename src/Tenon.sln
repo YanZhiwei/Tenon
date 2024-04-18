@@ -183,11 +183,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.Chromiu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.ChromiumAccessibility.Win32NativeBridge", "Infrastructures\Windows\Tenon.Infra.Windows.ChromiumAccessibility.Win32NativeBridge\Tenon.Infra.Windows.ChromiumAccessibility.Win32NativeBridge.csproj", "{AFB2D6EB-8532-434D-832B-98B0E940FEDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Puppeteer.Extensions", "Extensions\Tenon.Puppeteer.Extensions\Tenon.Puppeteer.Extensions.csproj", "{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Puppeteer.Extensions", "Extensions\Tenon.Puppeteer.Extensions\Tenon.Puppeteer.Extensions.csproj", "{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Infra.Windows.Puppeteer", "Infrastructures\Windows\Tenon.Infra.Windows.Puppeteer\Tenon.Infra.Windows.Puppeteer.csproj", "{4C703C25-3AA4-4268-803A-1B315EB823EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.Puppeteer", "Infrastructures\Windows\Tenon.Infra.Windows.Puppeteer\Tenon.Infra.Windows.Puppeteer.csproj", "{4C703C25-3AA4-4268-803A-1B315EB823EC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.Win32Tests", "..\test\Windows\Tenon.Infra.Windows.Win32Tests\Tenon.Infra.Windows.Win32Tests.csproj", "{F22B812A-5637-4ABA-90A5-2F3E3604A990}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Automation.Abstractions", "Abstractions\Tenon.Automation.Abstractions\Tenon.Automation.Abstractions.csproj", "{CA750B9C-BC2E-4F74-84B7-431388E4080D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Automation", "Automation", "{B64C047D-5EBC-424D-9B67-71F565188B51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{3DA38811-ECC4-451D-896A-E765E178394E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Automation.Windows", "Automation\Windows\Tenon.Automation.Windows\Tenon.Automation.Windows.csproj", "{EDA9EEAA-E386-4EA7-88C3-6806CE64DF53}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Linux", "Linux", "{7C9D1ADD-3D5B-4376-A0B7-45675C6D0D72}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "macOS", "macOS", "{29E95F29-D353-4F79-879C-47505B6DB463}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Automation.Linux", "Automation\Linux\Tenon.Automation.Linux\Tenon.Automation.Linux.csproj", "{68D9DC48-E4EA-4451-8246-F472DA6D8BBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Automation.MacOS", "Automation\macOS\Tenon.Automation.MacOS\Tenon.Automation.MacOS.csproj", "{339B3CE0-75F8-4137-8237-F4F2AD2A7B94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -511,6 +527,22 @@ Global
 		{F22B812A-5637-4ABA-90A5-2F3E3604A990}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F22B812A-5637-4ABA-90A5-2F3E3604A990}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F22B812A-5637-4ABA-90A5-2F3E3604A990}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA750B9C-BC2E-4F74-84B7-431388E4080D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA750B9C-BC2E-4F74-84B7-431388E4080D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA750B9C-BC2E-4F74-84B7-431388E4080D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA750B9C-BC2E-4F74-84B7-431388E4080D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDA9EEAA-E386-4EA7-88C3-6806CE64DF53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDA9EEAA-E386-4EA7-88C3-6806CE64DF53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDA9EEAA-E386-4EA7-88C3-6806CE64DF53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDA9EEAA-E386-4EA7-88C3-6806CE64DF53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D9DC48-E4EA-4451-8246-F472DA6D8BBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D9DC48-E4EA-4451-8246-F472DA6D8BBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D9DC48-E4EA-4451-8246-F472DA6D8BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D9DC48-E4EA-4451-8246-F472DA6D8BBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{339B3CE0-75F8-4137-8237-F4F2AD2A7B94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{339B3CE0-75F8-4137-8237-F4F2AD2A7B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{339B3CE0-75F8-4137-8237-F4F2AD2A7B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{339B3CE0-75F8-4137-8237-F4F2AD2A7B94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -578,6 +610,13 @@ Global
 		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
 		{4C703C25-3AA4-4268-803A-1B315EB823EC} = {623C2599-C6CE-4179-98A4-EEA505F38E31}
 		{F22B812A-5637-4ABA-90A5-2F3E3604A990} = {DE01E264-E91F-40B4-8950-6689AEA0009A}
+		{CA750B9C-BC2E-4F74-84B7-431388E4080D} = {73FC2D37-C4FE-4DD4-AA4C-2484EA04769C}
+		{3DA38811-ECC4-451D-896A-E765E178394E} = {B64C047D-5EBC-424D-9B67-71F565188B51}
+		{EDA9EEAA-E386-4EA7-88C3-6806CE64DF53} = {3DA38811-ECC4-451D-896A-E765E178394E}
+		{7C9D1ADD-3D5B-4376-A0B7-45675C6D0D72} = {B64C047D-5EBC-424D-9B67-71F565188B51}
+		{29E95F29-D353-4F79-879C-47505B6DB463} = {B64C047D-5EBC-424D-9B67-71F565188B51}
+		{68D9DC48-E4EA-4451-8246-F472DA6D8BBD} = {7C9D1ADD-3D5B-4376-A0B7-45675C6D0D72}
+		{339B3CE0-75F8-4137-8237-F4F2AD2A7B94} = {29E95F29-D353-4F79-879C-47505B6DB463}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}

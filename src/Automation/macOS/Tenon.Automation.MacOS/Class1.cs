@@ -1,4 +1,4 @@
-﻿namespace Tenon.Infra.Windows.Form
+﻿namespace Tenon.Automation.MacOS
 {
     public class Class1
     {

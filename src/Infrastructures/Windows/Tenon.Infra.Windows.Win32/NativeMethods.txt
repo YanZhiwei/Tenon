@@ -71,4 +71,7 @@ GetModuleHandle
 WindowFromPoint
 SetThreadExecutionState
 WM*
-MOUSEHOOKSTRUCT 
+MOUSEHOOKSTRUCT
+GetWindowLong
+SetWindowLong
+SetProcessDPIAware

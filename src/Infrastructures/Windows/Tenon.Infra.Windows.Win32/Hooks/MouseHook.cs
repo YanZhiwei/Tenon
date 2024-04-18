@@ -1,14 +1,15 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
 using CsWin32 = Windows.Win32;
+using SysProcess = System.Diagnostics.Process;
 
 namespace Tenon.Infra.Windows.Win32.Hooks;
 
 public static class MouseHook
 {
     private static CsWin32.UnhookWindowsHookExSafeHandle _hookExSafeHandle = new(IntPtr.Zero);
+
     public static bool Install()
     {
         if (_hookExSafeHandle.IsInvalid)
@@ -25,7 +26,7 @@ public static class MouseHook
 
     private static CsWin32.UnhookWindowsHookExSafeHandle SetHook(HOOKPROC proc)
     {
-        using (var module = Process.GetCurrentProcess().MainModule)
+        using (var module = SysProcess.GetCurrentProcess().MainModule)
         {
             var moduleHandle = CsWin32.PInvoke.GetModuleHandle(module.ModuleName);
             return CsWin32.PInvoke.SetWindowsHookEx(WINDOWS_HOOK_ID.WH_MOUSE_LL, proc, moduleHandle, 0);
