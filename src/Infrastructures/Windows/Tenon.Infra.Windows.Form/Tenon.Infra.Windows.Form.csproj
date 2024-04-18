@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Helpers\Tenon.Helper\Tenon.Helper.csproj" />
+    <ProjectReference Include="..\Tenon.Infra.Windows.Win32\Tenon.Infra.Windows.Win32.csproj" />
   </ItemGroup>
 
 </Project>

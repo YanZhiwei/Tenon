@@ -1,4 +1,5 @@
 ﻿using Windows.Win32.Foundation;
+using Windows.Win32.UI.WindowsAndMessaging;
 using AutoMapper;
 using Tenon.Infra.Windows.Win32.Extensions;
 using Tenon.Infra.Windows.Win32.Models;
@@ -24,6 +25,11 @@ public sealed class Window
         Mapper = config.CreateMapper();
     }
 
+    /// <summary>
+    ///     获取指定窗口的矩形区域。
+    /// </summary>
+    /// <param name="intPtrHandle">窗口句柄的IntPtr。</param>
+    /// <returns>返回窗口的矩形区域，如果获取失败则返回null。</returns>
     public static Rect? GetRect(IntPtr intPtrHandle)
     {
         var hWnd = intPtrHandle.ToHWnd();
@@ -32,6 +38,11 @@ public sealed class Window
         return null;
     }
 
+    /// <summary>
+    ///     获取指定窗口的矩形区域。
+    /// </summary>
+    /// <param name="intPtrHandle">窗口句柄的IntPtr。</param>
+    /// <returns>返回窗口的矩形区域，如果获取失败则返回null。</returns>
     public static Rectangle? GetRectangle(IntPtr intPtrHandle)
     {
         var hWnd = intPtrHandle.ToHWnd();
@@ -39,5 +50,70 @@ public sealed class Window
         if (CsWin32.PInvoke.GetWindowRect(hWnd, out var rect))
             return new Rectangle(rect.left, rect.top, rect.Width, rect.Height);
         return null;
+    }
+
+    /// <summary>
+    ///     显示指定窗口的操作。
+    /// </summary>
+    /// <param name="intPtrHandle">窗口句柄的IntPtr。</param>
+    /// <param name="showWindowCommand">要执行的窗口显示命令。</param>
+    /// <returns>如果成功显示窗口，则返回true；否则返回false。</returns>
+    public static bool Show(IntPtr intPtrHandle, ShowWindowCommand showWindowCommand)
+    {
+        var hWnd = intPtrHandle.ToHWnd();
+        if (hWnd == IntPtr.Zero || hWnd.IsNull) return false;
+        var showCmdIndex = (int)showWindowCommand;
+        return CsWin32.PInvoke.ShowWindow(hWnd, (SHOW_WINDOW_CMD)showCmdIndex);
+    }
+
+    /// <summary>
+    ///     设置窗口的位置和大小
+    /// </summary>
+    /// <param name="intPtrHandle">要设置位置和大小的窗口的句柄</param>
+    /// <param name="x">窗口左上角相对于其父窗口或屏幕的坐标</param>
+    /// <param name="y">窗口左上角相对于其父窗口或屏幕的坐标</param>
+    /// <param name="cx">窗口的宽度和高度</param>
+    /// <param name="cy">窗口的宽度和高度</param>
+    /// <param name="windowHandles">指定相对于其位置将设置窗口位置的窗口的句柄，可以是特殊句柄，如HWND_TOPMOST、HWND_NOTOPMOST、HWND_TOP或HWND_BOTTOM。</param>
+    /// <param name="setWindowPosFlags">控制窗口大小和位置的标志，可以是SWP_NOSIZE、SWP_NOMOVE、SWP_NOZORDER、SWP_FRAMECHANGED等标志的组合。</param>
+    /// <returns></returns>
+    public static bool SetPos(IntPtr intPtrHandle, int x, int y, int cx, int cy, SpecialWindowHandles windowHandles,
+        SetWindowPosFlags setWindowPosFlags)
+    {
+        var hWnd = intPtrHandle.ToHWnd();
+        if (hWnd == IntPtr.Zero || hWnd.IsNull) return false;
+        var windowHandlesIndex = (int)windowHandles;
+        var setWindowPosFlagsIndex = (int)setWindowPosFlags;
+        return CsWin32.PInvoke.SetWindowPos(hWnd, new HWND(windowHandlesIndex), x, y, cx, cy,
+            (SET_WINDOW_POS_FLAGS)setWindowPosFlagsIndex);
+    }
+
+    /// <summary>
+    ///     获取指定窗口的长整型值。
+    /// </summary>
+    /// <param name="intPtrHandle">窗口句柄的IntPtr。</param>
+    /// <param name="windowLongPtr">要获取的长整型值的索引。</param>
+    /// <returns>返回窗口的长整型值。</returns>
+    public static IntPtr GetLong(IntPtr intPtrHandle, WindowLongPtrIndex windowLongPtr)
+    {
+        var hWnd = intPtrHandle.ToHWnd();
+        if (hWnd == IntPtr.Zero || hWnd.IsNull) return IntPtr.Zero;
+        var longPtrIndex = (int)windowLongPtr;
+        return CsWin32.PInvoke.GetWindowLong(hWnd, (WINDOW_LONG_PTR_INDEX)longPtrIndex);
+    }
+
+    /// <summary>
+    ///     设置指定窗口的长整型值。
+    /// </summary>
+    /// <param name="intPtrHandle">窗口句柄的IntPtr。</param>
+    /// <param name="windowLongPtr">要设置的长整型值的索引。</param>
+    /// <param name="dwNewLong">要设置的新的长整型值。</param>
+    /// <returns>返回设置后的窗口长整型值。</returns>
+    public static IntPtr SetLong(IntPtr intPtrHandle, WindowLongPtrIndex windowLongPtr, int dwNewLong)
+    {
+        var hWnd = intPtrHandle.ToHWnd();
+        if (hWnd == IntPtr.Zero || hWnd.IsNull) return IntPtr.Zero;
+        var longPtrIndex = (int)windowLongPtr;
+        return CsWin32.PInvoke.SetWindowLong(hWnd, (WINDOW_LONG_PTR_INDEX)longPtrIndex, dwNewLong);
     }
 }
