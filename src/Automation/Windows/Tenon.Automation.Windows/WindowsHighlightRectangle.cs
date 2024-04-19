@@ -1,4 +1,6 @@
-﻿using Tenon.Automation.Abstractions;
+﻿using System.Collections.Concurrent;
+using Tenon.Automation.Abstractions;
+using Tenon.Infra.Windows.Form.Common;
 
 namespace Tenon.Automation.Windows;
 
@@ -7,6 +9,8 @@ public sealed class WindowsHighlightRectangle : IHighlightRectangle
     private readonly HighlightForm _bottomForm = new();
     private readonly int _highlightLineWidth = 3;
     private readonly HighlightForm _leftForm = new();
+
+    private readonly ConcurrentStack<MouseEventArgs> _mouseMoveQueue = new();
     private readonly HighlightForm _rightForm = new();
     private readonly HighlightForm _topForm = new();
 
@@ -40,15 +44,30 @@ public sealed class WindowsHighlightRectangle : IHighlightRectangle
             Width = location.Width + 2 * _highlightLineWidth,
             Height = _highlightLineWidth
         });
+        Show();
     }
 
     public void Show()
     {
-        throw new NotImplementedException();
+        _leftForm.UIBeginThread(c => c.Visible = true);
+        _topForm.UIBeginThread(c => c.Visible = true);
+        _rightForm.UIBeginThread(c => c.Visible = true);
+        _bottomForm.UIBeginThread(c => c.Visible = true);
     }
 
     public void Hide()
     {
-        throw new NotImplementedException();
+        _leftForm.UIBeginThread(c => c.Visible = false);
+        _topForm.UIBeginThread(c => c.Visible = false);
+        _rightForm.UIBeginThread(c => c.Visible = false);
+        _bottomForm.UIBeginThread(c => c.Visible = false);
+    }
+
+    public void Close()
+    {
+        _leftForm.UIBeginThread(c => c.Close());
+        _topForm.UIBeginThread(c => c.Close());
+        _rightForm.UIBeginThread(c => c.Close());
+        _bottomForm.UIBeginThread(c => c.Close());
     }
 }

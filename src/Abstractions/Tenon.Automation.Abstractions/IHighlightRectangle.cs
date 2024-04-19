@@ -9,4 +9,6 @@ public interface IHighlightRectangle
     public void Show();
 
     public void Hide();
+
+    public void Close();
 }

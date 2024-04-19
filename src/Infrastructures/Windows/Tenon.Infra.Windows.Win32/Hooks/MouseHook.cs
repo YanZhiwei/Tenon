@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
 using CsWin32 = Windows.Win32;
@@ -10,18 +11,21 @@ public static class MouseHook
 {
     private static CsWin32.UnhookWindowsHookExSafeHandle _hookExSafeHandle = new(IntPtr.Zero);
 
-    public static bool Install()
+    public static void Install()
     {
         if (_hookExSafeHandle.IsInvalid)
             _hookExSafeHandle = SetHook(HookCallback);
-        return !_hookExSafeHandle.IsInvalid || _hookExSafeHandle.IsClosed;
+        if (!_hookExSafeHandle.IsInvalid) return;
+        throw new Win32Exception(Marshal.GetLastWin32Error(), "MouseHook install failed.");
     }
 
-    public static bool Uninstall()
+    public static void Uninstall()
     {
-        if (!_hookExSafeHandle.IsInvalid)
-            return true;
-        return CsWin32.PInvoke.UnhookWindowsHookEx(new HHOOK(_hookExSafeHandle.DangerousGetHandle()));
+        if (_hookExSafeHandle.IsClosed)
+            return;
+        if (!CsWin32.PInvoke.UnhookWindowsHookEx(new HHOOK(_hookExSafeHandle.DangerousGetHandle())))
+            throw new Win32Exception(Marshal.GetLastWin32Error(), "MouseHook uninstall failed.");
+        _hookExSafeHandle = new CsWin32.UnhookWindowsHookExSafeHandle(IntPtr.Zero);
     }
 
     private static CsWin32.UnhookWindowsHookExSafeHandle SetHook(HOOKPROC proc)
