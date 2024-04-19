@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Abstractions\Tenon.Automation.Abstractions\Tenon.Automation.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Infrastructures\Windows\Tenon.Infra.Windows.Form\Tenon.Infra.Windows.Form.csproj" />
     <ProjectReference Include="..\..\..\Infrastructures\Windows\Tenon.Infra.Windows.Win32\Tenon.Infra.Windows.Win32.csproj" />
   </ItemGroup>
 

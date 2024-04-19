@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
 using CsWin32 = Windows.Win32;
@@ -10,17 +11,21 @@ public static class KeyboardHook
 {
     private static CsWin32.UnhookWindowsHookExSafeHandle _hookExSafeHandle = new(IntPtr.Zero);
 
-    public static bool Install()
+    public static void Install()
     {
-        _hookExSafeHandle = SetHook(HookCallback);
-        return !_hookExSafeHandle.IsInvalid;
+        if (_hookExSafeHandle.IsInvalid)
+            _hookExSafeHandle = SetHook(HookCallback);
+        if (!_hookExSafeHandle.IsInvalid) return;
+        throw new Win32Exception(Marshal.GetLastWin32Error(), "KeyboardHook install failed.");
     }
 
     public static void Uninstall()
     {
-        if (!_hookExSafeHandle.IsInvalid)
+        if (_hookExSafeHandle.IsClosed)
             return;
-        CsWin32.PInvoke.UnhookWindowsHookEx(new HHOOK(_hookExSafeHandle.DangerousGetHandle()));
+        if (!CsWin32.PInvoke.UnhookWindowsHookEx(new HHOOK(_hookExSafeHandle.DangerousGetHandle())))
+            throw new Win32Exception(Marshal.GetLastWin32Error(), "KeyboardHook uninstall failed.");
+        _hookExSafeHandle = new CsWin32.UnhookWindowsHookExSafeHandle(IntPtr.Zero);
     }
 
     private static LRESULT HookCallback(int code, WPARAM wParam, LPARAM lParam)

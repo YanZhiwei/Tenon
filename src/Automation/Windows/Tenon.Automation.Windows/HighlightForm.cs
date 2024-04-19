@@ -18,6 +18,7 @@ public class HighlightForm : SysForm
         Width = properties.Width;
         Height = properties.Height;
         Top = properties.Top;
+        BackColor = properties.BackColor;
         SetFormStyle();
     }
 
