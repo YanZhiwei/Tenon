@@ -10,7 +10,11 @@ public class WindowsHighlightBehavior
     protected readonly ConcurrentStack<MouseEventArgs> MouseMoveQueue = new();
     protected Thread? WorkerThread;
 
-    public event EventHandler<MouseEventArgs> IdentifyFromPointHandler;
+    public event EventHandler<MouseEventArgs> MouseMoveEventHandler;
+
+    public event EventHandler<KeyEventArgs> KeyUpEventHandler;
+
+    public event EventHandler<KeyEventArgs> KeyDownEventHandler;
 
     private void ThreadProcedure(object? obj)
     {
@@ -25,7 +29,7 @@ public class WindowsHighlightBehavior
                 {
                     MouseMoveQueue.Clear();
                     if (e?.Location == null || e.Location.IsEmpty) continue;
-                    IdentifyFromPointHandler?.Invoke(this, e);
+                    MouseMoveEventHandler?.Invoke(this, e);
                 }
             }
             catch
@@ -40,7 +44,6 @@ public class WindowsHighlightBehavior
         lock (SyncRoot)
         {
             MouseMoveQueue.Clear();
-            Mre.Close();
             WorkerThread?.Interrupt();
             WorkerThread = null;
             MouseHook.MouseMove -= Hook_MouseMove;
@@ -65,10 +68,12 @@ public class WindowsHighlightBehavior
 
     private void Hook_KeyUp(object? sender, KeyEventArgs e)
     {
+        KeyUpEventHandler?.Invoke(sender, e);
     }
 
     private void Hook_KeyDown(object? sender, KeyEventArgs e)
     {
+        KeyDownEventHandler?.Invoke(sender, e);
     }
 
     private void Hook_MouseMove(object? sender, MouseEventArgs e)
@@ -95,6 +100,7 @@ public class WindowsHighlightBehavior
                 WorkerThread.SetApartmentState(ApartmentState.STA);
             }
             WorkerThread.Start();
+            Mre.Set();
         }
     }
 }
