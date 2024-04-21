@@ -7,7 +7,7 @@ using SysProcess = System.Diagnostics.Process;
 
 namespace Tenon.Infra.Windows.Win32.Hooks;
 
-public static class MouseHook
+public sealed class MouseHook
 {
     private static CsWin32.UnhookWindowsHookExSafeHandle _hookExSafeHandle = new(IntPtr.Zero);
 

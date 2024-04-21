@@ -7,7 +7,7 @@ using SysProcess = System.Diagnostics.Process;
 
 namespace Tenon.Infra.Windows.Win32.Hooks;
 
-public static class KeyboardHook
+public sealed class KeyboardHook
 {
     private static CsWin32.UnhookWindowsHookExSafeHandle _hookExSafeHandle = new(IntPtr.Zero);
 
