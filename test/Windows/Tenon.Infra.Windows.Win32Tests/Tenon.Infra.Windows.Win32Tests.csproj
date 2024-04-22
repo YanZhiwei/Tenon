@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Automation\Windows\Tenon.Automation.Windows\Tenon.Automation.Windows.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructures\Windows\Tenon.Infra.Windows.ChromiumAccessibility\Tenon.Infra.Windows.ChromiumAccessibility.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructures\Windows\Tenon.Infra.Windows.Win32\Tenon.Infra.Windows.Win32.csproj" />
   </ItemGroup>

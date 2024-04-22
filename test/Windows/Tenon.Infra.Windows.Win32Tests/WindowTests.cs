@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tenon.Automation.Windows;
 using Tenon.Infra.Windows.ChromiumAccessibility;
 using Tenon.Infra.Windows.Win32;
 using Tenon.Infra.Windows.Win32.Models;
@@ -8,7 +9,7 @@ namespace Tenon.Infra.Windows.Win32.Tests
     [TestClass]
     public class WindowTests
     {
-       
+
     }
 }
 
@@ -44,6 +45,8 @@ namespace Tenon.Infra.Windows.Win32Tests
             Assert.IsNotNull(mainWindowHandle);
             var actual = Window.Show(mainWindowHandle, ShowWindowCommand.ShowMaximized);
             Assert.IsTrue(actual);
+
+
         }
 
         [TestMethod()]
@@ -58,7 +61,7 @@ namespace Tenon.Infra.Windows.Win32Tests
         [TestCleanup]
         public void Cleanup()
         {
-            //Thread.Sleep(TimeSpan.FromSeconds(30));
+            Thread.Sleep(TimeSpan.FromSeconds(30));
         }
     }
 }

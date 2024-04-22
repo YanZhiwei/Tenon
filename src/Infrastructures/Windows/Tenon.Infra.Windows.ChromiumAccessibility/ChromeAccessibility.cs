@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Tenon.Infra.Windows.ChromiumAccessibility.Options;
+using Tenon.Infra.Windows.Win32;
+using Process = System.Diagnostics.Process;
 
 namespace Tenon.Infra.Windows.ChromiumAccessibility;
 
@@ -22,6 +23,14 @@ public sealed class ChromeAccessibility
                 return chromeProcess.MainWindowHandle;
 
         return IntPtr.Zero;
+    }
+
+    public IntPtr GetRenderWidgetHostHandle()
+    {
+        var mainWindowHandle = GetMainWindowHandle();
+        if (mainWindowHandle == IntPtr.Zero)
+            return IntPtr.Zero;
+        return Window.FindEx(mainWindowHandle, "Chrome_RenderWidgetHostHWND");
     }
 
     public async Task LaunchAsync(LaunchOptions? option = null, CancellationToken token = default)
