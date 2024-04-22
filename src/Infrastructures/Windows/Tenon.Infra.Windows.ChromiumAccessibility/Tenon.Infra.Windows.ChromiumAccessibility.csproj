@@ -7,4 +7,8 @@
 	  <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tenon.Infra.Windows.Win32\Tenon.Infra.Windows.Win32.csproj" />
+  </ItemGroup>
+
 </Project>

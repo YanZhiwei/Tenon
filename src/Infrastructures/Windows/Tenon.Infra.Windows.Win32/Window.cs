@@ -1,4 +1,6 @@
-﻿using Windows.Win32.Foundation;
+﻿using System.Runtime.InteropServices;
+using Windows.Win32.Foundation;
+using Windows.Win32.Graphics.Dwm;
 using Windows.Win32.UI.WindowsAndMessaging;
 using AutoMapper;
 using Tenon.Infra.Windows.Win32.Extensions;
@@ -115,5 +117,45 @@ public sealed class Window
         if (hWnd == IntPtr.Zero || hWnd.IsNull) return IntPtr.Zero;
         var longPtrIndex = (int)windowLongPtr;
         return CsWin32.PInvoke.SetWindowLong(hWnd, (WINDOW_LONG_PTR_INDEX)longPtrIndex, dwNewLong);
+    }
+
+    /// <summary>
+    ///     搜索与指定窗口类名和/或窗口名称匹配的窗口
+    /// </summary>
+    /// <param name="hWndParent">要搜索其子窗口的父窗口的句柄。要搜索所有窗口，请将此参数指定为0。</param>
+    /// <param name="lpszClass">要查找的窗口的窗口类的名称。指定空字符串以忽略类。</param>
+    /// <param name="hWndChildAfter">指定开始搜索的子窗口的句柄。搜索将从Z顺序中紧随此窗口后的子窗口开始。如果这是0，则搜索将从hwndParent的第一个子窗口开始。</param>
+    /// <param name="lpszWindow"></param>
+    /// <returns>要查找的窗口的标题栏文本的名称。指定空字符串以忽略窗口的标题。</returns>
+    public static IntPtr FindEx(IntPtr hWndParent, string lpszClass, IntPtr? hWndChildAfter = null,
+        string? lpszWindow = null)
+    {
+        if (hWndChildAfter.HasValue)
+            CsWin32.PInvoke.FindWindowEx(hWndParent.ToHWnd(), hWndChildAfter.Value.ToHWnd(), lpszClass, lpszWindow);
+        return CsWin32.PInvoke.FindWindowEx(hWndParent.ToHWnd(), HWND.Null, lpszClass, lpszWindow);
+    }
+
+    /// <summary>
+    /// 获取一个窗口的边界矩形,该矩形包括了窗口本身的边界以及可能的装饰（例如标题栏、边框）和 DWM 添加的额外区域（例如阴影效果）。
+    /// </summary>
+    /// <param name="intPtrHandle">窗口句柄的IntPtr。</param>
+    /// <returns>窗口的边界矩形</returns>
+    public static Rectangle? GetExtendedFrameBounds(IntPtr intPtrHandle)
+    {
+        var hWnd = intPtrHandle.ToHWnd();
+        if (hWnd == IntPtr.Zero || hWnd.IsNull) return null;
+        var extendedFrameBounds = new RECT();
+        unsafe
+        {
+            var sizeOfRect = Marshal.SizeOf(typeof(RECT));
+            CsWin32.PInvoke.DwmGetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS,
+                 &extendedFrameBounds, (uint)sizeOfRect);
+
+            if (!extendedFrameBounds.IsEmpty)
+                return new Rectangle(extendedFrameBounds.left, extendedFrameBounds.top, extendedFrameBounds.Width,
+                    extendedFrameBounds.Height);
+        }
+
+        return null;
     }
 }

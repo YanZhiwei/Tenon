@@ -75,4 +75,4 @@ MOUSEHOOKSTRUCT
 GetWindowLong
 SetWindowLong
 SetProcessDPIAware
-GetLastError
+DwmGetWindowAttribute
