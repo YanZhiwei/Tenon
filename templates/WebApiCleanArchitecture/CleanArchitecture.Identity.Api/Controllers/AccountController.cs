@@ -1,6 +1,5 @@
 ﻿using CleanArchitecture.Identity.Application.Dtos;
 using CleanArchitecture.Identity.Application.Services;
-using CleanArchitecture.Identity.Application.Services.Impl;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +34,8 @@ public sealed class AccountController(IUserService userService, IValidator<UserL
         return Problem(result.ProblemDetails);
     }
 
-    [AllowAnonymous, HttpPut()]
+    [AllowAnonymous]
+    [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<UserTokenInfoDto>> RefreshAccessTokenAsync([FromBody] UserRefreshTokenDto input)
     {

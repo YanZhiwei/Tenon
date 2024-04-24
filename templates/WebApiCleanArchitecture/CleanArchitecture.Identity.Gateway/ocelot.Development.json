@@ -1,0 +1,53 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/svc/identity/{url}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "DownstreamPathTemplate": "/api/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "AddHeadersToRequest": {
+        "uniquename": "Claims[unique_name] > value"
+      },
+      "UpstreamHeaderTransform": {
+        "custom-key": "identity.gateway"
+      },
+      "DownstreamHeaderTransform": {
+        "trace-id": "Trace-Id"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "AllowAnonymous": true // 在这里设置允许匿名访问
+      //"DelegatingHandlers": [
+      //  "CustomResultHandler"
+      //]
+    },
+    // identity-svc-swagger
+    {
+      "UpstreamPathTemplate": "/swagger/identity-svc/swagger.json",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/swagger/V2/swagger.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "LoadBalancer": "RoundRobin"
+    }
+
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:9090"
+  }
+}

@@ -6,14 +6,14 @@ namespace Tenon.Infra.Swagger.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static void AddBearerAuthenticationHeader(this SwaggerGenOptions swaggerGenOptions)
+    public static void AddBearerAuthorizationHeader(this SwaggerGenOptions swaggerGenOptions)
     {
         if (swaggerGenOptions == null)
             throw new ArgumentNullException(nameof(swaggerGenOptions));
         swaggerGenOptions.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
             Name = "Authorization",
-            Type = SecuritySchemeType.ApiKey,
+            Type = SecuritySchemeType.Http,
             Scheme = "Bearer",
             BearerFormat = "JWT",
             In = ParameterLocation.Header,

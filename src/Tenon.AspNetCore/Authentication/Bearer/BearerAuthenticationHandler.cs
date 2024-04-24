@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -22,6 +24,9 @@ public abstract class BearerAuthenticationHandler : AuthenticationHandler<Bearer
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
+        var endpoint = Context.GetEndpoint();
+        if (endpoint?.Metadata.GetMetadata<IAllowAnonymous>() is not null)
+            return await Task.FromResult(AuthenticateResult.NoResult());
         AuthenticateResult authResult;
         var authHeader = Request.Headers["Authorization"].ToString();
         if (!string.IsNullOrWhiteSpace(authHeader) && authHeader.StartsWith(BearerDefaults.AuthenticationScheme,

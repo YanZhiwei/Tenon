@@ -77,8 +77,8 @@ public class Program
         }
 
         app.UseRouting();
-        app.UseAuthentication(); // ��� �����֤�м��
-        // ��� ��Ȩ�м��
+        app.UseAuthentication(); // ���?�����֤�м��
+        // ���?��Ȩ�м��?
         app.UseAuthorization();
         app.MapControllers();
 
