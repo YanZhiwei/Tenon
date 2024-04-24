@@ -11,7 +11,7 @@ namespace CleanArchitecture.Identity.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[AuthorizeScope([],AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[AuthorizeScope([], AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class UserController : AbstractController
 {
     private readonly IUserService _userService;

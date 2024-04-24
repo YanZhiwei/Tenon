@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,6 +16,7 @@
     <ProjectReference Include="..\..\..\src\Extensions\Tenon.FluentValidation.AspNetCore.Extensions\Tenon.FluentValidation.AspNetCore.Extensions.csproj" />
     <ProjectReference Include="..\..\..\src\Extensions\Tenon.FluentValidation.Extensions\Tenon.FluentValidation.Extensions.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructures\Tenon.Infra.Redis.StackExchangeProvider\Tenon.Infra.Redis.StackExchangeProvider.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructures\Tenon.Infra.Swagger\Tenon.Infra.Swagger.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.AspNetCore\Tenon.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.DistributedId.Snowflake\Tenon.DistributedId.Snowflake.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.Mapper.AutoMapper\Tenon.Mapper.AutoMapper.csproj" />

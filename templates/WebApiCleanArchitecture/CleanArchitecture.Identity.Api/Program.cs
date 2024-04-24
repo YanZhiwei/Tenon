@@ -8,9 +8,10 @@ using CleanArchitecture.Identity.Application;
 using CleanArchitecture.Identity.Application.Extensions;
 using CleanArchitecture.Identity.Repository.Extensions;
 using Microsoft.OpenApi.Models;
-using Tenon.AspNetCore.Authentication.Bearer;
+using Swashbuckle.AspNetCore.Filters;
 using Tenon.AspNetCore.Authorization.Bearer;
 using Tenon.AspNetCore.Extensions;
+using Tenon.Infra.Swagger.Extensions;
 
 namespace CleanArchitecture.Identity.Api;
 
@@ -35,7 +36,6 @@ public class Program
         });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
         builder.Services.AddApplication(builder.Configuration);
         builder.Services.AddRepository(builder.Configuration);
         builder.Services.AddDataProtection();
@@ -47,25 +47,9 @@ public class Program
                 Title = "CleanArchitecture.Identity.Api",
                 Version = "v1"
             });
-            var securityScheme = new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.Http,
-                Scheme = "bearer",
-                BearerFormat = "JWT",
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = BearerDefaults.AuthenticationScheme
-                }
-            };
-            c.AddSecurityDefinition(BearerDefaults.AuthenticationScheme, securityScheme);
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                { securityScheme, new string[] { } }
-            });
+
+            c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
+            c.AddBearerAuthorizationHeader();
         });
         builder.Services.ConfigureJwtBearerAuthenticationOptions<IdentityAuthenticationHandler>(
             builder.Configuration.GetSection("Jwt"), options => options.OnTokenValidated =
@@ -95,7 +79,7 @@ public class Program
 
         app.UseRouting();
         app.UseAuthorization();
-        app.UseAuthentication();
+       // app.UseAuthentication();
         app.MapControllers();
         app.Run();
     }
