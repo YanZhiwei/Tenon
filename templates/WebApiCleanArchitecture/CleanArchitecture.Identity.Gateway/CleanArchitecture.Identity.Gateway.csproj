@@ -7,14 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
     <PackageReference Include="Ocelot" Version="23.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Infrastructures\Tenon.Infra.Swagger\Tenon.Infra.Swagger.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.AspNetCore\Tenon.AspNetCore.csproj" />
-    <ProjectReference Include="..\CleanArchitecture.Identity.Application\CleanArchitecture.Identity.Application.csproj" />
-    <ProjectReference Include="..\CleanArchitecture.Identity.Repository\CleanArchitecture.Identity.Repository.csproj" />
   </ItemGroup>
 
   <ItemGroup>
