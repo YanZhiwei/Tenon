@@ -44,7 +44,7 @@ public class Program
         {
             c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "CleanArchitecture.Identity.Api",
+                Title = "Identity.Api",
                 Version = "v1"
             });
 
@@ -78,8 +78,8 @@ public class Program
         }
 
         app.UseRouting();
+        //app.UseAuthentication();
         app.UseAuthorization();
-       // app.UseAuthentication();
         app.MapControllers();
         app.Run();
     }

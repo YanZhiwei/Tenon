@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using CleanArchitecture.Identity.Repository.Entities;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Tenon.AspNetCore.Authentication.Bearer;
@@ -60,8 +59,8 @@ public class IdentityAuthenticationHandler : JwtBearerAuthenticationHandler
         var userClaims = await _userManager.GetClaimsAsync(userValidatedInfo);
         if (!(userClaims?.Any() ?? false))
             return [];
-        claims.Add(new Claim(type: ClaimTypes.Name, value: userValidatedInfo.UserName));
-        claims.Add(new Claim(type: JwtRegisteredClaimNames.UniqueName, value: userValidatedInfo.Account));
+        claims.Add(new Claim(ClaimTypes.Name, userValidatedInfo.UserName));
+        claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, userValidatedInfo.Account));
         claims.AddRange(userClaims);
         return claims.ToArray();
     }

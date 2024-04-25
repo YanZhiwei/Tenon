@@ -1,12 +1,12 @@
 {
   "Routes": [
     {
-      "UpstreamPathTemplate": "/svc/identity/{url}",
+      "UpstreamPathTemplate": "/svc/User/{url}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
-      "DownstreamPathTemplate": "/api/{url}",
+      "DownstreamPathTemplate": "/api/User/{url}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -14,9 +14,9 @@
           "Port": 5232
         }
       ],
-      "AddHeadersToRequest": {
-        "uniquename": "Claims[unique_name] > value"
-      },
+      //"AddHeadersToRequest": {
+      //  "uniquename": "Claims[unique_name] > value"
+      //},
       "UpstreamHeaderTransform": {
         "custom-key": "identity.gateway"
       },
@@ -24,18 +24,41 @@
         "trace-id": "Trace-Id"
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
+        "AuthenticationProviderKey": "gw"
+      }
+      //"DelegatingHandlers": [
+      //  "CustomResultHandler"
+      //]
+    },
+    {
+      "UpstreamPathTemplate": "/svc/WeatherForecast/{url}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
       },
-      "AllowAnonymous": true // 在这里设置允许匿名访问
+      "DownstreamPathTemplate": "/api/WeatherForecast/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamHeaderTransform": {
+        "custom-key": "identity.gateway"
+      },
+      "DownstreamHeaderTransform": {
+        "trace-id": "Trace-Id"
+      }
       //"DelegatingHandlers": [
       //  "CustomResultHandler"
       //]
     },
     // identity-svc-swagger
     {
-      "UpstreamPathTemplate": "/swagger/identity-svc/swagger.json",
+      "UpstreamPathTemplate": "/identity-svc/swagger/swagger.json",
       "UpstreamHttpMethod": [ "GET" ],
-      "DownstreamPathTemplate": "/swagger/V2/swagger.json",
+      "DownstreamPathTemplate": "/swagger/v1/swagger.json",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
