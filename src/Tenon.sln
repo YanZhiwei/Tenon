@@ -181,11 +181,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{DE01
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.ChromiumAccessibilityTests", "..\test\Windows\Tenon.Infra.Windows.ChromiumAccessibilityTests\Tenon.Infra.Windows.ChromiumAccessibilityTests.csproj", "{57F2017B-9738-4423-B65E-EB4BC197C04F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.ChromiumAccessibility.Win32NativeBridge", "Infrastructures\Windows\Tenon.Infra.Windows.ChromiumAccessibility.Win32NativeBridge\Tenon.Infra.Windows.ChromiumAccessibility.Win32NativeBridge.csproj", "{AFB2D6EB-8532-434D-832B-98B0E940FEDE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Puppeteer.Extensions", "Extensions\Tenon.Puppeteer.Extensions\Tenon.Puppeteer.Extensions.csproj", "{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.Puppeteer", "Infrastructures\Windows\Tenon.Infra.Windows.Puppeteer\Tenon.Infra.Windows.Puppeteer.csproj", "{4C703C25-3AA4-4268-803A-1B315EB823EC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Windows.Win32Tests", "..\test\Windows\Tenon.Infra.Windows.Win32Tests\Tenon.Infra.Windows.Win32Tests.csproj", "{F22B812A-5637-4ABA-90A5-2F3E3604A990}"
 EndProject
@@ -211,9 +207,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Linux.X11", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutomationSample", "..\samples\Windows\AutomationSample\AutomationSample.csproj", "{E37BDC07-A867-4FA5-B0AD-267DC8E64F21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Infra.Swagger", "Infrastructures\Tenon.Infra.Swagger\Tenon.Infra.Swagger.csproj", "{CC485B42-BF40-4041-B3FD-E43969B7823D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Swagger", "Infrastructures\Tenon.Infra.Swagger\Tenon.Infra.Swagger.csproj", "{CC485B42-BF40-4041-B3FD-E43969B7823D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Identity.Gateway", "..\templates\WebApiCleanArchitecture\CleanArchitecture.Identity.Gateway\CleanArchitecture.Identity.Gateway.csproj", "{952FFBE9-72E0-44F4-A31A-702E8C0123EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Identity.Gateway", "..\templates\WebApiCleanArchitecture\CleanArchitecture.Identity.Gateway\CleanArchitecture.Identity.Gateway.csproj", "{952FFBE9-72E0-44F4-A31A-702E8C0123EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -521,18 +517,10 @@ Global
 		{57F2017B-9738-4423-B65E-EB4BC197C04F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57F2017B-9738-4423-B65E-EB4BC197C04F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57F2017B-9738-4423-B65E-EB4BC197C04F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFB2D6EB-8532-434D-832B-98B0E940FEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFB2D6EB-8532-434D-832B-98B0E940FEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFB2D6EB-8532-434D-832B-98B0E940FEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFB2D6EB-8532-434D-832B-98B0E940FEDE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C703C25-3AA4-4268-803A-1B315EB823EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C703C25-3AA4-4268-803A-1B315EB823EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C703C25-3AA4-4268-803A-1B315EB823EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C703C25-3AA4-4268-803A-1B315EB823EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F22B812A-5637-4ABA-90A5-2F3E3604A990}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F22B812A-5637-4ABA-90A5-2F3E3604A990}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F22B812A-5637-4ABA-90A5-2F3E3604A990}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -632,9 +620,7 @@ Global
 		{06B24A75-1AEA-41C6-8312-6FE73A1E4D83} = {623C2599-C6CE-4179-98A4-EEA505F38E31}
 		{DE01E264-E91F-40B4-8950-6689AEA0009A} = {E105A163-9660-4A89-8CA9-C242762B8613}
 		{57F2017B-9738-4423-B65E-EB4BC197C04F} = {DE01E264-E91F-40B4-8950-6689AEA0009A}
-		{AFB2D6EB-8532-434D-832B-98B0E940FEDE} = {623C2599-C6CE-4179-98A4-EEA505F38E31}
 		{C4792B19-FE4F-43C2-B6F5-63B55A3DA2DB} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
-		{4C703C25-3AA4-4268-803A-1B315EB823EC} = {623C2599-C6CE-4179-98A4-EEA505F38E31}
 		{F22B812A-5637-4ABA-90A5-2F3E3604A990} = {DE01E264-E91F-40B4-8950-6689AEA0009A}
 		{CA750B9C-BC2E-4F74-84B7-431388E4080D} = {73FC2D37-C4FE-4DD4-AA4C-2484EA04769C}
 		{3DA38811-ECC4-451D-896A-E765E178394E} = {B64C047D-5EBC-424D-9B67-71F565188B51}
