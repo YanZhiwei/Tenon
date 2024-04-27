@@ -17,19 +17,19 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Build with dotnet
-      run: dotnet build --configuration Release /home/runner/work/Tenon/Tenon/src/Tenon.sln
+      run: dotnet build --configuration Release  D:/a/Tenon/Tenon/src/Tenon.sln
     - name: Pack with dotnet
-      run: dotnet pack /home/runner/work/Tenon/Tenon/src/Tenon.sln -o /home/runner/work/nugetpkgs -c Release --no-build
+      run: dotnet pack  D:/a/Tenon/Tenon/src/Tenon.sln -o  D:/a/nugetpkgs -c Release --no-build
     - name: Upload artifact
       uses: actions/upload-artifact@v1
       with:
         name: nugetpkgs
-        path: /home/runner/work/nugetpkgs  
+        path: D:/a/nugetpkgs
 
   release_nuget:
       name: Release to Nuget
       needs: build_artifact
-      runs-on: ubuntu-latest
+      runs-on: windows-latest
   
       steps:
         - name: Download build artifacts
