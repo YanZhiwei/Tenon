@@ -4,7 +4,7 @@
 
 ## Project Introduction
 
-Tenon is a comprehensive development framework based on the .NET Core platform, designed to accelerate the development process and enhance efficiency by integrating key technologies in modern software development. It includes encapsulated features such as message queuing (RabbitMQ), caching (Redis), distributed ID generation (Snowflake), distributed locks (Redis), database repository patterns (EntityFrameworkCore), gateway (Ocelot), service governance (Consul), and ASP.NET Core authentication and authorization. The modular design of these features allows developers to quickly build applications, focusing on business logic without having to construct each component from scratch.
+Tenon is a comprehensive development framework based on the .NET 8 platform, designed to accelerate the development process and enhance efficiency by integrating key technologies in modern software development. It includes encapsulated features such as message queuing (RabbitMQ), caching (Redis), distributed ID generation (Snowflake), distributed locks (Redis), database repository patterns (EntityFrameworkCore), gateway (Ocelot), service governance (Consul), and ASP.NET Core authentication and authorization. The modular design of these features allows developers to quickly build applications, focusing on business logic without having to construct each component from scratch.
 
 ## Core Features
 
