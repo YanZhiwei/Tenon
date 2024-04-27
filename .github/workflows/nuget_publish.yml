@@ -40,7 +40,8 @@ jobs:
           run: ls nugetpkgs
         - name: Release
           run: |
-            for file in nugetpkgs/*.nupkg
-            do
-              dotnet nuget push $file --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json
-            done
+            $nugetFiles = Get-ChildItem -Path nugetpkgs -Recurse -Include *.nupkg
+            foreach ($file in $nugetFiles) {
+            Write-Host "Found .nuget file: $($file.FullName)"
+            dotnet nuget push $file --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json
+            }
