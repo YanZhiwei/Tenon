@@ -40,8 +40,21 @@ jobs:
           run: ls nugetpkgs
         - name: Release
           run: |
+            $excludeFileName = @('Sample', 'CleanArchitecture', 'Tests')
             $nugetFiles = Get-ChildItem -Path nugetpkgs -Recurse -Include *.nupkg
             foreach ($file in $nugetFiles) {
-            Write-Host "Found .nuget file: $($file.FullName)"
-            dotnet nuget push $file --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json
+              $fileName = $($file.FullName)"
+              $skipFile = $false
+              foreach ($excludeName in $excludeFileName) {
+                  if ($fileName -like "*$excludeName*") {
+                      $skipFile = $true
+                      break
+                  }
+              }
+              if ($skipFile) {
+                  Write-Host "Skipping file: $fileName"
+                  continue
+              }
+              Write-Host "Processing  file: $($file.FullName)"
+              dotnet nuget push $file --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json
             }
