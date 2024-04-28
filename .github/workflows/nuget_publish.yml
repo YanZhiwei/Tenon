@@ -43,7 +43,7 @@ jobs:
             $excludeFileName = @('Sample', 'CleanArchitecture', 'Tests')
             $nugetFiles = Get-ChildItem -Path nugetpkgs -Recurse -Include *.nupkg
             foreach ($file in $nugetFiles) {
-              $fileName = $($file.FullName)"
+              $fileName = $file.FullName
               $skipFile = $false
               foreach ($excludeName in $excludeFileName) {
                   if ($fileName -like "*$excludeName*") {
