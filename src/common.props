@@ -7,14 +7,11 @@
 		<Authors>YanZhiwei</Authors>
 		<Product>Tenon</Product>
 		<RepositoryType>git</RepositoryType>
+		<EnablePackageValidation>true</EnablePackageValidation>
 		<SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
 		<SatelliteResourceLanguages>zh-Hant</SatelliteResourceLanguages>
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 		<NoWarn>$(NoWarn);1591;0436</NoWarn>
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
-	</PropertyGroup>
-
-	<PropertyGroup>
-	
 	</PropertyGroup>
 </Project>

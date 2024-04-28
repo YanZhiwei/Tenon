@@ -7,6 +7,9 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>	
+		<PackageTags>ddd,framework,infra,helper</PackageTags>
+		<RepositoryUrl>https://github.com/YanZhiwei/Tenon</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/YanZhiwei/Tenon</PackageProjectUrl>
 	</PropertyGroup>
 	<ItemGroup  Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
