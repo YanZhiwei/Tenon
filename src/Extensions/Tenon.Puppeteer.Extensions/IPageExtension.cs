@@ -5,12 +5,14 @@ namespace Tenon.Puppeteer.Extensions;
 
 public static class PageExtension
 {
-    public static async Task InjectScriptTagAsync(this IPage page, AddTagOptions options)
+    public static async Task<bool> InjectScriptTagAsync(this IPage page, AddTagOptions options)
     {
-        var htmlContent = await page.GetContentAsync();
+        var htmlContent = await page.GetContentAsync().ConfigureAwait(false);
         var jsIdentity = options.Id?.ToString();
         if (htmlContent.IndexOf(jsIdentity, StringComparison.OrdinalIgnoreCase) == -1)
             await page.AddScriptTagAsync(options);
+        htmlContent = await page.GetContentAsync().ConfigureAwait(false);
+        return htmlContent.IndexOf(jsIdentity, StringComparison.OrdinalIgnoreCase) != -1;
     }
 
     public static async Task<PerformResult<TRes>> EvaluateFunctionAsync<TReq, TRes>(this IPage page,

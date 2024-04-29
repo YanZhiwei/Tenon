@@ -216,6 +216,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Swagger", "Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Identity.Gateway", "..\templates\WebApiCleanArchitecture\CleanArchitecture.Identity.Gateway\CleanArchitecture.Identity.Gateway.csproj", "{952FFBE9-72E0-44F4-A31A-702E8C0123EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppeteerSample", "..\samples\Windows\PuppeteerSample\PuppeteerSample.csproj", "{21E21CE4-7264-4390-BD2B-3DC3968F124E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -562,6 +564,10 @@ Global
 		{952FFBE9-72E0-44F4-A31A-702E8C0123EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{952FFBE9-72E0-44F4-A31A-702E8C0123EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{952FFBE9-72E0-44F4-A31A-702E8C0123EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21E21CE4-7264-4390-BD2B-3DC3968F124E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21E21CE4-7264-4390-BD2B-3DC3968F124E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21E21CE4-7264-4390-BD2B-3DC3968F124E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21E21CE4-7264-4390-BD2B-3DC3968F124E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -639,6 +645,7 @@ Global
 		{E37BDC07-A867-4FA5-B0AD-267DC8E64F21} = {1F3E1BC7-395D-4D77-8657-FC552AC852AF}
 		{CC485B42-BF40-4041-B3FD-E43969B7823D} = {379B9552-4579-4BFD-A50E-F123587A91AE}
 		{952FFBE9-72E0-44F4-A31A-702E8C0123EB} = {340CE2E4-0FF5-48EE-87E5-171BB4E0382C}
+		{21E21CE4-7264-4390-BD2B-3DC3968F124E} = {1F3E1BC7-395D-4D77-8657-FC552AC852AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}
