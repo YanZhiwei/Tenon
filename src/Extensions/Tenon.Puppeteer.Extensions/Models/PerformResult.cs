@@ -17,6 +17,7 @@ public class PerformResult<TValue>
     public int IframeIndex { get; set; } = -1;
     public TValue? Data { get; }
 
+    public int Code { get; set; }
 
     public static implicit operator PerformResult<TValue>(TValue value)
     {
@@ -31,6 +32,7 @@ public class PerformResult(object value)
 
     public int IframeIndex { get; set; } = -1;
     public object Data { get; } = value;
+    public int Code { get; set; }
 
     public static PerformResult FromObject(object value)
     {

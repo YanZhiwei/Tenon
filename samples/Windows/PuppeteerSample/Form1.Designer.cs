@@ -30,10 +30,11 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            button3 = new Button();
             button2 = new Button();
             button1 = new Button();
             listBox1 = new ListBox();
-            button3 = new Button();
+            button4 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             SuspendLayout();
@@ -49,6 +50,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(button4);
             tabPage1.Controls.Add(button3);
             tabPage1.Controls.Add(button2);
             tabPage1.Controls.Add(button1);
@@ -59,6 +61,16 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Browser ";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(224, 42);
+            button3.Name = "button3";
+            button3.Size = new Size(155, 23);
+            button3.TabIndex = 2;
+            button3.Text = "InjectScriptTag";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button2
             // 
@@ -89,15 +101,15 @@
             listBox1.Size = new Size(792, 140);
             listBox1.TabIndex = 2;
             // 
-            // button3
+            // button4
             // 
-            button3.Location = new Point(224, 42);
-            button3.Name = "button3";
-            button3.Size = new Size(155, 23);
-            button3.TabIndex = 2;
-            button3.Text = "InjectScriptTag";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            button4.Location = new Point(385, 42);
+            button4.Name = "button4";
+            button4.Size = new Size(145, 23);
+            button4.TabIndex = 3;
+            button4.Text = "EvaluateFunction";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // Form1
             // 
@@ -122,5 +134,6 @@
         private Button button2;
         private ListBox listBox1;
         private Button button3;
+        private Button button4;
     }
 }

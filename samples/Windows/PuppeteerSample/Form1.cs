@@ -2,6 +2,7 @@ using PuppeteerSharp;
 using Tenon.Infra.Windows.ChromiumAccessibility;
 using Tenon.Infra.Windows.Form.Common;
 using Tenon.Puppeteer.Extensions;
+using Tenon.Puppeteer.Extensions.Models;
 
 namespace PuppeteerSample;
 
@@ -30,6 +31,7 @@ public partial class Form1 : Form
             }).ConfigureAwait(false).GetAwaiter().GetResult();
         _page = _browser.NewPageAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         var result = _page.GoToAsync("http://www.google.com").ConfigureAwait(false).GetAwaiter().GetResult();
+        AddLog($"GoToAsync Result: {result}");
     }
 
     private void AddLog(string message)
@@ -50,8 +52,18 @@ public partial class Form1 : Form
             Id = "formartStr",
             Content = script
         }).ConfigureAwait(false).GetAwaiter().GetResult();
-        var output = _page.EvaluateExpressionAsync<string>("formartStr('hello')").ConfigureAwait(false).GetAwaiter()
-            .GetResult();
-        AddLog($"InjectScript {result}");
+        AddLog($"InjectScript Result:{result}");
+    }
+
+    private void button4_Click(object sender, EventArgs e)
+    {
+        //var output = _page.EvaluateExpressionAsync<string>("formartStr('hello')").ConfigureAwait(false).GetAwaiter()
+        //    .GetResult();
+        var result = _page.EvaluateFunctionAsync(new PerformRequest<string>
+        {
+            FunctionName = "formartStr",
+            FunctionParameter = "hello"
+        }).ConfigureAwait(false).GetAwaiter().GetResult();
+        AddLog($"EvaluateFunction Result: {result}");
     }
 }
