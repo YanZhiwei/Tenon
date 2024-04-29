@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <OutputType>WinExe</OutputType>
+	  <TargetFramework>net8.0-windows</TargetFramework>
+	  <Nullable>enable</Nullable>
+	  <UseWindowsForms>true</UseWindowsForms>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PuppeteerSharp" Version="17.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Extensions\Tenon.Puppeteer.Extensions\Tenon.Puppeteer.Extensions.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructures\Windows\Tenon.Infra.Windows.ChromiumAccessibility\Tenon.Infra.Windows.ChromiumAccessibility.csproj" />
+    <ProjectReference Include="..\..\..\src\Infrastructures\Windows\Tenon.Infra.Windows.Form\Tenon.Infra.Windows.Form.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="tenon.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
