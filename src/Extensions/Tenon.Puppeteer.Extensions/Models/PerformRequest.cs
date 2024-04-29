@@ -7,4 +7,5 @@ public class PerformRequest<T>
     public T FunctionParameter { get; set; }
 
     public int IframeIndex { get; set; } = -1;
+
 }
