@@ -87,10 +87,7 @@ public partial class Form1 : Form
 
     private void button8_Click(object sender, EventArgs e)
     {
-        var pages = _browser.GetPagesAsync(new SearchPageOption()
-        {
-            Title = "google"
-        }).GetAwaiter().GetResult();
+        var pages = _browser.GetPagesByTitleAsync("google").GetAwaiter().GetResult();
         if (pages?.Any() ?? false)
         {
             foreach (var page in pages)
