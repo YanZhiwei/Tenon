@@ -31,7 +31,8 @@ public partial class Form1 : Form
             }).ConfigureAwait(false).GetAwaiter().GetResult();
         _page = _browser.NewPageAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         var result = _page.GoToAsync("http://www.google.com").ConfigureAwait(false).GetAwaiter().GetResult();
-        AddLog($"GoToAsync Result: {result}");
+        AddLog(
+            $"GoToAsync Result: {result},title:{_page.GetTitleAsync().ConfigureAwait(false).GetAwaiter().GetResult()}");
     }
 
     private void AddLog(string message)
@@ -65,5 +66,37 @@ public partial class Form1 : Form
             FunctionParameter = "hello"
         }).ConfigureAwait(false).GetAwaiter().GetResult();
         AddLog($"EvaluateFunction Result: {result}");
+    }
+
+    private void button5_Click(object sender, EventArgs e)
+    {
+        var result = _page.IsReadyAsync().GetAwaiter().GetResult();
+        AddLog($"IsReady Result: {result}");
+    }
+
+    private void button6_Click(object sender, EventArgs e)
+    {
+        var result = _page.IsActiveAsync().GetAwaiter().GetResult();
+        AddLog($"IsActive Result: {result}");
+    }
+
+    private void button7_Click(object sender, EventArgs e)
+    {
+        _page.BringToFrontAsync().GetAwaiter().GetResult();
+    }
+
+    private void button8_Click(object sender, EventArgs e)
+    {
+        var pages = _browser.GetPagesAsync(new SearchPageOption()
+        {
+            Title = "google"
+        }).GetAwaiter().GetResult();
+        if (pages?.Any() ?? false)
+        {
+            foreach (var page in pages)
+            {
+                AddLog($"search page:{page.GetTitleAsync().ConfigureAwait(false).GetAwaiter().GetResult()}");
+            }
+        }
     }
 }
