@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Puppeteer.Extensions", "Tenon.Puppeteer.Extensions.csproj", "{DEBB4A35-2207-4628-8FA7-F367890A462E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEBB4A35-2207-4628-8FA7-F367890A462E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEBB4A35-2207-4628-8FA7-F367890A462E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEBB4A35-2207-4628-8FA7-F367890A462E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEBB4A35-2207-4628-8FA7-F367890A462E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {667EDDB8-5252-41D6-A449-66803D10721C}
+	EndGlobalSection
+EndGlobal
