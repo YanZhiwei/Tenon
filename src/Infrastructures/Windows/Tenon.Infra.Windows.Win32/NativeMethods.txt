@@ -79,3 +79,4 @@ DwmGetWindowAttribute
 GetCursorPos
 WindowFromPoint
 GetParent
+GetClassName
