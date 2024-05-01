@@ -3,6 +3,8 @@ using Tenon.Infra.Windows.ChromiumAccessibility;
 using Tenon.Infra.Windows.Form.Common;
 using Tenon.Puppeteer.Extensions;
 using Tenon.Puppeteer.Extensions.Models;
+using Tenon.Windows.Puppeteer.Extensions;
+using Point = System.Drawing.Point;
 
 namespace PuppeteerSample;
 
@@ -22,7 +24,7 @@ public partial class Form1 : Form
 
     private void button1_Click(object sender, EventArgs e)
     {
-        _browser = Puppeteer.LaunchAsync(
+        _browser = PuppeteerPool.LaunchAsync(
             new LaunchOptions
             {
                 Headless = false,
@@ -92,8 +94,37 @@ public partial class Form1 : Form
         {
             foreach (var page in pages)
             {
-                AddLog($"search page:{page.GetTitleAsync().ConfigureAwait(false).GetAwaiter().GetResult()}");
+                AddLog($"search page title:{page.GetTitleAsync().ConfigureAwait(false).GetAwaiter().GetResult()}");
             }
         }
+    }
+
+    private void button9_Click(object sender, EventArgs e)
+    {
+        var pages = _browser.GetPagesByUrlAsync("https://www.google.com.hk/search?q*").GetAwaiter().GetResult();
+        if (pages?.Any() ?? false)
+        {
+            foreach (var page in pages)
+            {
+                AddLog($"search page url:{page.Url}");
+            }
+        }
+    }
+
+    private void button10_Click(object sender, EventArgs e)
+    {
+        Point point = new Point((int)numericUpDown1.Value, (int)numericUpDown2.Value);
+        IBrowser connectBrowser = WindowsPuppeteer.AttachToAsync(point).ConfigureAwait(false).GetAwaiter().GetResult();
+        if (connectBrowser != null)
+        {
+            AddLog($"from point:{point} connectBrowser succeeded.");
+            var page = _browser.NewPageAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            page.GoToAsync("https://twitter.com/home").ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+        else
+        {
+            AddLog($"from point:{point} connectBrowser failed.");
+        }
+
     }
 }

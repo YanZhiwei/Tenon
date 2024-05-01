@@ -136,7 +136,7 @@ public sealed class Window
     }
 
     /// <summary>
-    /// 获取一个窗口的边界矩形,该矩形包括了窗口本身的边界以及可能的装饰（例如标题栏、边框）和 DWM 添加的额外区域（例如阴影效果）。
+    ///     获取一个窗口的边界矩形,该矩形包括了窗口本身的边界以及可能的装饰（例如标题栏、边框）和 DWM 添加的额外区域（例如阴影效果）。
     /// </summary>
     /// <param name="intPtrHandle">窗口句柄的IntPtr。</param>
     /// <returns>窗口的边界矩形</returns>
@@ -149,7 +149,7 @@ public sealed class Window
         {
             var sizeOfRect = Marshal.SizeOf(typeof(RECT));
             CsWin32.PInvoke.DwmGetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS,
-                 &extendedFrameBounds, (uint)sizeOfRect);
+                &extendedFrameBounds, (uint)sizeOfRect);
 
             if (!extendedFrameBounds.IsEmpty)
                 return new Rectangle(extendedFrameBounds.left, extendedFrameBounds.top, extendedFrameBounds.Width,
@@ -157,5 +157,17 @@ public sealed class Window
         }
 
         return null;
+    }
+
+    public static IntPtr Get(Point point = default)
+    {
+        var posPoint = point != default ? point : CsWin32.PInvoke.GetCursorPos(out var p) ? p : default;
+        return GetTopWindowHandle(CsWin32.PInvoke.WindowFromPoint(posPoint));
+    }
+
+    private static IntPtr GetTopWindowHandle(IntPtr hWnd)
+    {
+        var parentHandle = CsWin32.PInvoke.GetParent(hWnd.ToHWnd());
+        return parentHandle == HWND.Null ? hWnd : GetTopWindowHandle(parentHandle);
     }
 }

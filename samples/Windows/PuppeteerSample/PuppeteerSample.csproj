@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Extensions\Tenon.Puppeteer.Extensions\Tenon.Puppeteer.Extensions.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\Tenon.Windows.Puppeteer.Extensions\Tenon.Windows.Puppeteer.Extensions.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructures\Windows\Tenon.Infra.Windows.ChromiumAccessibility\Tenon.Infra.Windows.ChromiumAccessibility.csproj" />
     <ProjectReference Include="..\..\..\src\Infrastructures\Windows\Tenon.Infra.Windows.Form\Tenon.Infra.Windows.Form.csproj" />
   </ItemGroup>
