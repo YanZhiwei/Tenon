@@ -216,7 +216,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Infra.Swagger", "Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Identity.Gateway", "..\templates\WebApiCleanArchitecture\CleanArchitecture.Identity.Gateway\CleanArchitecture.Identity.Gateway.csproj", "{952FFBE9-72E0-44F4-A31A-702E8C0123EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuppeteerSample", "..\samples\Windows\PuppeteerSample\PuppeteerSample.csproj", "{21E21CE4-7264-4390-BD2B-3DC3968F124E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuppeteerSample", "..\samples\Windows\PuppeteerSample\PuppeteerSample.csproj", "{21E21CE4-7264-4390-BD2B-3DC3968F124E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Windows.Puppeteer.Extensions", "Extensions\Tenon.Windows.Puppeteer.Extensions\Tenon.Windows.Puppeteer.Extensions.csproj", "{0C684CE4-FF78-4AEC-B948-93FF2B3B99A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32Sample", "..\samples\Windows\Win32Sample\Win32Sample.csproj", "{730F3C7B-4C9C-4315-87CD-581885E84FC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -568,6 +572,14 @@ Global
 		{21E21CE4-7264-4390-BD2B-3DC3968F124E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21E21CE4-7264-4390-BD2B-3DC3968F124E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21E21CE4-7264-4390-BD2B-3DC3968F124E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C684CE4-FF78-4AEC-B948-93FF2B3B99A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C684CE4-FF78-4AEC-B948-93FF2B3B99A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C684CE4-FF78-4AEC-B948-93FF2B3B99A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C684CE4-FF78-4AEC-B948-93FF2B3B99A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{730F3C7B-4C9C-4315-87CD-581885E84FC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{730F3C7B-4C9C-4315-87CD-581885E84FC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{730F3C7B-4C9C-4315-87CD-581885E84FC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{730F3C7B-4C9C-4315-87CD-581885E84FC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -646,6 +658,8 @@ Global
 		{CC485B42-BF40-4041-B3FD-E43969B7823D} = {379B9552-4579-4BFD-A50E-F123587A91AE}
 		{952FFBE9-72E0-44F4-A31A-702E8C0123EB} = {340CE2E4-0FF5-48EE-87E5-171BB4E0382C}
 		{21E21CE4-7264-4390-BD2B-3DC3968F124E} = {1F3E1BC7-395D-4D77-8657-FC552AC852AF}
+		{0C684CE4-FF78-4AEC-B948-93FF2B3B99A8} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
+		{730F3C7B-4C9C-4315-87CD-581885E84FC0} = {1F3E1BC7-395D-4D77-8657-FC552AC852AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}

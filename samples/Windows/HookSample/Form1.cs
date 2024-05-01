@@ -1,4 +1,5 @@
 using Tenon.Infra.Windows.Form.Common;
+using Tenon.Infra.Windows.Win32;
 using Tenon.Infra.Windows.Win32.Hooks;
 
 namespace HookSample;
@@ -51,9 +52,11 @@ public partial class Form1 : Form
 
     private void MouseHook_Click(object? sender, MouseEventArgs e)
     {
+        var windowHandle = Window.Get(e.Location);
         lsOutput.UIThread(ls =>
             ls.AddItemSelected(
-                $"[{DateTime.Now.ToShortDateString()}] MouseHook x:{e.X},x:{e.Y},Button:{e.Button.ToString()},Clicks:{e.Clicks}"));
+                $"[{DateTime.Now.ToShortDateString()}] MouseHook x:{e.X},x:{e.Y},WindowHandle:{windowHandle},Button:{e.Button.ToString()},Clicks:{e.Clicks}"));
+
     }
 
     private void button4_Click(object sender, EventArgs e)

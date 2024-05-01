@@ -5,11 +5,6 @@ namespace Tenon.Puppeteer.Extensions;
 
 public static class BrowserExtension
 {
-    public static async Task<IPage> AttachToAsync(this IBrowser browser, Point point)
-    {
-        return await Task.FromResult<IPage>(null);
-    }
-
     public static async Task<IPage?> GetActivePageAsync(this IBrowser browser)
     {
         CheckBrowser(browser);
@@ -90,5 +85,13 @@ public static class BrowserExtension
         }
 
         return null;
+    }
+
+    public static string GetKeyId(this IBrowser browser)
+    {
+        CheckBrowser(browser);
+        var webSocketEndpoint = browser.WebSocketEndpoint;
+        var lastSlashIndex = webSocketEndpoint.LastIndexOf('/');
+        return webSocketEndpoint.Substring(lastSlashIndex + 1);
     }
 }

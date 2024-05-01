@@ -30,6 +30,11 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            numericUpDown2 = new NumericUpDown();
+            numericUpDown1 = new NumericUpDown();
+            button10 = new Button();
+            button9 = new Button();
+            button8 = new Button();
             button2 = new Button();
             button1 = new Button();
             tabPage2 = new TabPage();
@@ -39,9 +44,10 @@
             button4 = new Button();
             button3 = new Button();
             listBox1 = new ListBox();
-            button8 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             tabPage2.SuspendLayout();
             SuspendLayout();
             // 
@@ -57,6 +63,10 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(numericUpDown2);
+            tabPage1.Controls.Add(numericUpDown1);
+            tabPage1.Controls.Add(button10);
+            tabPage1.Controls.Add(button9);
             tabPage1.Controls.Add(button8);
             tabPage1.Controls.Add(button2);
             tabPage1.Controls.Add(button1);
@@ -67,6 +77,56 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Browser ";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown2
+            // 
+            numericUpDown2.Location = new Point(96, 93);
+            numericUpDown2.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown2.Minimum = new decimal(new int[] { 10000, 0, 0, int.MinValue });
+            numericUpDown2.Name = "numericUpDown2";
+            numericUpDown2.Size = new Size(60, 23);
+            numericUpDown2.TabIndex = 6;
+            numericUpDown2.Value = new decimal(new int[] { 436, 0, 0, 0 });
+            // 
+            // numericUpDown1
+            // 
+            numericUpDown1.Location = new Point(30, 93);
+            numericUpDown1.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown1.Minimum = new decimal(new int[] { 10000, 0, 0, int.MinValue });
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(60, 23);
+            numericUpDown1.TabIndex = 5;
+            numericUpDown1.Value = new decimal(new int[] { 1819, 0, 0, int.MinValue });
+            // 
+            // button10
+            // 
+            button10.Location = new Point(162, 93);
+            button10.Name = "button10";
+            button10.Size = new Size(75, 23);
+            button10.TabIndex = 4;
+            button10.Text = "AttachTo";
+            button10.UseVisualStyleBackColor = true;
+            button10.Click += button10_Click;
+            // 
+            // button9
+            // 
+            button9.Location = new Point(360, 38);
+            button9.Name = "button9";
+            button9.Size = new Size(117, 23);
+            button9.TabIndex = 3;
+            button9.Text = "GetPagesByUrl";
+            button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click;
+            // 
+            // button8
+            // 
+            button8.Location = new Point(226, 38);
+            button8.Name = "button8";
+            button8.Size = new Size(117, 23);
+            button8.TabIndex = 2;
+            button8.Text = "GetPagesByTitle";
+            button8.UseVisualStyleBackColor = true;
+            button8.Click += button8_Click;
             // 
             // button2
             // 
@@ -161,16 +221,6 @@
             listBox1.Size = new Size(792, 140);
             listBox1.TabIndex = 2;
             // 
-            // button8
-            // 
-            button8.Location = new Point(226, 38);
-            button8.Name = "button8";
-            button8.Size = new Size(75, 23);
-            button8.TabIndex = 2;
-            button8.Text = "GetPages";
-            button8.UseVisualStyleBackColor = true;
-            button8.Click += button8_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -183,6 +233,8 @@
             Text = "Form1";
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             tabPage2.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -200,6 +252,10 @@
         private Button button3;
         private Button button6;
         private Button button7;
+        private Button button9;
+        private Button button10;
         private Button button8;
+        private NumericUpDown numericUpDown2;
+        private NumericUpDown numericUpDown1;
     }
 }
