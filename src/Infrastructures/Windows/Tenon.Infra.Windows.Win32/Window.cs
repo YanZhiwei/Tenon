@@ -165,9 +165,30 @@ public sealed class Window
         return GetTopWindowHandle(CsWin32.PInvoke.WindowFromPoint(posPoint));
     }
 
+    /// <summary>
+    /// 用于获取指定窗口的类名
+    /// </summary>
+    /// <param name="intPtrHandle">窗口的句柄</param>
+    /// <returns>窗口的类名</returns>
+    public static string GetClassName(IntPtr intPtrHandle)
+    {
+        var hWnd = intPtrHandle.ToHWnd();
+        if (hWnd == IntPtr.Zero || hWnd.IsNull) return string.Empty;
+        var nMaxCount = 256;
+        unsafe
+        {
+            fixed (char* lpClassNameChars = new char[nMaxCount])
+            {
+                var lpClassName = new PWSTR(lpClassNameChars);
+                var length = CsWin32.PInvoke.GetClassName(hWnd, lpClassName, nMaxCount);
+                return length > 0 ? lpClassName.ToString() : string.Empty;
+            }
+        }
+    }
+
     private static IntPtr GetTopWindowHandle(IntPtr hWnd)
     {
         var parentHandle = CsWin32.PInvoke.GetParent(hWnd.ToHWnd());
-        return parentHandle == HWND.Null ? hWnd : GetTopWindowHandle(parentHandle);
+        return (IntPtr)parentHandle == IntPtr.Zero ? hWnd : GetTopWindowHandle(parentHandle);
     }
 }
