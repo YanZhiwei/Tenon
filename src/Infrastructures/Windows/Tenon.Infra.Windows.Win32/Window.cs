@@ -189,6 +189,6 @@ public sealed class Window
     private static IntPtr GetTopWindowHandle(IntPtr hWnd)
     {
         var parentHandle = CsWin32.PInvoke.GetParent(hWnd.ToHWnd());
-        return (IntPtr)parentHandle == IntPtr.Zero ? hWnd : GetTopWindowHandle(parentHandle);
+        return parentHandle == HWND.Null ? hWnd : GetTopWindowHandle(parentHandle);
     }
 }
