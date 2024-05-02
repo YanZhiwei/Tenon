@@ -1,6 +1,7 @@
 using Tenon.Infra.Windows.Form.Common;
 using Tenon.Infra.Windows.Win32;
 using Tenon.Infra.Windows.Win32.Hooks;
+using Process = System.Diagnostics.Process;
 
 namespace HookSample;
 
@@ -52,9 +53,19 @@ public partial class Form1 : Form
 
     private void MouseHook_Click(object? sender, MouseEventArgs e)
     {
-        var windowHandle = Window.Get(e.Location);
+        var windowHandle = Window.GetTop(e.Location);
         AddLog($"Windows hWnd:{windowHandle}");
-        if (windowHandle != IntPtr.Zero) AddLog($"Windows className:{Window.GetClassName(windowHandle)}");
+        if (windowHandle != IntPtr.Zero)
+        {
+            AddLog($"Windows className:{Window.GetClassName(windowHandle)}");
+            var processId = Window.GetProcessId(windowHandle);
+            if (processId != IntPtr.Zero)
+            {
+                var process = Process.GetProcessById((int)processId);
+                AddLog($"Windows processId:{processId} name:{process.ProcessName}");
+            }
+
+        }
 
         //AddLog(
         //    $"[{DateTime.Now.ToShortDateString()}] MouseHook x:{e.X},x:{e.Y},Button:{e.Button.ToString()},Clicks:{e.Clicks}");

@@ -159,14 +159,33 @@ public sealed class Window
         return null;
     }
 
-    public static IntPtr Get(Point point = default)
+    public static IntPtr GetTop(Point point = default)
     {
         var posPoint = point != default ? point : CsWin32.PInvoke.GetCursorPos(out var p) ? p : default;
         return GetTopWindowHandle(CsWin32.PInvoke.WindowFromPoint(posPoint));
     }
 
+    public static IntPtr Get(Point point = default)
+    {
+        var posPoint = point != default ? point : CsWin32.PInvoke.GetCursorPos(out var p) ? p : default;
+        return CsWin32.PInvoke.WindowFromPoint(posPoint);
+    }
+
+    public static IntPtr GetProcessId(IntPtr intPtrHandle)
+    {
+        var hWnd = intPtrHandle.ToHWnd();
+        if (hWnd == IntPtr.Zero || hWnd.IsNull) return IntPtr.Zero;
+        uint processId = 0;
+        unsafe
+        {
+            var processIdPtr = &processId;
+            var threadId = CsWin32.PInvoke.GetWindowThreadProcessId(hWnd, processIdPtr);
+            return (IntPtr)(*processIdPtr);
+        }
+    }
+
     /// <summary>
-    /// 用于获取指定窗口的类名
+    ///     用于获取指定窗口的类名
     /// </summary>
     /// <param name="intPtrHandle">窗口的句柄</param>
     /// <returns>窗口的类名</returns>
