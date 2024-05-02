@@ -11,7 +11,7 @@ public static class WindowsPuppeteer
     public static async Task<IBrowser?> AttachToAsync(Point point, ILoggerFactory? loggerFactory = null)
     {
         if (point.IsEmpty) return null;
-        var mainWindowHandle = Window.Get(point);
+        var mainWindowHandle = Window.GetTop(point);
         if (mainWindowHandle == IntPtr.Zero) return null;
         var puppeteer = PuppeteerPool.RunningPuppeteers.FirstOrDefault(p => p.MainWindowHandle == mainWindowHandle);
         if (puppeteer == null) return null;
