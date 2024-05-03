@@ -21,7 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="tenon.js">
+    <None Update="Script\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Script\tenon.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Script\tenonplugin.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

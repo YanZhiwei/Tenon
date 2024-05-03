@@ -1,3 +1,4 @@
+using PuppeteerSample.Request;
 using PuppeteerSharp;
 using Tenon.Infra.Windows.ChromiumAccessibility;
 using Tenon.Infra.Windows.Form.Common;
@@ -49,7 +50,7 @@ public partial class Form1 : Form
 
     private void button3_Click(object sender, EventArgs e)
     {
-        var script = File.ReadAllText("tenon.js");
+        var script = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Script", "tenon.js"));
         var result = _page.InjectScriptTagAsync(new AddTagOptions
         {
             Id = "formartStr",
@@ -62,7 +63,7 @@ public partial class Form1 : Form
     {
         //var output = _page.EvaluateExpressionAsync<string>("formartStr('hello')").ConfigureAwait(false).GetAwaiter()
         //    .GetResult();
-        var result = _page.EvaluateFunctionAsync(new PerformRequest<string>
+        var result = _page.EvaluateExpressionAsync(new PerformRequest<string>
         {
             FunctionName = "formartStr",
             FunctionParameter = "hello"
@@ -126,5 +127,33 @@ public partial class Form1 : Form
             AddLog($"from point:{point} connectBrowser failed.");
         }
 
+    }
+
+    private void button11_Click(object sender, EventArgs e)
+    {
+        var script = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Script", "tenonplugin.js"));
+        var result = _page.InjectScriptTagAsync(new AddTagOptions
+        {
+            Id = "tenon_call_plugin",
+            Content = script
+        }).ConfigureAwait(false).GetAwaiter().GetResult();
+        AddLog($"Inject plugin script Result:{result}");
+    }
+
+    private void button12_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var result = _page.EvaluateFunctionAsync(new PluginPerformRequest<string>
+            {
+                FunctionName = "pingTabPlugin",
+                FunctionParameter = "hello"
+            }).ConfigureAwait(false).GetAwaiter().GetResult();
+            AddLog($"EvaluateFunction Result: {result}");
+        }
+        catch (Exception ex)
+        {
+            AddLog($"EvaluateFunction failed,error: {ex.Message}");
+        }
     }
 }
