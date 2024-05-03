@@ -38,6 +38,8 @@
             button2 = new Button();
             button1 = new Button();
             tabPage2 = new TabPage();
+            button12 = new Button();
+            button11 = new Button();
             button7 = new Button();
             button6 = new Button();
             button5 = new Button();
@@ -150,6 +152,8 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(button12);
+            tabPage2.Controls.Add(button11);
             tabPage2.Controls.Add(button7);
             tabPage2.Controls.Add(button6);
             tabPage2.Controls.Add(button5);
@@ -161,6 +165,26 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Page";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button12
+            // 
+            button12.Location = new Point(169, 65);
+            button12.Name = "button12";
+            button12.Size = new Size(145, 23);
+            button12.TabIndex = 10;
+            button12.Text = "EvaluateFunction";
+            button12.UseVisualStyleBackColor = true;
+            button12.Click += button12_Click;
+            // 
+            // button11
+            // 
+            button11.Location = new Point(8, 65);
+            button11.Name = "button11";
+            button11.Size = new Size(155, 23);
+            button11.TabIndex = 9;
+            button11.Text = "Inject Plugin Script";
+            button11.UseVisualStyleBackColor = true;
+            button11.Click += button11_Click;
             // 
             // button7
             // 
@@ -198,7 +222,7 @@
             button4.Name = "button4";
             button4.Size = new Size(145, 23);
             button4.TabIndex = 5;
-            button4.Text = "EvaluateFunction";
+            button4.Text = "EvaluateExpression";
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
             // 
@@ -208,7 +232,7 @@
             button3.Name = "button3";
             button3.Size = new Size(155, 23);
             button3.TabIndex = 4;
-            button3.Text = "InjectScriptTag";
+            button3.Text = "InjectScript";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
@@ -257,5 +281,7 @@
         private Button button8;
         private NumericUpDown numericUpDown2;
         private NumericUpDown numericUpDown1;
+        private Button button11;
+        private Button button12;
     }
 }

@@ -1,20 +1,10 @@
-﻿using System.Text;
-using PuppeteerSharp;
+﻿using PuppeteerSharp;
 using Tenon.Puppeteer.Extensions.Models;
-using Tenon.Serialization.Abstractions;
-using Tenon.Serialization.Json;
 
 namespace Tenon.Puppeteer.Extensions;
 
 public static class PageExtension
 {
-    private static readonly ISerializer Serializer;
-
-    static PageExtension()
-    {
-        Serializer = new SystemTextJsonSerializer();
-    }
-
     public static string GetPageId(this Page page)
     {
         CheckPage(page);
@@ -42,17 +32,23 @@ public static class PageExtension
             throw new NullReferenceException(nameof(page));
     }
 
-    public static async Task<string> EvaluateFunctionAsync<TReq>(this IPage page,
+    public static async Task<string> EvaluateExpressionAsync<TReq>(this IPage page,
         PerformRequest<TReq> request)
     {
         CheckPage(page);
-        var evaluateScript = new StringBuilder();
-        evaluateScript.Append(request.FunctionName);
-        evaluateScript.Append("('");
-        evaluateScript.AppendFormat($"{Serializer.SerializeObject(request.FunctionParameter)}");
-        evaluateScript.Append("')");
+        var evaluateScript = request.GenerateScript();
         var evaluateResult =
-            await page.EvaluateExpressionAsync<string>(evaluateScript.ToString()).ConfigureAwait(false);
+            await page.EvaluateExpressionAsync<string>(evaluateScript).ConfigureAwait(false);
+        return evaluateResult;
+    }
+
+    public static async Task<dynamic> EvaluateFunctionAsync<TReq>(this IPage page,
+        PerformRequest<TReq> request)
+    {
+        CheckPage(page);
+        var evaluateScript = request.GenerateScript();
+        var evaluateResult =
+            await page.EvaluateFunctionAsync<dynamic>(evaluateScript).ConfigureAwait(false);
         return evaluateResult;
     }
 
