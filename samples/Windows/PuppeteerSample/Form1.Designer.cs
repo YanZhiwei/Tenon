@@ -38,6 +38,7 @@
             button2 = new Button();
             button1 = new Button();
             tabPage2 = new TabPage();
+            button13 = new Button();
             button12 = new Button();
             button11 = new Button();
             button7 = new Button();
@@ -46,6 +47,8 @@
             button4 = new Button();
             button3 = new Button();
             listBox1 = new ListBox();
+            button14 = new Button();
+            textBox1 = new TextBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
@@ -152,6 +155,9 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(textBox1);
+            tabPage2.Controls.Add(button14);
+            tabPage2.Controls.Add(button13);
             tabPage2.Controls.Add(button12);
             tabPage2.Controls.Add(button11);
             tabPage2.Controls.Add(button7);
@@ -165,6 +171,16 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Page";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button13
+            // 
+            button13.Location = new Point(327, 67);
+            button13.Name = "button13";
+            button13.Size = new Size(150, 23);
+            button13.TabIndex = 11;
+            button13.Text = "ElementFromPoint";
+            button13.UseVisualStyleBackColor = true;
+            button13.Click += button13_Click;
             // 
             // button12
             // 
@@ -245,6 +261,23 @@
             listBox1.Size = new Size(792, 140);
             listBox1.TabIndex = 2;
             // 
+            // button14
+            // 
+            button14.Location = new Point(169, 94);
+            button14.Name = "button14";
+            button14.Size = new Size(150, 23);
+            button14.TabIndex = 12;
+            button14.Text = "getElementRect";
+            button14.UseVisualStyleBackColor = true;
+            button14.Click += button14_Click;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(8, 94);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(155, 23);
+            textBox1.TabIndex = 13;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -260,6 +293,7 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             tabPage2.ResumeLayout(false);
+            tabPage2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -283,5 +317,8 @@
         private NumericUpDown numericUpDown1;
         private Button button11;
         private Button button12;
+        private Button button13;
+        private Button button14;
+        private TextBox textBox1;
     }
 }

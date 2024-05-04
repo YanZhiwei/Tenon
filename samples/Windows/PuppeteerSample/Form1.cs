@@ -33,7 +33,7 @@ public partial class Form1 : Form
                 DefaultViewport = null
             }).ConfigureAwait(false).GetAwaiter().GetResult();
         _page = _browser.NewPageAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-        var result = _page.GoToAsync("http://www.google.com").ConfigureAwait(false).GetAwaiter().GetResult();
+        var result = _page.GoToAsync("http://www.baidu.com").ConfigureAwait(false).GetAwaiter().GetResult();
         AddLog(
             $"GoToAsync Result: {result},title:{_page.GetTitleAsync().ConfigureAwait(false).GetAwaiter().GetResult()}");
     }
@@ -146,14 +146,53 @@ public partial class Form1 : Form
         {
             var result = _page.EvaluateFunctionAsync(new PluginPerformRequest<string>
             {
-                FunctionName = "pingTabPlugin",
+                FunctionName = "pingTab",
                 FunctionParameter = "hello"
             }).ConfigureAwait(false).GetAwaiter().GetResult();
-            AddLog($"EvaluateFunction Result: {result}");
+            AddLog($"pingTab Result: {result}");
         }
         catch (Exception ex)
         {
-            AddLog($"EvaluateFunction failed,error: {ex.Message}");
+            AddLog($"pingTab failed,error: {ex.Message}");
+        }
+    }
+
+    private void button13_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var result = _page.EvaluateFunctionAsync(new PluginPerformRequest<Point>
+            {
+                FunctionName = "elementFromPoint",
+                FunctionParameter = new Point()
+                {
+                    Y = 335,
+                    X = 1200
+                }
+            }).ConfigureAwait(false).GetAwaiter().GetResult();
+            this.textBox1.UIBeginThread(txt => txt.Text = result.ToString());
+            AddLog($"elementFromPoint Result: {result}");
+        }
+        catch (Exception ex)
+        {
+            AddLog($"elementFromPoint failed,error: {ex.Message}");
+        }
+    }
+
+    private void button14_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var result = _page.EvaluateFunctionAsync(new PluginPerformRequest<string>
+            {
+                FunctionName = "getElementRect",
+                FunctionParameter = this.textBox1.Text.Trim()
+            }).ConfigureAwait(false).GetAwaiter().GetResult();
+            AddLog($"getElementRect Result: {result}");
+        }
+        catch (Exception ex)
+        {
+            AddLog($"getElementRect failed,error: {ex.Message}");
         }
     }
 }
