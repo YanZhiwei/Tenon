@@ -64,6 +64,7 @@ window.tenon_pluginsMap = {
       return null;
     }
     const rect = elem.getBoundingClientRect();
+    window.tenon_pluginsMap.drawRect(rect);
     return {
       left: rect.left,
       top: rect.top,
@@ -99,6 +100,21 @@ window.tenon_pluginsMap = {
     return {
       zoom: window.devicePixelRatio,
     };
+  },
+  drawRect: function (rect) {
+    const { left, top, width, height } = rect;
+    const rectDiv = document.createElement("div");
+    rectDiv.style.position = "fixed";
+    rectDiv.style.left = left + "px";
+    rectDiv.style.top = top + "px";
+    rectDiv.style.width = width + "px";
+    rectDiv.style.height = height + "px";
+    rectDiv.style.border = "2px solid red";
+    rectDiv.style.zIndex = 9999;
+    document.body.appendChild(rectDiv);
+    setTimeout(() => {
+      document.body.removeChild(rectDiv);
+    }, 10000);
   },
 };
 
