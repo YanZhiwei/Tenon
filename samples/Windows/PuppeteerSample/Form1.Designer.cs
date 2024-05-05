@@ -38,6 +38,9 @@
             button2 = new Button();
             button1 = new Button();
             tabPage2 = new TabPage();
+            comboBox1 = new ComboBox();
+            textBox1 = new TextBox();
+            button14 = new Button();
             button13 = new Button();
             button12 = new Button();
             button11 = new Button();
@@ -47,8 +50,6 @@
             button4 = new Button();
             button3 = new Button();
             listBox1 = new ListBox();
-            button14 = new Button();
-            textBox1 = new TextBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
@@ -155,6 +156,7 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(comboBox1);
             tabPage2.Controls.Add(textBox1);
             tabPage2.Controls.Add(button14);
             tabPage2.Controls.Add(button13);
@@ -172,9 +174,36 @@
             tabPage2.Text = "Page";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "http://www.baidu.com", "https://seleniumbase.io/w3schools/iframes" });
+            comboBox1.Location = new Point(3, 94);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(245, 25);
+            comboBox1.TabIndex = 14;
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(410, 94);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(155, 23);
+            textBox1.TabIndex = 13;
+            // 
+            // button14
+            // 
+            button14.Location = new Point(571, 94);
+            button14.Name = "button14";
+            button14.Size = new Size(150, 23);
+            button14.TabIndex = 12;
+            button14.Text = "getElementRect";
+            button14.UseVisualStyleBackColor = true;
+            button14.Click += button14_Click;
+            // 
             // button13
             // 
-            button13.Location = new Point(327, 67);
+            button13.Location = new Point(254, 94);
             button13.Name = "button13";
             button13.Size = new Size(150, 23);
             button13.TabIndex = 11;
@@ -261,23 +290,6 @@
             listBox1.Size = new Size(792, 140);
             listBox1.TabIndex = 2;
             // 
-            // button14
-            // 
-            button14.Location = new Point(169, 94);
-            button14.Name = "button14";
-            button14.Size = new Size(150, 23);
-            button14.TabIndex = 12;
-            button14.Text = "getElementRect";
-            button14.UseVisualStyleBackColor = true;
-            button14.Click += button14_Click;
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(8, 94);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(155, 23);
-            textBox1.TabIndex = 13;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -288,6 +300,7 @@
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
+            Load += Form1_Load;
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
@@ -320,5 +333,6 @@
         private Button button13;
         private Button button14;
         private TextBox textBox1;
+        private ComboBox comboBox1;
     }
 }

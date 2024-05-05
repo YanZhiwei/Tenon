@@ -59,101 +59,20 @@ window.tenon_pluginsMap = {
     return window.tenon_pluginsMap.setCustomId(foundElem);
   },
   getElementRect: function (customId) {
-    const elem = window.tenon_pluginsMap.getElementByCustomIdInFrames(
-      customId,
-      document
-    );
+    const elem = window.document.querySelector('[customid="' + customId + '"]');
     if (!elem) {
       console.log(`Element:${customId} not found`);
       return null;
     }
-    const frame = window.tenon_pluginsMap.getFrameByCustomId(
-      customId,
-      document
-    );
-    if (!frame) {
-      console.log(`Frame:${customId} not found`);
-    }
-    let frameLeft = 0,
-      frameTop = 0;
-    if (frame) {
-      const frameRect = frame.getBoundingClientRect();
-      frameLeft = frameRect.left;
-      frameTop = frameRect.top;
-      console.log(`frameRect:left:${frameRect.left},top:${frameRect.top}`);
-    }
     const rect = elem.getBoundingClientRect();
-    // var finalRect = {
-    //   left: frameLeft - rect.left,
-    //   top: frameTop - rect.top,
-    //   width: rect.width,
-    //   height: rect.height,
-    // };
-    console.log(
-      `rect:left:${rect.left},top:${rect.top},width:${rect.width},height:${rect.height}}`
-    );
     const finalRect = {
-      left: frameLeft + rect.left,
-      top: frameTop + rect.height,
-      width: rect.width,
-      height: rect.height,
+      left: Math.round(rect.left),
+      top: Math.round(rect.top),
+      width: Math.round(rect.width),
+      height: Math.round(rect.height),
     };
-    console.log(
-      `rect:left:${finalRect.left},top:${finalRect.top},width:${finalRect.width},height:${finalRect.height}}`
-    );
     window.tenon_pluginsMap.drawRect(finalRect);
     return finalRect;
-  },
-  getElementClientCssRectangle: function (elem, doc) {
-    const htmlRc = elem.getBoundingClientRect();
-    let rect = {
-      left: htmlRc.left,
-      top: htmlRc.top,
-      width: htmlRc.width,
-      height: htmlRc.height,
-    };
-  },
-  getElementByCustomIdInFrames: function (customId, doc) {
-    var element = doc.querySelector('[customid="' + customId + '"]');
-    if (element) {
-      return element;
-    } else {
-      var iframes = doc.querySelectorAll("iframe");
-      for (var i = 0; i < iframes.length; i++) {
-        var iframeDoc =
-          iframes[i].contentDocument || iframes[i].contentWindow.document;
-        var elementInFrame =
-          window.tenon_pluginsMap.getElementByCustomIdInFrames(
-            customId,
-            iframeDoc
-          );
-        if (elementInFrame) {
-          return elementInFrame;
-        }
-      }
-    }
-    return null;
-  },
-  getFrameByCustomId: function (customId, doc) {
-    var element = doc.querySelector('[customid="' + customId + '"]');
-    if (element) {
-      return null;
-    } else {
-      var iframes = doc.querySelectorAll("iframe");
-      for (var i = 0; i < iframes.length; i++) {
-        var iframeDoc =
-          iframes[i].contentDocument || iframes[i].contentWindow.document;
-        var elementInFrame =
-          window.tenon_pluginsMap.getElementByCustomIdInFrames(
-            customId,
-            iframeDoc
-          );
-        if (elementInFrame) {
-          return iframes[i];
-        }
-      }
-    }
-    return null;
   },
   setCustomId: function (elem) {
     let customId = elem.getAttribute("customid");
@@ -197,7 +116,7 @@ window.tenon_pluginsMap = {
     document.body.appendChild(rectDiv);
     setTimeout(() => {
       document.body.removeChild(rectDiv);
-    }, 10000);
+    }, 5000);
   },
 };
 
