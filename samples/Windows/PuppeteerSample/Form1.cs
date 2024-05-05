@@ -33,7 +33,7 @@ public partial class Form1 : Form
                 DefaultViewport = null
             }).ConfigureAwait(false).GetAwaiter().GetResult();
         _page = _browser.NewPageAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-        var result = _page.GoToAsync("http://www.baidu.com").ConfigureAwait(false).GetAwaiter().GetResult();
+        var result = _page.GoToAsync("https://seleniumbase.io/w3schools/iframes").ConfigureAwait(false).GetAwaiter().GetResult();
         AddLog(
             $"GoToAsync Result: {result},title:{_page.GetTitleAsync().ConfigureAwait(false).GetAwaiter().GetResult()}");
     }
@@ -166,8 +166,8 @@ public partial class Form1 : Form
                 FunctionName = "elementFromPoint",
                 FunctionParameter = new Point()
                 {
-                    Y = 335,
-                    X = 1200
+                    Y = 191,
+                    X = 1425
                 }
             }).ConfigureAwait(false).GetAwaiter().GetResult();
             this.textBox1.UIBeginThread(txt => txt.Text = result.ToString());
