@@ -1,3 +1,12 @@
+// import { elementFromPointResult } from "./result/elementFromPointResult";
+
+class elementFromPointResult {
+  constructor(customId, iframeIds) {
+    this.customId = customId;
+    this.iframeIds = iframeIds;
+  }
+}
+
 window.tenon_pluginsMap = {
   pingTab: function (param) {
     /*      console.log("Plugin called with parameter: " + param)*/
@@ -56,7 +65,10 @@ window.tenon_pluginsMap = {
       if (frameWidthLessThanElem || frameHeightLessThanElem)
         foundElem = lastFrame;
     }
-    return window.tenon_pluginsMap.setCustomId(foundElem);
+    let customId = window.tenon_pluginsMap.setCustomId(foundElem);
+    var iframestack = [];
+    iframestack.push(1);
+    return new elementFromPointResult(customId, iframestack);
   },
   getElementRect: function (customId) {
     const elem = window.document.querySelector('[customid="' + customId + '"]');
