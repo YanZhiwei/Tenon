@@ -15,12 +15,24 @@ public partial class Form1 : Form
 
     private IBrowser _browser;
     private IPage _page;
-
+    private readonly Dictionary<string, Point> _elecFromPoints = new();
     public Form1()
     {
         InitializeComponent();
         _chromeAccessibility = new ChromeAccessibility();
         _chromeAccessibility.Detect();
+
+        _elecFromPoints.Add("http://www.baidu.com", new Point()
+        {
+            Y = 335,
+            X = 1200
+        });
+        _elecFromPoints.Add("https://seleniumbase.io/w3schools/iframes", new Point()
+        {
+            Y = 191,
+            X = 1425
+        });
+        _elecfromPoint = _elecFromPoints["http://www.baidu.com"];
     }
 
     private void button1_Click(object sender, EventArgs e)
@@ -33,7 +45,7 @@ public partial class Form1 : Form
                 DefaultViewport = null
             }).ConfigureAwait(false).GetAwaiter().GetResult();
         _page = _browser.NewPageAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-        var result = _page.GoToAsync("https://seleniumbase.io/w3schools/iframes").ConfigureAwait(false).GetAwaiter().GetResult();
+        var result = _page.GoToAsync("https://www.baidu.com").ConfigureAwait(false).GetAwaiter().GetResult();
         AddLog(
             $"GoToAsync Result: {result},title:{_page.GetTitleAsync().ConfigureAwait(false).GetAwaiter().GetResult()}");
     }
@@ -164,13 +176,9 @@ public partial class Form1 : Form
             var result = _page.EvaluateFunctionAsync(new PluginPerformRequest<Point>
             {
                 FunctionName = "elementFromPoint",
-                FunctionParameter = new Point()
-                {
-                    Y = 191,
-                    X = 1425
-                }
+                FunctionParameter = _elecfromPoint
             }).ConfigureAwait(false).GetAwaiter().GetResult();
-            this.textBox1.UIBeginThread(txt => txt.Text = result.ToString());
+            this.textBox1.UIBeginThread(txt => txt.Text = result["result"].ToString());
             AddLog($"elementFromPoint Result: {result}");
         }
         catch (Exception ex)
@@ -194,5 +202,22 @@ public partial class Form1 : Form
         {
             AddLog($"getElementRect failed,error: {ex.Message}");
         }
+    }
+
+    private Point _elecfromPoint;
+    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ComboBox comboBox = sender as ComboBox;
+        var key = comboBox.SelectedItem?.ToString();
+        if (key != null && _page != null)
+        {
+            _page.GoToAsync(key).ConfigureAwait(false).GetAwaiter().GetResult();
+            _elecfromPoint = _elecFromPoints[key];
+        }
+    }
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
+        comboBox1.SelectedIndex = 0;
     }
 }
