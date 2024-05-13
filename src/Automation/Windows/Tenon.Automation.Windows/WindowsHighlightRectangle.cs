@@ -7,15 +7,36 @@ namespace Tenon.Automation.Windows;
 public sealed class WindowsHighlightRectangle : IHighlightRectangle
 {
     private readonly HighlightForm _bottomForm = new();
+    private readonly int _highlightLabelWidth = 30;
     private readonly int _highlightLineWidth = 3;
     private readonly HighlightForm _leftForm = new();
 
     private readonly ConcurrentStack<MouseEventArgs> _mouseMoveQueue = new();
     private readonly HighlightForm _rightForm = new();
     private readonly HighlightForm _topForm = new();
+    private readonly LabelHighlightForm _topLabelForm = new();
 
     public void SetLocation(Rectangle location)
     {
+        if (location.Y > _highlightLabelWidth)
+            _topLabelForm.SetLocation(new Rectangle
+            {
+                X = location.Left,
+                Y = location.Top - _highlightLabelWidth,
+                Width = location.Width + 2 * _highlightLabelWidth,
+                Height = _highlightLabelWidth
+            });
+        else
+        {
+            _topLabelForm.SetLocation(new Rectangle
+            {
+                X = location.Left - _highlightLabelWidth,
+                Y = location.Top + location.Height,
+                Width = location.Width + 2 * _highlightLabelWidth,
+                Height = _highlightLabelWidth
+            });
+        }
+
         _leftForm.SetLocation(new Rectangle
         {
             X = location.Left - _highlightLineWidth,
@@ -50,6 +71,7 @@ public sealed class WindowsHighlightRectangle : IHighlightRectangle
     public void Show()
     {
         _leftForm.UIBeginThread(c => c.Visible = true);
+        _topLabelForm.UIBeginThread(c => c.Visible = true);
         _topForm.UIBeginThread(c => c.Visible = true);
         _rightForm.UIBeginThread(c => c.Visible = true);
         _bottomForm.UIBeginThread(c => c.Visible = true);
@@ -58,6 +80,7 @@ public sealed class WindowsHighlightRectangle : IHighlightRectangle
     public void Hide()
     {
         _leftForm.UIBeginThread(c => c.Visible = false);
+        _topLabelForm.UIBeginThread(c => c.Visible = false);
         _topForm.UIBeginThread(c => c.Visible = false);
         _rightForm.UIBeginThread(c => c.Visible = false);
         _bottomForm.UIBeginThread(c => c.Visible = false);
@@ -65,6 +88,7 @@ public sealed class WindowsHighlightRectangle : IHighlightRectangle
 
     public void Close()
     {
+        _topLabelForm.UIBeginThread(c => c.Close());
         _leftForm.UIBeginThread(c => c.Close());
         _topForm.UIBeginThread(c => c.Close());
         _rightForm.UIBeginThread(c => c.Close());
