@@ -16,7 +16,7 @@ public sealed class WindowsHighlightRectangle : IHighlightRectangle
     private readonly HighlightForm _topForm = new();
     private readonly LabelHighlightForm _topLabelForm = new();
 
-    public void SetLocation(Rectangle location)
+    public void SetLocation(Rectangle location, string? content = null)
     {
         if (location.Y > _highlightLabelWidth)
             _topLabelForm.SetLocation(new Rectangle
@@ -25,7 +25,7 @@ public sealed class WindowsHighlightRectangle : IHighlightRectangle
                 Y = location.Top - _highlightLabelWidth,
                 Width = location.Width + 2 * _highlightLabelWidth,
                 Height = _highlightLabelWidth
-            });
+            }, content);
         else
         {
             _topLabelForm.SetLocation(new Rectangle
@@ -34,7 +34,7 @@ public sealed class WindowsHighlightRectangle : IHighlightRectangle
                 Y = location.Top + location.Height,
                 Width = location.Width + 2 * _highlightLabelWidth,
                 Height = _highlightLabelWidth
-            });
+            }, content);
         }
 
         _leftForm.SetLocation(new Rectangle

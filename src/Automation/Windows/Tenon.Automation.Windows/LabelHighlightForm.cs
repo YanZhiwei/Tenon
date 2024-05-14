@@ -7,6 +7,8 @@ namespace Tenon.Automation.Windows;
 
 public class LabelHighlightForm : SysForm
 {
+    private Label lblContent;
+
     public LabelHighlightForm(WindowProperties? properties = null)
     {
         InitializeComponent();
@@ -16,13 +18,10 @@ public class LabelHighlightForm : SysForm
         TopMost = properties.TopMost;
         Visible = properties.Visible;
         Left = properties.Left;
-        //Width = properties.Width;
-        //Height = properties.Height;
         Top = properties.Top;
         BackColor = Color.Black;
         TransparencyKey = BackColor;
         SetFormStyle();
-       
     }
 
     private void SetFormStyle()
@@ -32,13 +31,14 @@ public class LabelHighlightForm : SysForm
             Window.SetLong(Handle, WindowLongPtrIndex.ExStyle, (int)style | 0x00000080);
     }
 
-    public void SetLocation(Rectangle rectangle)
+    public void SetLocation(Rectangle rectangle, string? content = null)
     {
         if (rectangle.IsEmpty) return;
         BeginInvoke(() =>
         {
-            Window.SetPos(Handle, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height,
+            Window.SetPos(Handle, rectangle.X, rectangle.Y, this.Width, rectangle.Height,
                 SpecialWindowHandles.Topmost, SetWindowPosFlags.SwpNoActivate);
+            lblContent.Text = content;
         });
     }
 
@@ -51,14 +51,12 @@ public class LabelHighlightForm : SysForm
         // 
         lblContent.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         lblContent.AutoSize = true;
-        lblContent.Font = new Font("Microsoft YaHei UI", 18F);
         lblContent.ForeColor = Color.Red;
         lblContent.Location = new Point(0, 0);
         lblContent.Name = "lblContent";
-        lblContent.Size = new Size(183, 31);
+        lblContent.Size = new Size(0, 17);
         lblContent.TabIndex = 0;
-        lblContent.Text = "test123123131";
-        lblContent.TextAlign = ContentAlignment.MiddleCenter;
+        lblContent.TextAlign = ContentAlignment.BottomLeft;
         // 
         // LabelHighlightForm
         // 
@@ -73,6 +71,4 @@ public class LabelHighlightForm : SysForm
     {
         Window.Show(Handle, ShowWindowCommand.ShowNa);
     }
-
-    private Label lblContent;
 }

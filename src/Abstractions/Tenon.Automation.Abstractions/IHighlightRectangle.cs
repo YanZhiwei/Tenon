@@ -4,7 +4,7 @@ namespace Tenon.Automation.Abstractions;
 
 public interface IHighlightRectangle
 {
-    public void SetLocation(Rectangle rectangle);
+    public void SetLocation(Rectangle rectangle, string? content = null);
 
     public void Show();
 
