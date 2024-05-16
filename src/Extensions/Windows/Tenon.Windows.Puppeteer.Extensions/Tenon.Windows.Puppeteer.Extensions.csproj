@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\..\nuget.props"></Import>
-	<Import Project="..\..\common.props"></Import>
-	<Import Project="..\..\version.props"></Import>
+	<Import Project="..\..\..\nuget.props"></Import>
+	<Import Project="..\..\..\common.props"></Import>
+	<Import Project="..\..\..\version.props"></Import>
   <PropertyGroup>
 	  <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -12,8 +12,8 @@
 		<PackageReference Include="PuppeteerSharp" Version="17.0.0" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Infrastructures\Windows\Tenon.Infra.Windows.Win32\Tenon.Infra.Windows.Win32.csproj" />
-	  <ProjectReference Include="..\Tenon.Puppeteer.Extensions\Tenon.Puppeteer.Extensions.csproj" />
+	  <ProjectReference Include="..\..\..\Infrastructures\Windows\Tenon.Infra.Windows.Win32\Tenon.Infra.Windows.Win32.csproj" />
+	  <ProjectReference Include="..\..\Tenon.Puppeteer.Extensions\Tenon.Puppeteer.Extensions.csproj" />
 	</ItemGroup>
 
 </Project>
