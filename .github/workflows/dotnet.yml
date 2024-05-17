@@ -22,7 +22,7 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       working-directory: ./src
-      run: dotnet restore
+      run: dotnet restore --no-restore ./src/Extensions/Windows/Tenon.Windows.MSAA.Extensions/Tenon.Windows.MSAA.Extensions.csproj
     - name: Build
-      run: dotnet build --no-build src/Extensions/Windows/Tenon.Windows.MSAA.Extensions/Tenon.Windows.MSAA.Extensions.csproj
+      run: dotnet build --no-build ./src/Extensions/Windows/Tenon.Windows.MSAA.Extensions/Tenon.Windows.MSAA.Extensions.csproj
       working-directory: ./src
