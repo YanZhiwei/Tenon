@@ -228,6 +228,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenon.Windows.Puppeteer.Ext
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Windows.UIA.Extensions", "Extensions\Windows\Tenon.Windows.UIA.Extensions\Tenon.Windows.UIA.Extensions.csproj", "{9896B3E5-4A98-496B-A2A6-DF5FDCB706E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Windows.MSAA.Extensions", "Extensions\Windows\Tenon.Windows.MSAA.Extensions\Tenon.Windows.MSAA.Extensions.csproj", "{86933767-25B1-4493-AD2C-C42B1EC48B4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -594,6 +596,10 @@ Global
 		{9896B3E5-4A98-496B-A2A6-DF5FDCB706E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9896B3E5-4A98-496B-A2A6-DF5FDCB706E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9896B3E5-4A98-496B-A2A6-DF5FDCB706E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86933767-25B1-4493-AD2C-C42B1EC48B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86933767-25B1-4493-AD2C-C42B1EC48B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86933767-25B1-4493-AD2C-C42B1EC48B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86933767-25B1-4493-AD2C-C42B1EC48B4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -677,6 +683,7 @@ Global
 		{10261A0A-A64C-40F1-AF54-453AAB53A045} = {8F47DBC9-9B92-4C83-B058-EA0EF909FAA9}
 		{D71C005B-94B3-473B-996F-345134B41B82} = {10261A0A-A64C-40F1-AF54-453AAB53A045}
 		{9896B3E5-4A98-496B-A2A6-DF5FDCB706E0} = {10261A0A-A64C-40F1-AF54-453AAB53A045}
+		{86933767-25B1-4493-AD2C-C42B1EC48B4A} = {10261A0A-A64C-40F1-AF54-453AAB53A045}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD20DE54-1131-41A3-9F1B-37B742A8FA09}
