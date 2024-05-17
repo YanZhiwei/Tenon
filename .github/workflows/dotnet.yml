@@ -24,5 +24,5 @@ jobs:
       working-directory: ./src
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-build src/Extensions/Windows/Tenon.Windows.MSAA.Extensions/Tenon.Windows.MSAA.Extensions.csproj
       working-directory: ./src
