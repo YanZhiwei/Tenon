@@ -26,3 +26,5 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: ./src
+    paths-ignore:
+    - ./src/Extensions/Tenon.Windows.MSAA.Extensions
