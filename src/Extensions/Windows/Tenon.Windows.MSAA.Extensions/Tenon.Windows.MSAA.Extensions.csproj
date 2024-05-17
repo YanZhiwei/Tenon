@@ -9,7 +9,7 @@
 	  <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
   <ItemGroup>
-    <COMReference Include="Accessibility">
+    <COMReference Include="Accessibility" Condition="'$(MSBuildRuntimeType)' != 'Core'">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>1</VersionMinor>
       <VersionMajor>1</VersionMajor>
