@@ -22,7 +22,7 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       working-directory: ./src
-      run: msbuild /t:Restore
+      run: dotnet restore
     - name: Build
-      run: msbuild /t:Build /p:Configuration=Release
+      run: dotnet build --no-restore
       working-directory: ./src
