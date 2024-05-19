@@ -66,17 +66,17 @@ public static class AccessibleExtension
         return new Rectangle(x, y, w, h);
     }
 
-    /// <summary>
-    ///     获取状态文本
-    /// </summary>
-    /// <param name="accessible">IAccessible</param>
-    /// <returns>状态文本</returns>
-    public static string GetStateText(this IAccessible accessible)
-    {
-        var builder = new StringBuilder();
-        int result = GetStateText(accessible.accState[0], builder, 256);
-        return builder.ToString();
-    }
+    ///// <summary>
+    /////     获取状态文本
+    ///// </summary>
+    ///// <param name="accessible">IAccessible</param>
+    ///// <returns>状态文本</returns>
+    //public static string GetStateText(this IAccessible accessible)
+    //{
+    //    var builder = new StringBuilder();
+    //    int result = GetStateText(accessible.accState[0], builder, 256);
+    //    return builder.ToString();
+    //}
 
     /// <summary>
     ///     将指定接口的地址检索到与给定窗口关联的对象

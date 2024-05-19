@@ -9,6 +9,11 @@
 	  <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.Accessibility">
+      <HintPath>DLL\Interop.Accessibility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <!--<ItemGroup>
     <COMReference Include="Accessibility">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>1</VersionMinor>
@@ -18,6 +23,6 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
+  </ItemGroup>-->
 
 </Project>
