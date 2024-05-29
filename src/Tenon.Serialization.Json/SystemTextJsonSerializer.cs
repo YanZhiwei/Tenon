@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Tenon.Serialization.Abstractions;
 using SystemJsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -16,7 +17,8 @@ public sealed class SystemTextJsonSerializer(JsonSerializerOptions? jsonSerializ
             Converters =
             {
                 new DateTimeConverter(),
-                new DateTimeNullableConverter()
+                new DateTimeNullableConverter(),
+                new JsonStringEnumConverter()
             },
             ReadCommentHandling = JsonCommentHandling.Skip,
             PropertyNameCaseInsensitive = true,
