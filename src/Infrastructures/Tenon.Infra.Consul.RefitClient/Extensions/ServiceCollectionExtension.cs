@@ -21,7 +21,7 @@ public static class ServiceCollectionExtension
             throw new ArgumentNullException(nameof(consulRestClientOptions));
         loadBalancer ??= new RandomLoadBalancer();
         var contentSerializer =
-            new SystemTextJsonContentSerializer(SystemTextJsonSerializer.DefaultJsonSerializerOption);
+            new SystemTextJsonContentSerializer(SystemTextJsonSerializer.DefaultOptions);
         var refitSettings = new RefitSettings(contentSerializer);
         var httpClientBuilder = services.AddRefitClient<TRestClient>(refitSettings);
         httpClientBuilder.ConfigureHttpClient(httpClient =>
