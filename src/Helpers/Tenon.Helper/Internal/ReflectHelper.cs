@@ -101,7 +101,7 @@ public static class ReflectHelper
     {
         var interfaceType = typeof(T);
         if (assembly == null)
-            assembly = Assembly.GetExecutingAssembly();
+            assembly = Assembly.GetCallingAssembly();
         var implementingTypes = GetImplementingTypes(interfaceType, assembly);
 
         var instances = new List<T>();
