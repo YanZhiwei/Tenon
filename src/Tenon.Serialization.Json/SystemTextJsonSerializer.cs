@@ -7,12 +7,12 @@ namespace Tenon.Serialization.Json;
 
 public sealed class SystemTextJsonSerializer(JsonSerializerOptions? jsonSerializerOptions = null) : ISerializer
 {
-    public static readonly JsonSerializerOptions DefaultJsonSerializerOption;
-    private readonly JsonSerializerOptions _jsonSerializerOption = jsonSerializerOptions ?? DefaultJsonSerializerOption;
+    public static readonly JsonSerializerOptions DefaultOptions;
+    private readonly JsonSerializerOptions _jsonSerializerOption = jsonSerializerOptions ?? DefaultOptions;
 
     static SystemTextJsonSerializer()
     {
-        DefaultJsonSerializerOption = new JsonSerializerOptions
+        DefaultOptions = new JsonSerializerOptions
         {
             Converters =
             {
