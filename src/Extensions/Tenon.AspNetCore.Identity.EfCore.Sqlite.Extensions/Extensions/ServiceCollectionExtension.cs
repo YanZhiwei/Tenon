@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tenon.AspNetCore.Identity.EfCore.Extensions;
 using Tenon.Repository.EfCore;
 using Tenon.Repository.EfCore.Interceptors;
 using Tenon.Repository.EfCore.Sqlite.Configurations;
@@ -17,7 +17,7 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddIdentityEfCoreSqlite<TDbContext, TUser, TRole, TKey>(
         this IServiceCollection services,
         IConfigurationSection sqliteSection, Action<SqliteDbContextOptionsBuilder>? sqliteOptionsAction = null)
-        where TDbContext : AbstractIdentityDbContext<TUser, TRole, TKey>
+        where TDbContext : IdentityDbContext<TUser, TRole, TKey>
         where TUser : IdentityUser<TKey>
         where TRole : IdentityRole<TKey>
         where TKey : IEquatable<TKey>

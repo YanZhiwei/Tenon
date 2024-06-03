@@ -10,18 +10,16 @@ public class SqliteTestDbFactory : IDesignTimeDbContextFactory<SqliteTestDbConte
 {
     public SqliteTestDbContext CreateDbContext(string[] args)
     {
-        var configuration = new ConfigurationBuilder()
+        var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", false)
-            .Build();
-
+            .AddJsonFile("appsettings.json");
+        var configuration = builder.Build();
         var serviceProvider = new ServiceCollection()
             .AddLogging(loggingBuilder => loggingBuilder
+                .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddSingleton<AbstractDbContextConfiguration, BlogDbContextConfiguration>()
             .AddEfCoreSqlite<SqliteTestDbContext>(configuration.GetSection("Sqlite"))
             .BuildServiceProvider();
-        var scope = serviceProvider.CreateScope();
-        return scope.ServiceProvider.GetService<SqliteTestDbContext>();
+        return serviceProvider.GetService<SqliteTestDbContext>();
     }
 }

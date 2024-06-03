@@ -1,16 +1,12 @@
 ﻿using CleanArchitecture.Identity.Repository.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Tenon.AspNetCore.Identity.EfCore.Extensions;
-using Tenon.Repository.EfCore;
 
 namespace CleanArchitecture.Identity.Repository;
 
 public sealed class UserIdentityDbContext(
-    DbContextOptions<UserIdentityDbContext> options,
-    AbstractDbContextConfiguration? dbContextConfiguration,
-    IEnumerable<AbstractEntityTypeConfiguration>? entityTypeConfigurations)
-    : AbstractIdentityDbContext<User, Role, long>(options, dbContextConfiguration,
-        entityTypeConfigurations)
+    DbContextOptions<UserIdentityDbContext> options)
+    : IdentityDbContext<User, Role, long>(options)
 {
     protected override void OnModelCreating(ModelBuilder builder)
     {

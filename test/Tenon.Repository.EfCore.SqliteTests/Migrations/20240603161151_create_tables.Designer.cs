@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tenon.Repository.EfCore.SqliteTests;
 
@@ -10,9 +11,11 @@ using Tenon.Repository.EfCore.SqliteTests;
 namespace Tenon.Repository.EfCore.SqliteTests.Migrations
 {
     [DbContext(typeof(SqliteTestDbContext))]
-    partial class SqliteTestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240603161151_create_tables")]
+    partial class create_tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");

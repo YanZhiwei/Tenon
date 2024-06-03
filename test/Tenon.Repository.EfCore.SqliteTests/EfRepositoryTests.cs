@@ -23,7 +23,6 @@ public class EfRepositoryTests
         _serviceProvider = new ServiceCollection()
             .AddLogging(loggingBuilder => loggingBuilder
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddSingleton<AbstractDbContextConfiguration, BlogDbContextConfiguration>()
             .AddEfCoreSqlite<SqliteTestDbContext>(configuration.GetSection("Sqlite"))
             .BuildServiceProvider();
     }

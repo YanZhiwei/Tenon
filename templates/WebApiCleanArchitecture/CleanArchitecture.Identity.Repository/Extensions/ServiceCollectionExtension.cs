@@ -14,7 +14,6 @@ public static class ServiceCollectionExtension
     {
         services.AddIdentityEfCoreSqlite<UserIdentityDbContext, User, Role, long>(
             configurationManager.GetSection("Sqlite"));
-        services.AddSingleton<AbstractDbContextConfiguration, IdentityDbContextConfiguration>();
         services.AddIdentityCore<User>(options =>
         {
             options.Password.RequireDigit = false;

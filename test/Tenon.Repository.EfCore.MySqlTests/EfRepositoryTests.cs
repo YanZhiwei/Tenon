@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tenon.Repository.EfCore.MySql;
 using Tenon.Repository.EfCore.MySql.Extensions;
 using Tenon.Repository.EfCore.MySqlTests.Entities;
 
@@ -24,7 +23,6 @@ public class EfRepositoryTests
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddSingleton<AbstractDbContextConfiguration, BlogDbContextConfiguration>()
             .AddScoped<IAuditContextAccessor, AuditContextAccessor>()
             .AddEfCoreMySql<MySqlTestDbContext>(configuration.GetSection("MySql"))
             .BuildServiceProvider();
@@ -78,7 +76,7 @@ public class EfRepositoryTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
             {
                 var blog = new Blog { Url = "http://sample.com", Id = 88 };
                 var blogRepository = new EfRepository<Blog>(context);
@@ -97,7 +95,7 @@ public class EfRepositoryTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
             {
                 var bogs = new Blog[5]
                 {
@@ -119,7 +117,7 @@ public class EfRepositoryTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
             {
                 var blogRepository = new EfRepository<Blog>(context);
                 var blog = await blogRepository.GetAsync(1, false);
@@ -135,7 +133,7 @@ public class EfRepositoryTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
             {
                 var blogRepository = new EfRepository<Blog>(context);
                 var blogs = await blogRepository.GetListAsync(x => x.Id == 1 || x.Id == 2, false);
@@ -152,7 +150,7 @@ public class EfRepositoryTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
             {
                 var blogRepository = new EfRepository<Blog>(context);
                 var result = await blogRepository.AnyAsync(x => x.Id == 1 || x.Id == 2);
@@ -168,7 +166,7 @@ public class EfRepositoryTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
             {
                 var blogRepository = new EfRepository<Blog>(context);
                 var result = await blogRepository.CountAsync(x => x.Id == 1 || x.Id == 2);
@@ -183,7 +181,7 @@ public class EfRepositoryTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
             {
                 var blogRepository = new EfRepository<Blog>(context);
                 var blog = await blogRepository.GetAsync(1, true);
@@ -198,7 +196,7 @@ public class EfRepositoryTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
             {
                 var blogRepository = new EfRepository<Blog>(context);
                 var result = await blogRepository.RemoveAsync(1);
@@ -214,7 +212,7 @@ public class EfRepositoryTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
             {
                 var blogRepository = new EfRepository<Blog>(context);
                 var blogs = await blogRepository.GetListAsync(x => x.Id == 2 || x.Id == 1, default);
@@ -230,7 +228,7 @@ public class EfRepositoryTests
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            using (var context = scope.ServiceProvider.GetService<MySqlDbContext>())
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
             {
                 var blogRepository = new EfRepository<Blog>(context);
                 var blog = await blogRepository.GetAsync(1, false);

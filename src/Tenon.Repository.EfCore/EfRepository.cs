@@ -5,15 +5,10 @@ using Tenon.Extensions.Expression;
 
 namespace Tenon.Repository.EfCore;
 
-public class EfRepository<TEntity> : IRepository<TEntity, long>, IEfRepository<TEntity, long>
+public class EfRepository<TEntity>(DbContext dbContext) : IRepository<TEntity, long>, IEfRepository<TEntity, long>
     where TEntity : EfEntity, new()
 {
-    protected readonly DbContext DbContext;
-
-    public EfRepository(DbContext dbContext)
-    {
-        DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-    }
+    protected readonly DbContext DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
     public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression, bool noTracking = true)
     {

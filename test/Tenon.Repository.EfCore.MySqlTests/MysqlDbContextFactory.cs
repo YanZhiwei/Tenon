@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.Diagnostics;
-using Tenon.Repository.EfCore.MySql;
-using Tenon.Repository.EfCore.MySql.Configurations;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Tenon.Repository.EfCore.MySql.Extensions;
 
 namespace Tenon.Repository.EfCore.MySqlTests;
 
@@ -14,15 +14,15 @@ public class MysqlDbContextFactory : IDesignTimeDbContextFactory<MySqlTestDbCont
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json");
-        if (!Debugger.IsAttached) Debugger.Launch();
-
+        //if (!Debugger.IsAttached) Debugger.Launch();
         var configuration = builder.Build();
-        var mysqlSection = configuration.GetSection("Mysql");
-        var mysqlConfig = mysqlSection.Get<MySqlOptions>();
-        var serverVersion = new MariaDbServerVersion(new Version(8, 2, 0));
-        var options = new DbContextOptionsBuilder<MySqlDbContext>()
-            .UseMySql(mysqlConfig.ConnectionString, serverVersion)
-            .Options;
-        return new MySqlTestDbContext(options);
+        var serviceProvider = new ServiceCollection()
+            .AddLogging(loggingBuilder => loggingBuilder
+                .AddConsole()
+                .SetMinimumLevel(LogLevel.Debug))
+            .AddScoped<IAuditContextAccessor, AuditContextAccessor>()
+            .AddEfCoreMySql<MySqlTestDbContext>(configuration.GetSection("MySql"))
+            .BuildServiceProvider();
+        return serviceProvider.GetService<MySqlTestDbContext>();
     }
 }
