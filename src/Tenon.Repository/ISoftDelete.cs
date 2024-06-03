@@ -1,7 +1,6 @@
-﻿namespace Tenon.Repository
+﻿namespace Tenon.Repository;
+
+public interface ISoftDelete
 {
-    public interface ISoftDelete
-    {
-        bool IsDeleted { get; set; }
-    }
+    bool IsDeleted { get; set; }
 }

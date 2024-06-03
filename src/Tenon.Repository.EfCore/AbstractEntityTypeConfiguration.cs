@@ -12,16 +12,6 @@ public abstract class AbstractEntityTypeConfiguration<TEntity> : AbstractEntityT
     IEntityTypeConfiguration<TEntity>
     where TEntity : EfEntity
 {
-    protected const int MaxLength16 = 16;
-    protected const int MaxLength32 = 32;
-    protected const int MaxLength64 = 64;
-    protected const int MaxLength128 = 128;
-    protected const int MaxLength256 = 256;
-    protected const int PhoneMaxLength = 11;
-    protected const int EmailMaxLength = 32;
-    protected const int NameMaxlength = 16;
-    protected const int PasswordMaxlength = 32;
-
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
         var entityType = typeof(TEntity);

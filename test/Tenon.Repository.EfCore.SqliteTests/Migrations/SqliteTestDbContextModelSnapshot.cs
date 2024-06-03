@@ -15,7 +15,7 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
 
             modelBuilder.Entity("Tenon.Repository.EfCore.SqliteTests.Entities.Blog", b =>
                 {
@@ -23,20 +23,14 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnOrder(1);
 
-                    b.Property<long>("CreateBy")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<long>("ModifyBy")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("ModifyTime")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Rating")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -64,21 +58,15 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("CreateBy")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<long>("ModifyBy")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("ModifyTime")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Tenon.Repository.EfCore.SqliteTests.Entities.Config;
+namespace Tenon.Repository.EfCore.MySqlTests.Entities.Config;
 
 public sealed class PostConfig : AbstractEntityTypeConfiguration<Post>
 {

@@ -1,7 +1,6 @@
-﻿namespace Tenon.Repository
+﻿namespace Tenon.Repository;
+
+public interface IEntity<TKey>
 {
-    public interface IEntity<TKey>
-    {
-         TKey Id { get; set; }
-    }
+    TKey Id { get; set; }
 }

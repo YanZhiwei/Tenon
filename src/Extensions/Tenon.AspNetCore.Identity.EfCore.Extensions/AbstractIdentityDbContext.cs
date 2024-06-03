@@ -25,30 +25,6 @@ public abstract class AbstractIdentityDbContext<TUser, TRole, TKey> : IdentityDb
         Database.AutoTransactionsEnabled = false;
     }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        if (ChangeTracker.Entries<EfEntity>().Any())
-        {
-            var addEntityEntries =
-                ChangeTracker.Entries<EfBasicAuditEntity>().Where(x => x.State == EntityState.Added);
-            foreach (var addedEntity in addEntityEntries)
-            {
-                addedEntity.Entity.CreateTime = DateTime.UtcNow;
-                DbContextConfiguration?.OnAddedEntity(addedEntity);
-            }
-
-            var modifiedEntities =
-                ChangeTracker.Entries<EfBasicAuditEntity>().Where(x => x.State == EntityState.Modified);
-            foreach (var modifiedEntity in modifiedEntities)
-            {
-                modifiedEntity.Entity.ModifyTime = DateTime.UtcNow;
-                DbContextConfiguration?.OnModifiedEntity(modifiedEntity);
-            }
-        }
-
-        return await base.SaveChangesAsync(cancellationToken);
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

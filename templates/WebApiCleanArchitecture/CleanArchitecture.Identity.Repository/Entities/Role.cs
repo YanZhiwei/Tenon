@@ -3,10 +3,10 @@ using Tenon.Repository;
 
 namespace CleanArchitecture.Identity.Repository.Entities;
 
-public sealed class Role : IdentityRole<long>, IBasicAuditable<long>
+public sealed class Role : IdentityRole<long>, IBasicAuditable
 {
     public long CreateBy { get; set; }
-    public DateTime CreateTime { get; set; }
-    public long ModifyBy { get; set; }
-    public DateTime? ModifyTime { get; set; }
+    public long ModifyBy { get; set; } 
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
 }

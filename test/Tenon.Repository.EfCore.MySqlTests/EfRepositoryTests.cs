@@ -24,6 +24,7 @@ public class EfRepositoryTests
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
+            .AddSingleton<AbstractDbContextConfiguration, BlogDbContextConfiguration>()
             .AddScoped<IAuditContextAccessor, AuditContextAccessor>()
             .AddEfCoreMySql<MySqlTestDbContext>(configuration.GetSection("MySql"))
             .BuildServiceProvider();

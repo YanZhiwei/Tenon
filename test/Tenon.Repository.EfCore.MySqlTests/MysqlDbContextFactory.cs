@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 using Tenon.Repository.EfCore.MySql;
 using Tenon.Repository.EfCore.MySql.Configurations;
 
@@ -13,7 +14,7 @@ public class MysqlDbContextFactory : IDesignTimeDbContextFactory<MySqlTestDbCont
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json");
-
+        if (!Debugger.IsAttached) Debugger.Launch();
 
         var configuration = builder.Build();
         var mysqlSection = configuration.GetSection("Mysql");
