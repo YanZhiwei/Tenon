@@ -1,7 +1,6 @@
-﻿namespace Tenon.Repository.EfCore
+﻿namespace Tenon.Repository.EfCore;
+
+public interface IConcurrency
 {
-    public interface IConcurrency
-    {
-        public byte[] RowVersion { get; set; }
-    }
+    public byte[] RowVersion { get; set; }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tenon.Repository.EfCore.SqliteTests.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateBlogSchema : Migration
+    public partial class create_tables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,10 +18,8 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     Id = table.Column<long>(type: "INTEGER", nullable: false),
                     Url = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     Rating = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreateBy = table.Column<long>(type: "INTEGER", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ModifyBy = table.Column<long>(type: "INTEGER", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,10 +34,8 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     Title = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     Content = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     BlogId = table.Column<long>(type: "INTEGER", nullable: false),
-                    CreateBy = table.Column<long>(type: "INTEGER", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ModifyBy = table.Column<long>(type: "INTEGER", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

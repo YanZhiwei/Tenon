@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Tenon.Repository;
 
-namespace Tenon.Repository
+public interface IFullAuditable<TKey> : IBasicAuditable
 {
-    public interface IFullAuditable
-    {
-    }
+    TKey CreatedBy { get; set; }
+
+    TKey? UpdatedBy { get; set; }
 }

@@ -1,14 +1,8 @@
-﻿using System;
+﻿namespace Tenon.Repository;
 
-namespace Tenon.Repository
+public interface IBasicAuditable
 {
-    public interface IBasicAuditable<TKey> 
-    {
-        TKey CreateBy { get; set; }
-        DateTime CreateTime { get; set; }
+    DateTimeOffset CreatedAt { get; set; }
 
-        TKey? ModifyBy { get; set; }
-
-        DateTime? ModifyTime { get; set; }
-    }
+    DateTimeOffset? UpdatedAt { get; set; }
 }

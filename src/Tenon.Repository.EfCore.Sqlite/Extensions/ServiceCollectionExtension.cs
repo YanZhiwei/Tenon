@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Tenon.Repository.EfCore.Interceptors;
 using Tenon.Repository.EfCore.Sqlite.Configurations;
 using Tenon.Repository.EfCore.Sqlite.Transaction;
 using Tenon.Repository.EfCore.Transaction;
@@ -21,6 +22,7 @@ public static class ServiceCollectionExtension
         services.Configure<SqliteOptions>(sqliteSection);
         services.AddDbContext<SqliteDbContext, TDbContext>(options =>
         {
+            options.AddInterceptors(new SavingInterceptor());
             options.UseSqlite(sqliteConfig.ConnectionString, sqliteOptionsAction);
         });
         foreach (var type in typeof(TDbContext).Assembly.DefinedTypes
