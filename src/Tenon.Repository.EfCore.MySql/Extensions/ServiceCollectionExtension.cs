@@ -26,8 +26,8 @@ public static class ServiceCollectionExtension
             options.UseMySql(mySqlConfig.ConnectionString, ServerVersion.AutoDetect(mySqlConfig.ConnectionString),
                 mySqlOptionsAction);
         });
-        services.TryAddScoped<IUnitOfWork, MySqlUnitOfWork>();
-        services.TryAddScoped(typeof(IEfRepository<EfEntity, long>), typeof(EfRepository<EfEntity>));
+        services.AddScoped<IUnitOfWork, MySqlUnitOfWork>();
+        services.AddScoped(typeof(IEfRepository<EfEntity, long>), typeof(EfRepository<EfEntity>));
         return services;
     }
 }

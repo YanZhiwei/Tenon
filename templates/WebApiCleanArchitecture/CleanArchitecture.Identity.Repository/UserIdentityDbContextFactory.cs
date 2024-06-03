@@ -26,7 +26,6 @@ public sealed class UserIdentityDbContextFactory : IDesignTimeDbContextFactory<U
         var serviceProvider = new ServiceCollection()
             .AddLogging(loggingBuilder => loggingBuilder
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddSingleton<AbstractDbContextConfiguration, IdentityDbContextConfiguration>()
             .AddIdentityEfCoreSqlite<UserIdentityDbContext, User, Role, long>(configuration.GetSection("Sqlite"))
             .BuildServiceProvider();
         var scope = serviceProvider.CreateScope();

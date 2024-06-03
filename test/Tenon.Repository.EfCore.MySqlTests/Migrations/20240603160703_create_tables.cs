@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Tenon.Repository.EfCore.SqliteTests.Migrations
+namespace Tenon.Repository.EfCore.MySqlTests.Migrations
 {
     /// <inheritdoc />
     public partial class create_tables : Migration
@@ -11,31 +11,38 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "blogs",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false),
-                    Url = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    Rating = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Url = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_blogs", x => x.Id);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "posts",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    Content = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    BlogId = table.Column<long>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Title = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Content = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    BlogId = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -46,7 +53,8 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                         principalTable: "blogs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "IX_blogs_Id",

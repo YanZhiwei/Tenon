@@ -2,43 +2,45 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Tenon.Repository.EfCore.SqliteTests;
+using Tenon.Repository.EfCore.MySqlTests;
 
 #nullable disable
 
-namespace Tenon.Repository.EfCore.SqliteTests.Migrations
+namespace Tenon.Repository.EfCore.MySqlTests.Migrations
 {
-    [DbContext(typeof(SqliteTestDbContext))]
-    [Migration("20240603075131_create_tables")]
-    partial class create_tables
+    [DbContext(typeof(MySqlTestDbContext))]
+    partial class MySqlTestDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Tenon.Repository.EfCore.SqliteTests.Entities.Blog", b =>
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("Tenon.Repository.EfCore.MySqlTests.Entities.Blog", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("Rating")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(64)");
 
                     b.HasKey("Id");
 
@@ -47,30 +49,30 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     b.ToTable("blogs", (string)null);
                 });
 
-            modelBuilder.Entity("Tenon.Repository.EfCore.SqliteTests.Entities.Post", b =>
+            modelBuilder.Entity("Tenon.Repository.EfCore.MySqlTests.Entities.Post", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("bigint")
                         .HasColumnOrder(1);
 
                     b.Property<long>("BlogId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(64)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -81,9 +83,9 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     b.ToTable("posts", (string)null);
                 });
 
-            modelBuilder.Entity("Tenon.Repository.EfCore.SqliteTests.Entities.Post", b =>
+            modelBuilder.Entity("Tenon.Repository.EfCore.MySqlTests.Entities.Post", b =>
                 {
-                    b.HasOne("Tenon.Repository.EfCore.SqliteTests.Entities.Blog", "Blog")
+                    b.HasOne("Tenon.Repository.EfCore.MySqlTests.Entities.Blog", "Blog")
                         .WithMany("Posts")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -92,7 +94,7 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     b.Navigation("Blog");
                 });
 
-            modelBuilder.Entity("Tenon.Repository.EfCore.SqliteTests.Entities.Blog", b =>
+            modelBuilder.Entity("Tenon.Repository.EfCore.MySqlTests.Entities.Blog", b =>
                 {
                     b.Navigation("Posts");
                 });
