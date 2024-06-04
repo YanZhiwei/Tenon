@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Tenon.Repository.EfCore.Interceptors;
 using Tenon.Repository.EfCore.MySql.Configurations;
 using Tenon.Repository.EfCore.MySql.Transaction;
@@ -22,7 +21,7 @@ public static class ServiceCollectionExtension
         services.Configure<MySqlOptions>(mySqlSection);
         services.AddDbContext<MySqlDbContext, TDbContext>(options =>
         {
-            options.AddInterceptors(new SavingInterceptor());
+            options.AddInterceptors(new SavingInterceptor(), new ConcurrencyCheckInterceptor());
             options.UseMySql(mySqlConfig.ConnectionString, ServerVersion.AutoDetect(mySqlConfig.ConnectionString),
                 mySqlOptionsAction);
         });

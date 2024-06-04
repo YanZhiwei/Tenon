@@ -121,7 +121,7 @@ public class EfRepository<TEntity>(DbContext dbContext) : IRepository<TEntity, l
 
     public virtual async Task<int> RemoveAsync(long keyValue, CancellationToken token = default)
     {
-        var entity = DbContext.Set<TEntity>().Local
+        var entity = DbContext.Set<TEntity>().AsNoTracking()
                          .FirstOrDefault(t => t.Id.Equals(keyValue)) ??
                      new TEntity { Id = keyValue };
         DbContext.Remove(entity);

@@ -23,7 +23,6 @@ public class EfRepositoryTests
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddScoped<IAuditContextAccessor, AuditContextAccessor>()
             .AddEfCoreMySql<MySqlTestDbContext>(configuration.GetSection("MySql"))
             .BuildServiceProvider();
     }
@@ -233,12 +232,12 @@ public class EfRepositoryTests
                 var blogRepository = new EfRepository<Blog>(context);
                 var blog = await blogRepository.GetAsync(1, false);
                 Assert.IsNotNull(blog);
-                blog.Rating = 100;
+                blog.Rating = 100000;
                 blog.Url = "hello";
                 var result = await blogRepository.UpdateAsync(blog, [x => x.Rating]);
                 Assert.AreEqual(result == 1, true);
                 var newblog = await blogRepository.GetAsync(1, false);
-                Assert.AreEqual(100, newblog?.Rating);
+                Assert.AreEqual(100000, newblog?.Rating);
                 Assert.AreEqual("http://sample.com", newblog?.Url);
             }
         }
