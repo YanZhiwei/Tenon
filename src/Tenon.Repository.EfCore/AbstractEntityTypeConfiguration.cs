@@ -16,10 +16,8 @@ public abstract class AbstractEntityTypeConfiguration<TEntity> : AbstractEntityT
     {
         var entityType = typeof(TEntity);
         ConfigureKey(builder, entityType);
-        ConfigureConcurrency(builder, entityType);
         ConfigureQueryFilter(builder, entityType);
     }
-    //public abstract void Configure(EntityTypeBuilder<TEntity> builder);
 
     public override void Configure(ModelBuilder modelBuilder)
     {
@@ -33,12 +31,12 @@ public abstract class AbstractEntityTypeConfiguration<TEntity> : AbstractEntityT
         builder.Property(x => x.Id).HasColumnOrder(1).ValueGeneratedNever();
     }
 
-    protected void ConfigureConcurrency(EntityTypeBuilder<TEntity> builder, Type entityType)
-    {
-        //ValueGeneratedOnAddOrUpdate:方法允许我们指定属性的值在插入或更新记录时自动生成。
-        if (typeof(IConcurrency).IsAssignableFrom(entityType))
-            builder.Property("RowVersion").IsRequired().IsRowVersion().ValueGeneratedOnAddOrUpdate();
-    }
+    //protected void ConfigureConcurrency(EntityTypeBuilder<TEntity> builder, Type entityType)
+    //{
+    //    //ValueGeneratedOnAddOrUpdate:方法允许我们指定属性的值在插入或更新记录时自动生成。
+    //    if (typeof(IConcurrency).IsAssignableFrom(entityType))
+    //        builder.Property("RowVersion").IsRequired().IsRowVersion().ValueGeneratedOnAddOrUpdate();
+    //}
 
     protected void ConfigureKey(EntityTypeBuilder<TEntity> builder, Type entityType)
     {

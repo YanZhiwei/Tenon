@@ -20,7 +20,6 @@ public class MysqlDbContextFactory : IDesignTimeDbContextFactory<MySqlTestDbCont
             .AddLogging(loggingBuilder => loggingBuilder
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddScoped<IAuditContextAccessor, AuditContextAccessor>()
             .AddEfCoreMySql<MySqlTestDbContext>(configuration.GetSection("MySql"))
             .BuildServiceProvider();
         return serviceProvider.GetService<MySqlTestDbContext>();

@@ -15,6 +15,7 @@ public sealed class MySqlTestDbContext(DbContextOptions options)
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // optionsBuilder.UseLazyLoadingProxies();
+        optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
     }
 
@@ -22,6 +23,6 @@ public sealed class MySqlTestDbContext(DbContextOptions options)
     {
         modelBuilder.Entity<Blog>().ToTable("blogs");
         modelBuilder.Entity<Post>().ToTable("posts");
-        //modelBuilder.ApplyConfigurations<MySqlTestDbContext>();
+        modelBuilder.ApplyConfigurations<MySqlTestDbContext>();
     }
 }

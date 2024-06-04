@@ -34,6 +34,11 @@ namespace Tenon.Repository.EfCore.MySqlTests.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -52,8 +57,11 @@ namespace Tenon.Repository.EfCore.MySqlTests.Migrations
             modelBuilder.Entity("Tenon.Repository.EfCore.MySqlTests.Entities.Post", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnOrder(1);
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("BlogId")
                         .HasColumnType("bigint");
