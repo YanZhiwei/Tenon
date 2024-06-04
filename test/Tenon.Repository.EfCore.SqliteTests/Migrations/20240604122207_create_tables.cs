@@ -15,10 +15,10 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                 name: "blogs",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Url = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false),
+                    Url = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     Rating = table.Column<int>(type: "INTEGER", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "BLOB", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
                 },
@@ -33,8 +33,8 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Content = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     BlogId = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
@@ -51,9 +51,19 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_blogs_Id",
+                table: "blogs",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_posts_BlogId",
                 table: "posts",
                 column: "BlogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_posts_Id",
+                table: "posts",
+                column: "Id");
         }
 
         /// <inheritdoc />

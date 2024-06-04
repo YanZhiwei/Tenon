@@ -11,6 +11,7 @@ public sealed class SqliteTestDbContext(
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
     }
 
@@ -18,7 +19,7 @@ public sealed class SqliteTestDbContext(
     {
         modelBuilder.Entity<Blog>().ToTable("blogs");
         modelBuilder.Entity<Post>().ToTable("posts");
-        //modelBuilder.ApplyConfigurations<SqliteTestDbContext>();
+        modelBuilder.ApplyConfigurations<SqliteTestDbContext>();
         base.OnModelCreating(modelBuilder);
     }
 }

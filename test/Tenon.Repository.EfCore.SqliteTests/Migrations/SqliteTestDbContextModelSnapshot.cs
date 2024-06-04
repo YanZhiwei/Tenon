@@ -20,8 +20,8 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
             modelBuilder.Entity("Tenon.Repository.EfCore.SqliteTests.Entities.Blog", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnOrder(1);
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -29,14 +29,22 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("INTEGER");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Url")
                         .IsRequired()
+                        .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("blogs", (string)null);
                 });
@@ -45,13 +53,15 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnOrder(1);
 
                     b.Property<long>("BlogId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
                         .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -59,6 +69,7 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
@@ -67,6 +78,8 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BlogId");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("posts", (string)null);
                 });

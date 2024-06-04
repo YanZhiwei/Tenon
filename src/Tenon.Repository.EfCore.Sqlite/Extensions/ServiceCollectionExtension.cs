@@ -21,7 +21,7 @@ public static class ServiceCollectionExtension
         services.Configure<SqliteOptions>(sqliteSection);
         services.AddDbContext<DbContext, TDbContext>(options =>
         {
-            options.AddInterceptors(new SavingInterceptor());
+            options.AddInterceptors(new SavingInterceptor(),new ConcurrencyCheckInterceptor());
             options.UseSqlite(sqliteConfig.ConnectionString, sqliteOptionsAction);
         });
         services.AddScoped<IUnitOfWork, SqliteUnitOfWork>();

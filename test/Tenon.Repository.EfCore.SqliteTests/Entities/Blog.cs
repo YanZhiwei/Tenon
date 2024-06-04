@@ -1,13 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace Tenon.Repository.EfCore.SqliteTests.Entities;
 
-namespace Tenon.Repository.EfCore.SqliteTests.Entities
+public class Blog : EfBasicAuditEntity, IConcurrency
 {
-    [PrimaryKey(nameof(Id))]
-    public class Blog : EfBasicAuditEntity//, IConcurrency
-    {
-        public string Url { get; set; }
-        public int Rating { get; set; }
-        public virtual ICollection<Post> Posts { get; set; }
-       // public byte[] RowVersion { get; set; }
-    }
+    public string Url { get; set; }
+    public int Rating { get; set; }
+    public virtual ICollection<Post> Posts { get; set; } = default!;
+
+    //[ConcurrencyCheck]
+    public byte[] RowVersion { get; set; } = default!;
 }
