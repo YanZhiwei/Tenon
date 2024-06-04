@@ -8,6 +8,8 @@ public sealed class PostConfig : AbstractEntityTypeConfiguration<Post>
     {
         base.Configure(builder);
         builder.HasIndex(x => x.Id);
+        builder.HasKey(x => x.Id);
+        builder.Property(p => p.Id).ValueGeneratedOnAdd();
         builder.Property(p => p.Title).HasMaxLength(64);
         builder.Property(p => p.Content).HasMaxLength(256);
     }
