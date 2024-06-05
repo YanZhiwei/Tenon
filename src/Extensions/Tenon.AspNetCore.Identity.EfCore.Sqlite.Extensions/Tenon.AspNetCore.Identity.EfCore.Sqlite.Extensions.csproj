@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
@@ -20,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Tenon.Repository.EfCore.Sqlite\Tenon.Repository.EfCore.Sqlite.csproj" />
-    <ProjectReference Include="..\Tenon.AspNetCore.Identity.EfCore.Extensions\Tenon.AspNetCore.Identity.EfCore.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

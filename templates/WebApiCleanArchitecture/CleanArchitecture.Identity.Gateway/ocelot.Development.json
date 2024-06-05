@@ -2,7 +2,7 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/svc/User/{url}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
@@ -14,9 +14,9 @@
           "Port": 5232
         }
       ],
-      //"AddHeadersToRequest": {
-      //  "uniquename": "Claims[unique_name] > value"
-      //},
+      "AddHeadersToRequest": {
+        "uniquename": "Claims[http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier] > value"
+      },
       "UpstreamHeaderTransform": {
         "custom-key": "identity.gateway"
       },
@@ -24,11 +24,54 @@
         "trace-id": "Trace-Id"
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "gw"
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
       }
       //"DelegatingHandlers": [
       //  "CustomResultHandler"
       //]
+    },
+    {
+      "UpstreamPathTemplate": "/svc/Account/{url}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "DownstreamPathTemplate": "/api/Account/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamHeaderTransform": {
+        "custom-key": "identity.gateway"
+      },
+      "DownstreamHeaderTransform": {
+        "trace-id": "Trace-Id"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/svc/User/{url}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "DownstreamPathTemplate": "/api/User/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamHeaderTransform": {
+        "custom-key": "identity.gateway"
+      },
+      "DownstreamHeaderTransform": {
+        "trace-id": "Trace-Id"
+      }
     },
     {
       "UpstreamPathTemplate": "/svc/WeatherForecast/{url}",

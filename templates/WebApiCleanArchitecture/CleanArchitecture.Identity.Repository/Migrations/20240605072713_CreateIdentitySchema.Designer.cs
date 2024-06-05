@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Identity.Repository.Migrations
 {
     [DbContext(typeof(UserIdentityDbContext))]
-    [Migration("20240401141327_CreateIdentitySchema")]
+    [Migration("20240605072713_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
 
             modelBuilder.Entity("CleanArchitecture.Identity.Repository.Entities.Role", b =>
                 {
@@ -33,14 +33,11 @@ namespace CleanArchitecture.Identity.Repository.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("CreateTime")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<long>("ModifyBy")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -48,6 +45,9 @@ namespace CleanArchitecture.Identity.Repository.Migrations
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -79,7 +79,7 @@ namespace CleanArchitecture.Identity.Repository.Migrations
                     b.Property<long>("CreateBy")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("CreateTime")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -97,9 +97,6 @@ namespace CleanArchitecture.Identity.Repository.Migrations
 
                     b.Property<long>("ModifyBy")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -126,6 +123,9 @@ namespace CleanArchitecture.Identity.Repository.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)

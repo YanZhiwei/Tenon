@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Infrastructures\Tenon.Infra.Swagger\Tenon.Infra.Swagger.csproj" />
     <ProjectReference Include="..\..\..\src\Tenon.AspNetCore\Tenon.AspNetCore.csproj" />
+    <ProjectReference Include="..\CleanArchitecture.Identity.Repository\CleanArchitecture.Identity.Repository.csproj" />
   </ItemGroup>
 
   <ItemGroup>
