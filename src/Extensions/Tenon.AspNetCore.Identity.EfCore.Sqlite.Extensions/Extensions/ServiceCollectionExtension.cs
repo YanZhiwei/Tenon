@@ -28,7 +28,6 @@ public static class ServiceCollectionExtension
         services.Configure<SqliteOptions>(sqliteSection);
         services.AddDbContext<DbContext, TDbContext>(options =>
         {
-            options.AddInterceptors(new SavingInterceptor());
             options.UseSqlite(sqliteConfig.ConnectionString, sqliteOptionsAction);
         });
         foreach (var type in typeof(TDbContext).Assembly.DefinedTypes

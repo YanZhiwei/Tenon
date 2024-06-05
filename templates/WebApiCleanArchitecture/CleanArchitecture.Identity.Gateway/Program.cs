@@ -1,3 +1,4 @@
+using CleanArchitecture.Identity.Gateway.Authentication;
 using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -24,12 +25,14 @@ public class Program
         builder.Configuration.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", false, true);
         builder.Services.AddOcelot();
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddAuthentication()
-            .AddJwtBearer("gw", options =>
-            {
-                var bearerConfig = builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
-                options.TokenValidationParameters = bearerConfig.GenerateTokenValidationParameters();
-            });
+        //builder.Services.AddAuthentication()
+        //    .AddJwtBearer("gw", options =>
+        //    {
+        //        var bearerConfig = builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
+        //        options.TokenValidationParameters = bearerConfig.GenerateTokenValidationParameters();
+        //    });
+        builder.Services.ConfigureJwtBearerAuthenticationOptions<IdentityAuthenticationHandler>(
+            builder.Configuration.GetSection("Jwt"), options => { });
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo

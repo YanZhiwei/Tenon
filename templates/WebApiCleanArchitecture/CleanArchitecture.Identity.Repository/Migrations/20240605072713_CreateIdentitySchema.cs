@@ -18,9 +18,9 @@ namespace CleanArchitecture.Identity.Repository.Migrations
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CreateBy = table.Column<long>(type: "INTEGER", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifyBy = table.Column<long>(type: "INTEGER", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
@@ -39,9 +39,9 @@ namespace CleanArchitecture.Identity.Repository.Migrations
                     Status = table.Column<int>(type: "INTEGER", nullable: false),
                     Account = table.Column<string>(type: "TEXT", nullable: false),
                     CreateBy = table.Column<long>(type: "INTEGER", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifyBy = table.Column<long>(type: "INTEGER", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
