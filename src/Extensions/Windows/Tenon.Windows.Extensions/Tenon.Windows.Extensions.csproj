@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\nuget.props"></Import>
+	<Import Project="..\..\..\common.props"></Import>
+	<Import Project="..\..\..\version.props"></Import>
+  <PropertyGroup>
+	  <TargetFramework>net8.0-windows</TargetFramework>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+	  <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructures\Windows\Tenon.Infra.Windows.Win32\Tenon.Infra.Windows.Win32.csproj" />
+  </ItemGroup>
+
+</Project>
