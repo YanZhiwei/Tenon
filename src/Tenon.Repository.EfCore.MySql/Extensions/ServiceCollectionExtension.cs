@@ -21,7 +21,7 @@ public static class ServiceCollectionExtension
         services.Configure<MySqlOptions>(mySqlSection);
         services.AddDbContext<MySqlDbContext, TDbContext>(options =>
         {
-            options.AddInterceptors(new SavingInterceptor(), new ConcurrencyCheckInterceptor());
+            options.AddInterceptors(new BasicAuditableInterceptor(), new ConcurrencyCheckInterceptor(),new SoftDeleteInterceptor());
             options.UseMySql(mySqlConfig.ConnectionString, ServerVersion.AutoDetect(mySqlConfig.ConnectionString),
                 mySqlOptionsAction);
         });

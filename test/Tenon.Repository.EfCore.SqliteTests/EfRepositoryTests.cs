@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -186,6 +187,11 @@ public class EfRepositoryTests
                 var blog = await blogRepository.GetAsync(1, true);
                 var result = await blogRepository.RemoveAsync(blog);
                 Assert.AreEqual(1, result);
+                var deletedBlog = await blogRepository.GetAsync(1, true);
+                Assert.IsNull(deletedBlog);
+                var softDeletedBlog = await context.Set<Blog>().AsNoTracking().IgnoreQueryFilters().FirstOrDefaultAsync(c => c.Id == 1);
+                Assert.IsNotNull(softDeletedBlog);
+
             }
         }
     }

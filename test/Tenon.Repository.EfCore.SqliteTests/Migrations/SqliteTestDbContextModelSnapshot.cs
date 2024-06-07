@@ -26,6 +26,12 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false)
+                        .HasColumnOrder(2);
+
                     b.Property<int>("Rating")
                         .HasColumnType("INTEGER");
 
