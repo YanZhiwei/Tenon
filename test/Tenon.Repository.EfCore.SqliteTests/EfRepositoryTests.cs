@@ -28,7 +28,7 @@ public class EfRepositoryTests
             .AddEfCoreSqlite<SqliteTestDbContext>(configuration.GetSection("Sqlite"),
                 interceptors:
                 [
-                    new BasicAuditableInterceptor(), new ConcurrencyCheckInterceptor(), new SoftDeleteInterceptor()
+                    new ConcurrencyCheckInterceptor(), new SoftDeleteInterceptor()
                 ])
             .AddSingleton<FullAuditableInterceptor>()
             .AddSingleton(new EfAuditableUser { User = 100 })
@@ -248,7 +248,7 @@ public class EfRepositoryTests
                 blog.Rating = 100;
                 blog.Url = "hello";
                 var result =
-                    await blogRepository.UpdateAsync(blog, new Expression<Func<Blog, object>>[] { x => x.Rating });
+                    await blogRepository.UpdateAsync(blog, [x => x.Rating]);
                 Assert.AreEqual(result == 1, true);
                 var newblog = await blogRepository.GetAsync(1, false);
                 Assert.AreEqual(100, newblog?.Rating);
