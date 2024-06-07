@@ -9,4 +9,5 @@ public sealed class Role : IdentityRole<long>, IBasicAuditable
     public long ModifyBy { get; set; } 
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 }

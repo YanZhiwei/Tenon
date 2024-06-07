@@ -21,7 +21,11 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     Rating = table.Column<int>(type: "INTEGER", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "BLOB", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    DeletedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    CreatedBy = table.Column<long>(type: "INTEGER", nullable: false),
+                    UpdatedBy = table.Column<long>(type: "INTEGER", nullable: false),
+                    DeletedBy = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,7 +42,8 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     Content = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     BlogId = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    DeletedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -1,6 +1,6 @@
 ﻿namespace Tenon.Repository.EfCore.SqliteTests.Entities;
 
-public class Blog : EfBasicAuditEntity, IConcurrency, ISoftDelete
+public class Blog : EfFullAuditableEntity, IConcurrency, ISoftDelete
 {
     public string Url { get; set; }
     public int Rating { get; set; }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tenon.Repository.EfCore.Interceptors;
 using Tenon.Repository.EfCore.Sqlite.Extensions;
 using Tenon.Repository.EfCore.SqliteTests.Entities;
 
@@ -24,7 +25,13 @@ public class EfRepositoryTests
         _serviceProvider = new ServiceCollection()
             .AddLogging(loggingBuilder => loggingBuilder
                 .SetMinimumLevel(LogLevel.Debug))
-            .AddEfCoreSqlite<SqliteTestDbContext>(configuration.GetSection("Sqlite"))
+            .AddEfCoreSqlite<SqliteTestDbContext>(configuration.GetSection("Sqlite"),
+                interceptors:
+                [
+                    new BasicAuditableInterceptor(), new ConcurrencyCheckInterceptor(), new SoftDeleteInterceptor()
+                ])
+            .AddSingleton<FullAuditableInterceptor>()
+            .AddSingleton(new EfAuditableUser { User = 100 })
             .BuildServiceProvider();
     }
 
@@ -189,9 +196,9 @@ public class EfRepositoryTests
                 Assert.AreEqual(1, result);
                 var deletedBlog = await blogRepository.GetAsync(1, true);
                 Assert.IsNull(deletedBlog);
-                var softDeletedBlog = await context.Set<Blog>().AsNoTracking().IgnoreQueryFilters().FirstOrDefaultAsync(c => c.Id == 1);
+                var softDeletedBlog = await context.Set<Blog>().AsNoTracking().IgnoreQueryFilters()
+                    .FirstOrDefaultAsync(c => c.Id == 1);
                 Assert.IsNotNull(softDeletedBlog);
-
             }
         }
     }
