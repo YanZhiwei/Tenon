@@ -21,7 +21,7 @@ public sealed class BasicAuditableInterceptor : SaveChangesInterceptor
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    private static void BeforeSaveChanges(DbContext dbContext)
+    private void BeforeSaveChanges(DbContext dbContext)
     {
         foreach (var entry in dbContext.ChangeTracker.Entries<EfBasicAuditEntity>())
         {
@@ -33,8 +33,11 @@ public sealed class BasicAuditableInterceptor : SaveChangesInterceptor
                     entity.CreatedAt = DateTimeOffset.UtcNow;
                     break;
 
-                case EntityState.Added or EntityState.Modified:
+                case EntityState.Modified:
                     entity.UpdatedAt = DateTimeOffset.UtcNow;
+                    break;
+                case EntityState.Deleted:
+                    entity.DeletedAt = DateTimeOffset.UtcNow;
                     break;
             }
         }

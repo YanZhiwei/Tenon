@@ -11,7 +11,7 @@ using Tenon.Repository.EfCore.SqliteTests;
 namespace Tenon.Repository.EfCore.SqliteTests.Migrations
 {
     [DbContext(typeof(SqliteTestDbContext))]
-    [Migration("20240607150128_create_tables")]
+    [Migration("20240607161802_create_tables")]
     partial class create_tables
     {
         /// <inheritdoc />
@@ -29,6 +29,15 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("DeletedBy")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
@@ -45,6 +54,9 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("UpdatedBy")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -74,6 +86,9 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")

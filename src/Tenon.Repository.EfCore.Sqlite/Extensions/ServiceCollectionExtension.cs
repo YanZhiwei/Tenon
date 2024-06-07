@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,16 +13,21 @@ namespace Tenon.Repository.EfCore.Sqlite.Extensions;
 public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddEfCoreSqlite<TDbContext>(this IServiceCollection services,
-        IConfigurationSection sqliteSection, Action<SqliteDbContextOptionsBuilder>? sqliteOptionsAction = null)
+        IConfigurationSection sqliteSection, Action<SqliteDbContextOptionsBuilder>? sqliteOptionsAction = null,
+        IInterceptor[]? interceptors = null)
         where TDbContext : DbContext
     {
         var sqliteConfig = sqliteSection.Get<SqliteOptions>();
         if (sqliteConfig == null)
             throw new ArgumentNullException(nameof(sqliteConfig));
         services.Configure<SqliteOptions>(sqliteSection);
-        services.AddDbContext<DbContext, TDbContext>(options =>
+        services.AddDbContext<TDbContext>((serviceProvider, options) =>
         {
-            options.AddInterceptors(new BasicAuditableInterceptor(),new ConcurrencyCheckInterceptor(), new SoftDeleteInterceptor());
+            if (interceptors?.Any() ?? false)
+                options.AddInterceptors(interceptors);
+            var fullAuditableInterceptor = serviceProvider.GetService<FullAuditableInterceptor>();
+            if (fullAuditableInterceptor != null)
+                options.AddInterceptors(fullAuditableInterceptor);
             options.UseSqlite(sqliteConfig.ConnectionString, sqliteOptionsAction);
         });
         services.AddScoped<IUnitOfWork, SqliteUnitOfWork>();
