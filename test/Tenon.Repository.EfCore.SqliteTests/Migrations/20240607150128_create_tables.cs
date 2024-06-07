@@ -16,6 +16,7 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
                     Url = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     Rating = table.Column<int>(type: "INTEGER", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "BLOB", nullable: false),

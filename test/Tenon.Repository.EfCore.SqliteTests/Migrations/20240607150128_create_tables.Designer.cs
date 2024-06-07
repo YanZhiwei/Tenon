@@ -11,7 +11,7 @@ using Tenon.Repository.EfCore.SqliteTests;
 namespace Tenon.Repository.EfCore.SqliteTests.Migrations
 {
     [DbContext(typeof(SqliteTestDbContext))]
-    [Migration("20240604122207_create_tables")]
+    [Migration("20240607150128_create_tables")]
     partial class create_tables
     {
         /// <inheritdoc />
@@ -28,6 +28,12 @@ namespace Tenon.Repository.EfCore.SqliteTests.Migrations
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false)
+                        .HasColumnOrder(2);
 
                     b.Property<int>("Rating")
                         .HasColumnType("INTEGER");

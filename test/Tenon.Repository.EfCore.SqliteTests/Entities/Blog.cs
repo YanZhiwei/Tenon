@@ -1,6 +1,6 @@
 ﻿namespace Tenon.Repository.EfCore.SqliteTests.Entities;
 
-public class Blog : EfBasicAuditEntity, IConcurrency
+public class Blog : EfBasicAuditEntity, IConcurrency, ISoftDelete
 {
     public string Url { get; set; }
     public int Rating { get; set; }
@@ -8,4 +8,5 @@ public class Blog : EfBasicAuditEntity, IConcurrency
 
     //[ConcurrencyCheck]
     public byte[] RowVersion { get; set; } = default!;
+    public bool IsDeleted { get; set; }
 }
