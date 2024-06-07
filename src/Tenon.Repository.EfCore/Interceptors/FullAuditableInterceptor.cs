@@ -29,7 +29,8 @@ public class FullAuditableInterceptor(EfAuditableUser auditable) : SaveChangesIn
         foreach (var entry in dbContext.ChangeTracker.Entries<EfFullAuditableEntity>())
         {
             var entity = entry.Entity;
-
+            var isSoftDelete = false;
+            if (entity is ISoftDelete softDelete) isSoftDelete = softDelete.IsDeleted;
             switch (entry.State)
             {
                 case EntityState.Added:
@@ -37,13 +38,18 @@ public class FullAuditableInterceptor(EfAuditableUser auditable) : SaveChangesIn
                     entity.CreatedBy = _auditable.User;
                     break;
 
-                case EntityState.Modified:
-                    entity.UpdatedAt = DateTimeOffset.UtcNow;
-                    entity.UpdatedBy = _auditable.User;
-                    break;
-                case EntityState.Deleted:
-                    entity.DeletedAt = DateTimeOffset.UtcNow;
-                    entity.DeletedBy = _auditable.User;
+                case EntityState.Modified or EntityState.Deleted:
+                    if (isSoftDelete == false)
+                    {
+                        entity.UpdatedAt = DateTimeOffset.UtcNow;
+                        entity.UpdatedBy = _auditable.User;
+                    }
+                    else
+                    {
+                        entity.DeletedAt = DateTimeOffset.UtcNow;
+                        entity.DeletedBy = _auditable.User;
+                    }
+
                     break;
             }
         }

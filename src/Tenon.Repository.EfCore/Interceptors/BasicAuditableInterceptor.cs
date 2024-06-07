@@ -26,18 +26,20 @@ public sealed class BasicAuditableInterceptor : SaveChangesInterceptor
         foreach (var entry in dbContext.ChangeTracker.Entries<EfBasicAuditEntity>())
         {
             var entity = entry.Entity;
-
+            var isSoftDelete = false;
+            if (entity is ISoftDelete softDelete) 
+                isSoftDelete = softDelete.IsDeleted;
             switch (entry.State)
             {
                 case EntityState.Added:
                     entity.CreatedAt = DateTimeOffset.UtcNow;
                     break;
 
-                case EntityState.Modified:
-                    entity.UpdatedAt = DateTimeOffset.UtcNow;
-                    break;
-                case EntityState.Deleted:
-                    entity.DeletedAt = DateTimeOffset.UtcNow;
+                case EntityState.Modified or EntityState.Deleted:
+                    if (isSoftDelete == false)
+                        entity.UpdatedAt = DateTimeOffset.UtcNow;
+                    else
+                        entity.DeletedAt = DateTimeOffset.UtcNow;
                     break;
             }
         }
