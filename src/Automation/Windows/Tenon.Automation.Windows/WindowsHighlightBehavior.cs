@@ -10,11 +10,15 @@ public class WindowsHighlightBehavior
     protected readonly ConcurrentStack<MouseEventArgs> MouseMoveQueue = new();
     protected Thread? WorkerThread;
 
-    public event EventHandler<MouseEventArgs> MouseMoveEventHandler;
+    public event EventHandler<MouseEventArgs>? MouseMoveEventHandler;
 
-    public event EventHandler<KeyEventArgs> KeyUpEventHandler;
+    public event EventHandler<MouseEventArgs>? MouseDownEventHandler;
 
-    public event EventHandler<KeyEventArgs> KeyDownEventHandler;
+    public event EventHandler<MouseEventArgs>? MouseUpEventHandler;
+
+    public event EventHandler<KeyEventArgs>? KeyUpEventHandler;
+
+    public event EventHandler<KeyEventArgs>? KeyDownEventHandler;
 
     private void ThreadProcedure(object? obj)
     {
@@ -47,11 +51,25 @@ public class WindowsHighlightBehavior
             WorkerThread?.Interrupt();
             WorkerThread = null;
             MouseHook.MouseMove -= Hook_MouseMove;
+            MouseHook.LeftButtonDown -= Hook_MouseDown;
+            MouseHook.RightButtonDown -= Hook_MouseDown;
+            MouseHook.LeftButtonUp -= Hook_UpDown;
+            MouseHook.RightButtonUp -= Hook_UpDown;
             KeyboardHook.KeyDown -= Hook_KeyDown;
             KeyboardHook.KeyUp -= Hook_KeyUp;
             MouseHook.Uninstall();
             KeyboardHook.Uninstall();
         }
+    }
+
+    private void Hook_MouseDown(object? sender, MouseEventArgs e)
+    {
+        MouseDownEventHandler?.Invoke(sender, e);
+    }
+
+    private void Hook_UpDown(object? sender, MouseEventArgs e)
+    {
+        MouseUpEventHandler?.Invoke(sender, e);
     }
 
     public virtual void Suspend()
@@ -88,6 +106,10 @@ public class WindowsHighlightBehavior
             MouseHook.Install();
             KeyboardHook.Install();
             MouseHook.MouseMove += Hook_MouseMove;
+            MouseHook.LeftButtonDown += Hook_MouseDown;
+            MouseHook.RightButtonDown += Hook_MouseDown;
+            MouseHook.LeftButtonUp += Hook_UpDown;
+            MouseHook.RightButtonUp += Hook_UpDown;
             KeyboardHook.KeyDown += Hook_KeyDown;
             KeyboardHook.KeyUp += Hook_KeyUp;
             if (WorkerThread == null)
@@ -99,6 +121,7 @@ public class WindowsHighlightBehavior
                 };
                 WorkerThread.SetApartmentState(ApartmentState.STA);
             }
+
             WorkerThread.Start();
             Mre.Set();
         }
