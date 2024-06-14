@@ -97,7 +97,7 @@ public static class ReflectHelper
     }
 
 
-    public static IEnumerable<T> CreateInterfaceTypeInstances<T>(Assembly? assembly = null) where T : class
+    public static IEnumerable<T> CreateInterfaceTypeInstances<T>(Assembly? assembly = null) where T : class, new()
     {
         var interfaceType = typeof(T);
         if (assembly == null)
@@ -122,5 +122,32 @@ public static class ReflectHelper
             .ToList();
 
         return implementingTypes;
+    }
+
+    public static IEnumerable<Type> GetDerivedTypes(Type baseType, Assembly assembly)
+    {
+        var derivedTypes = new List<Type>();
+        var types = assembly.GetTypes().Where(t => t.IsSubclassOf(baseType) && !t.IsAbstract);
+        derivedTypes.AddRange(types);
+        return derivedTypes;
+    }
+
+    public static List<T> InstantiateDerivedTypes<T>(IEnumerable<Type> types) where T : class, new()
+    {
+        var instances = new List<T>();
+
+        foreach (var type in types)
+            if (Activator.CreateInstance(type) is T instance)
+                instances.Add(instance);
+
+        return instances;
+    }
+
+    public static IEnumerable<T> CreateDerivedInstances<T>(Assembly? assembly = null) where T : class, new()
+    {
+        if (assembly == null)
+            assembly = Assembly.GetCallingAssembly();
+        var derivedTypes = GetDerivedTypes(typeof(T), assembly);
+        return InstantiateDerivedTypes<T>(derivedTypes);
     }
 }
