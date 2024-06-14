@@ -97,9 +97,11 @@ public static class ReflectHelper
     }
 
 
-    public static IEnumerable<T> CreateInterfaceTypeInstances<T>(Assembly? assembly = null) where T : class, new()
+    public static IEnumerable<T> CreateInterfaceTypeInstances<T>(Assembly? assembly = null) where T : class
     {
         var interfaceType = typeof(T);
+        if (!interfaceType.IsInterface) 
+            throw new NotSupportedException(nameof(interfaceType));
         if (assembly == null)
             assembly = Assembly.GetCallingAssembly();
         var implementingTypes = GetImplementingTypes(interfaceType, assembly);
