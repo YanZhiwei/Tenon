@@ -25,7 +25,7 @@ public static class ServiceCollectionExtension
         {
             if (interceptors?.Any() ?? false)
                 options.AddInterceptors(interceptors);
-            var fullAuditableInterceptor = serviceProvider.GetService<FullAuditableInterceptor>();
+            var fullAuditableInterceptor = serviceProvider.GetService<FullAuditableFieldsInterceptor>();
             if (fullAuditableInterceptor != null)
                 options.AddInterceptors(fullAuditableInterceptor);
             options.UseMySql(mySqlConfig.ConnectionString, ServerVersion.AutoDetect(mySqlConfig.ConnectionString),

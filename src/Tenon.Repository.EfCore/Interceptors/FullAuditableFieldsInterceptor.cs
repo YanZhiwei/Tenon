@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Tenon.Repository.EfCore.Interceptors;
 
-public class FullAuditableInterceptor(EfAuditableUser auditable) : SaveChangesInterceptor
+public class FullAuditableFieldsInterceptor(EfAuditableUser auditable) : SaveChangesInterceptor
 {
     private readonly EfAuditableUser _auditable = auditable ?? throw new ArgumentNullException(nameof(auditable));
 
