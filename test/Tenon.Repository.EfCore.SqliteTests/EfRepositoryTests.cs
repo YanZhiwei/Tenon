@@ -30,7 +30,7 @@ public class EfRepositoryTests
                 [
                     new ConcurrencyCheckInterceptor(), new SoftDeleteInterceptor()
                 ])
-            .AddSingleton<FullAuditableInterceptor>()
+            .AddSingleton<FullAuditableFieldsInterceptor>()
             .AddSingleton(new EfAuditableUser { User = 100 })
             .BuildServiceProvider();
     }

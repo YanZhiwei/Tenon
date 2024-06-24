@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Tenon.Repository.EfCore.Interceptors;
 
-public sealed class BasicAuditableInterceptor : SaveChangesInterceptor
+public sealed class BasicAuditableFieldsInterceptor : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
