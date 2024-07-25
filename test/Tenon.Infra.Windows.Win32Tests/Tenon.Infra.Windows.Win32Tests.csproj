@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<useWindowsForms>true</useWindowsForms>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	<EnableWindowsTargeting >true</EnableWindowsTargeting>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="coverlet.collector" Version="6.0.2">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.5.0" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Infrastructures\Windows\Tenon.Infra.Windows.Win32\Tenon.Infra.Windows.Win32.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework">
+	    <HintPath>..\..\..\..\..\..\.nuget\packages\mstest.testframework\3.3.1\lib\net8.0\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+	</ItemGroup>
+
+</Project>
