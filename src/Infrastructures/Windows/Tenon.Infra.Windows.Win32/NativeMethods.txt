@@ -82,3 +82,9 @@ GetParent
 GetClassName
 GetWindowThreadProcessId
 GetDpiForMonitor
+GetSystemMetrics
+EnumDisplayMonitors
+GetMonitorInfo
+EnumDisplayDevices
+MonitorFromWindow
+DISPLAY_DEVICE_STATE_FLAGS
