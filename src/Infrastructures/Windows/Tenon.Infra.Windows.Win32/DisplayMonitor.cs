@@ -34,15 +34,15 @@ public class DisplayMonitor
                 {
                     Name = displayDevice.DeviceName.ToString(),
                     Description = displayDevice.DeviceString.ToString(),
-                    RealResolution = new Size((int)devMode.dmPelsWidth, (int)devMode.dmPelsHeight),
+                    RealResolution = new Size(screen.Bounds.Width, screen.Bounds.Height),
                     ColorDepth = devMode.dmBitsPerPel,
                     RefreshRate = devMode.dmDisplayFrequency,
                     IsPrimary = screen.Primary,
-                    VirtualResolution = new Size(screen.Bounds.Width, screen.Bounds.Height)
+                    VirtualResolution = new Size((int)devMode.dmPelsWidth, (int)devMode.dmPelsHeight)
                 };
 
-                display.ScaleX = screen.Bounds.Width / (float)display.RealResolution.Width;
-                display.ScaleY = screen.Bounds.Height / (float)display.RealResolution.Height;
+                display.ScaleX = display.VirtualResolution.Width / (float)display.RealResolution.Width;
+                display.ScaleY = display.VirtualResolution.Height / (float)display.RealResolution.Height;
 
 
                 yield return display;
