@@ -1,50 +1,133 @@
 # Tenon
 
-[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE) 
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
-## Project Introduction
+<h3 align="center">像搭积木一样按需构建项目功能</h3>
 
-Tenon is a comprehensive development framework based on the .NET 8 platform, designed to accelerate the development process and enhance efficiency by integrating key technologies in modern software development. It includes encapsulated features such as message queuing (RabbitMQ), caching (Redis), distributed ID generation (Snowflake), distributed locks (Redis), database repository patterns (EntityFrameworkCore), gateway (Ocelot), service governance (Consul), and ASP.NET Core authentication and authorization. The modular design of these features allows developers to quickly build applications, focusing on business logic without having to construct each component from scratch.
+## ✨ 特性
 
-## Core Features
+- 🌈 服务治理：Consul
+- 📦 分布式缓存：Redis+BloomFilter
+- 🚀 分布式总线：Cap
+- ⚙️ 分布式 ID：Snowflake
+- 🎨 消息队列：RabbitMQ
+- 🔒 数据库访问：Entity Framework Core & Repository
+- 🌍 网关：Ocelot
 
-- **Message Queue (RabbitMQ)**: Provides efficient and reliable asynchronous communication capabilities for the system.
-- **Caching (Redis)**: Offers fast data access to optimize performance and response times.
-- **Distributed ID (Snowflake)**: Generates unique identifiers suitable for resources in distributed systems.
-- **Distributed Locks (Redis)**: Ensures synchronized access to resources in a distributed environment and consistency.
-- **Database Repository (EntityFrameworkCore)**: Simplifies data layer operations, enhancing code maintainability.
-- **Gateway (Ocelot)**: Manages routing in a microservices architecture, enabling API aggregation.
-- **Service Governance (Consul)**: Provides service discovery and configuration to ensure service reliability and resilience.
-- **Authentication and Authorization (ASP.NET Core)**: Implements secure user access control.
+## 🚀 结构
 
-## Getting Started
+- Infrastructures <br>
+  ![alt text](infrastructures.png)
+- Extensions <br>
+  ![alt text](extensions.png)
+- Services <br>
+  ![alt text](services.png)
 
-1. Clone the repository to your local environment.
-2. Install necessary dependency services, such as RabbitMQ, Redis, and Consul.
-3. Explore the example code in the `Templates` folder to understand how to use the framework.
-4. Integrate the required modules according to project needs and start developing.
+## 📦 示例
 
-## License
+- 🔒 数据访问
 
-This project is licensed under the MIT License, which can be viewed in full in the `LICENSE` file.
+  定义 DbContext
 
-## Contribution Guidelines
+  ```
+  public sealed class MySqlTestDbContext(DbContextOptions options)
+    : MySqlDbContext(options)
+  {
+    public DbSet<Blog> Blogs { get; set; }
+    public DbSet<Post> Posts { get; set; }
 
-We welcome contributions from the developer community. If you have any suggestions for improvement or feature requests, or wish to submit code, please contact us through GitHub Issues or Pull Requests.
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        // optionsBuilder.UseLazyLoadingProxies();
+        optionsBuilder.EnableSensitiveDataLogging();
+        optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+    }
 
-## Community Support
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Blog>().ToTable("blogs");
+        modelBuilder.Entity<Post>().ToTable("posts");
+        modelBuilder.ApplyConfigurations<MySqlTestDbContext>();
+    }
+  }
+  ```
 
-If you encounter any problems while using the Tenon framework, or need assistance, please contact us through GitHub Discussions.
+  使用 Repository
 
-:+1: If you like this project, please Star, Fork, and Follow.
-:smiley_cat: Project Development Mode: Daily code accumulation + Internet collection.
+  ```
+      [TestInitialize]
+    public async Task Init()
+    {
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            using (var context = scope.ServiceProvider.GetService<MySqlTestDbContext>())
+            {
+                await context.Database.EnsureDeletedAsync();
+                await context.Database.EnsureCreatedAsync();
+                var blog1 = new Blog { Url = "http://sample.com", Id = 1 };
+                var post1 = new Post { Blog = blog1, Content = "test", Title = "test" };
+                var blogRepository = new EfRepository<Blog>(context);
+                var result = await blogRepository.InsertAsync(blog1);
+                Assert.AreEqual(result > 0, true);
+                var postRepository = new EfRepository<Post>(context);
+                result = await postRepository.InsertAsync(post1);
+                Assert.AreEqual(result > 0, true);
 
-## This project is supported  by [JetBrains](https://www.jetbrains.com/shop/eform/opensource)
+                var blog2 = new Blog { Url = "http://sample2.com", Id = 2 };
+                var post2 = new Post { Blog = blog2, Content = "test2", Title = "test2" };
+                result = await blogRepository.InsertAsync(blog2);
+                Assert.AreEqual(result > 0, true);
+                result = await postRepository.InsertAsync(post2);
+                Assert.AreEqual(result > 0, true);
 
-<img src="https://www.jetbrains.com/shop/static/images/jetbrains-logo-inv.svg" height="100">
+                var blog3 = new Blog { Url = "http://sample4.com", Id = 3 };
+                var post3 = new Post { Blog = blog3, Content = "test3", Title = "test3" };
+                result = await blogRepository.InsertAsync(blog3);
+                Assert.AreEqual(result > 0, true);
+                result = await postRepository.InsertAsync(post3);
+                Assert.AreEqual(result > 0, true);
 
-## Recommended Development Environment
+                var blog4 = new Blog { Url = "http://sample4.com", Id = 4 };
+                var post4 = new Post { Blog = blog4, Content = "test4", Title = "test4" };
+                result = await blogRepository.InsertAsync(blog4);
+                Assert.AreEqual(result > 0, true);
+                result = await postRepository.InsertAsync(post4);
+                Assert.AreEqual(result > 0, true);
+            }
+        }
+    }
+  ```
 
-Operating System: Windows 10 1903 and above  
-Development Tool: Visual Studio 2022 and above  
-SDK: .NET 8.0 and above
+- 📦 分布式缓存：Redis+BloomFilter
+
+  依赖注入
+  ```
+      var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false)
+            .Build();
+        _serviceProvider = new ServiceCollection()
+            .AddLogging(loggingBuilder => loggingBuilder
+                .AddConsole()
+                .SetMinimumLevel(LogLevel.Debug))
+            .AddSystemTextJsonSerializer()
+            .AddRedisStackExchangeProvider(configuration.GetSection("Redis"))
+            .AddKeyedRedisStackExchangeProvider(_serviceKey, configuration.GetSection("Redis2"))
+            .AddKeyedRedisStackExchangeProvider("abc", configuration.GetSection("Redis2"))
+            .BuildServiceProvider();
+     ```
+  使用
+    ```
+    public void GetStandaloneServersTest()
+        {
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var redisDataBase = scope.ServiceProvider.GetService<RedisConnection>();
+                Assert.IsNotNull(redisDataBase);
+                var redisServer = redisDataBase.GetServers();
+                Assert.IsTrue(redisServer.Any());
+                var standaloneServer = redisServer.FirstOrDefault();
+                Assert.IsNotNull(standaloneServer);
+            }
+        }
+    ```
