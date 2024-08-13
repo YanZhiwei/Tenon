@@ -1,8 +1,8 @@
-# Tenon
+<h1 align="center"> Tenon </h1>
 
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
-<h3 align="center">像搭积木一样按需构建项目功能</h3>
+<h3 align="center">像榫卯一样按需构建项目功能</h3>
 
 ## ✨ 特性
 
@@ -18,11 +18,11 @@
 
 ## 🚀 结构
 
-- Infrastructures 
+- Infrastructures <br>
   ![alt text](infrastructures.png)
-- Extensions 
+- Extensions <br>
   ![alt text](extensions.png)
-- Services 
+- Services <br>
   ![alt text](services.png)
 
 ## 📦 示例
