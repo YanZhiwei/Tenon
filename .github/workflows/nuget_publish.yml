@@ -21,7 +21,7 @@ jobs:
     - name: Pack with dotnet
       run: dotnet pack  D:/a/Tenon/Tenon/src/Tenon.sln -o  D:/a/nugetpkgs -c Release --no-build
     - name: Upload artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: nugetpkgs
         path: D:/a/nugetpkgs
