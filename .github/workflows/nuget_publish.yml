@@ -1,60 +1,70 @@
 name: Publish
 
 on:
-    workflow_dispatch:
-      branches:
+  workflow_dispatch:
+    branches:
       - dev 
 
 jobs:
-  build_artifact:    
+  build_artifact:
     name: Build and upload artifact
     runs-on: windows-latest
-    
+
     steps:
-    - uses: actions/checkout@v1
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 8.0.x
-    - name: Build with dotnet
-      run: dotnet build --configuration Release  D:/a/Tenon/Tenon/src/Tenon.sln
-    - name: Pack with dotnet
-      run: dotnet pack  D:/a/Tenon/Tenon/src/Tenon.sln -o  D:/a/nugetpkgs -c Release --no-build
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: nugetpkgs
-        path: D:/a/nugetpkgs
+      - uses: actions/checkout@v1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release D:/a/Tenon/Tenon/src/Tenon.sln
+
+      - name: Pack with dotnet
+        run: dotnet pack D:/a/Tenon/Tenon/src/Tenon.sln -o D:/a/nugetpkgs -c Release --no-build
+
+      - name: Check if nugetpkgs directory exists
+        run: if (Test-Path "D:/a/nugetpkgs") { Write-Host "nugetpkgs exists" } else { Write-Error "nugetpkgs does not exist" }
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: nugetpkgs
+          path: D:/a/nugetpkgs
 
   release_nuget:
-      name: Release to Nuget
-      needs: build_artifact
-      runs-on: windows-latest
-  
-      steps:
-        - name: Download build artifacts
-          uses: actions/download-artifact@v3
-          with:
-            name: nugetpkgs
-        - name: list nugetpkgs
-          run: ls nugetpkgs
-        - name: Release
-          run: |
-            $excludeFileName = @('Sample', 'CleanArchitecture', 'Tests')
-            $nugetFiles = Get-ChildItem -Path nugetpkgs -Recurse -Include *.nupkg
-            foreach ($file in $nugetFiles) {
-              $fileName = $file.FullName
-              $skipFile = $false
-              foreach ($excludeName in $excludeFileName) {
-                  if ($fileName -like "*$excludeName*") {
-                      $skipFile = $true
-                      break
-                  }
-              }
-              if ($skipFile) {
-                  Write-Host "Skipping file: $fileName"
-                  continue
-              }
-              Write-Host "Processing  file: $($file.FullName)"
-              dotnet nuget push $file --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json
+    name: Release to Nuget
+    needs: build_artifact
+    runs-on: windows-latest
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: nugetpkgs
+          path: ./nugetpkgs  
+
+      - name: List nugetpkgs
+        run: dir ./nugetpkgs
+
+      - name: Release
+        run: |
+          $excludeFileName = @('Sample', 'CleanArchitecture', 'Tests')
+          $nugetFiles = Get-ChildItem -Path ./nugetpkgs -Recurse -Include *.nupkg
+          foreach ($file in $nugetFiles) {
+            $fileName = $file.FullName
+            $skipFile = $false
+            foreach ($excludeName in $excludeFileName) {
+                if ($fileName -like "*$excludeName*") {
+                    $skipFile = $true
+                    break
+                }
             }
+            if ($skipFile) {
+                Write-Host "Skipping file: $fileName"
+                continue
+            }
+            Write-Host "Processing file: $($file.FullName)"
+            dotnet nuget push $file --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --source https://api.nuget.org/v3/index.json
+          }
