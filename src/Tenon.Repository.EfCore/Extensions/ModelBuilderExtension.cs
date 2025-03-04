@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Tenon.Repository;
 
@@ -15,10 +15,10 @@ public static class ModelBuilderExtension
     public static void ApplySoftDeleteQueryFilter(this ModelBuilder modelBuilder)
     {
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            if (typeof(ISoftDelete).IsAssignableFrom(entityType.ClrType))
+            if (typeof(IDeletionAuditable<long>).IsAssignableFrom(entityType.ClrType))
             {
                 var parameter = Expression.Parameter(entityType.ClrType, "e");
-                var property = Expression.Property(parameter, nameof(ISoftDelete.IsDeleted));
+                var property = Expression.Property(parameter, nameof(IDeletionAuditable<long>.IsDeleted));
                 var falseConstant = Expression.Constant(false);
                 var lambda = Expression.Lambda(Expression.Equal(property, falseConstant), parameter);
 

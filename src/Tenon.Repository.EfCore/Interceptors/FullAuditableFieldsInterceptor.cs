@@ -72,7 +72,7 @@ public class FullAuditableFieldsInterceptor(IEfUserResolver userResolver) : Save
 
                 // 获取所有导航属性
                 var navigations = entry.Metadata.GetNavigations()
-                    .Where(n => typeof(ISoftDelete).IsAssignableFrom(n.TargetEntityType.ClrType))
+                    .Where(n => typeof(IDeletionAuditable<long>).IsAssignableFrom(n.TargetEntityType.ClrType))
                     .ToList();
 
                 foreach (var navigation in navigations)
@@ -84,7 +84,7 @@ public class FullAuditableFieldsInterceptor(IEfUserResolver userResolver) : Save
                     // 处理集合导航属性
                     if (navigation.IsCollection)
                     {
-                        var items = ((IEnumerable)navigationValue).Cast<EfFullAuditableEntity>();
+                        var items = ((IEnumerable)navigationValue).Cast<IDeletionAuditable<long>>();
                         foreach (var item in items)
                         {
                             if (!item.IsDeleted)
@@ -98,7 +98,7 @@ public class FullAuditableFieldsInterceptor(IEfUserResolver userResolver) : Save
                     // 处理单个导航属性
                     else
                     {
-                        var item = (EfFullAuditableEntity)navigationValue;
+                        var item = (IDeletionAuditable<long>)navigationValue;
                         if (!item.IsDeleted)
                         {
                             item.IsDeleted = true;

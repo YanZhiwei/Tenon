@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Tenon.Repository.EfCore.Interceptors;
@@ -27,7 +27,7 @@ public sealed class BasicAuditableFieldsInterceptor : SaveChangesInterceptor
         {
             var entity = entry.Entity;
             var isSoftDelete = false;
-            if (entity is ISoftDelete softDelete) 
+            if (entity is IDeletionAuditable<long> softDelete) 
                 isSoftDelete = softDelete.IsDeleted;
             switch (entry.State)
             {

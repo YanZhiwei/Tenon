@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Tenon.Repository.EfCore;
@@ -27,12 +27,12 @@ public abstract class AbstractEntityTypeConfiguration<TEntity> : AbstractEntityT
 
     protected void ConfigureQueryFilter(EntityTypeBuilder<TEntity> builder, Type entityType)
     {
-        if (typeof(ISoftDelete).IsAssignableFrom(entityType))
+        if (typeof(IDeletionAuditable<long>).IsAssignableFrom(entityType))
         {
-            builder.Property(nameof(ISoftDelete.IsDeleted))
+            builder.Property(nameof(IDeletionAuditable<long>.IsDeleted))
                 .HasDefaultValue(false)
                 .HasColumnOrder(2);
-            builder.HasQueryFilter(d => !EF.Property<bool>(d, nameof(ISoftDelete.IsDeleted)));
+            builder.HasQueryFilter(d => !EF.Property<bool>(d, nameof(IDeletionAuditable<long>.IsDeleted)));
         }
     }
 

@@ -25,7 +25,7 @@ public abstract class TenonDbContext : DbContext
         // 应用所有实体配置
         modelBuilder.ApplyConfigurationsFromAssembly(EntityAssembly);
 
-        // 为所有实现了ISoftDelete的实体添加全局软删除过滤器
+        // 为所有实现了IDeletionAuditable的实体添加全局软删除过滤器
         modelBuilder.ApplySoftDeleteQueryFilter();
     }
 }
