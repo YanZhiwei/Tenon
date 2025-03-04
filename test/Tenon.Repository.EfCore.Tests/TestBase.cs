@@ -38,7 +38,7 @@ public abstract class TestBase
         services.AddLogging(builder => builder.AddConsole());
 
         // 注册 EfUserResolver
-        services.AddScoped<EfUserResolver>(_ => new EfUserResolver { UserId = 1 });
+        services.AddScoped<IEfUserResolver>(_ => new HttpContextTenantResolver { UserId = 1 });
 
         // 使用 AddEfCore 扩展方法注册仓储和 DbContext
         services.AddEfCore<BlogDbContext, TestUnitOfWork>(

@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Tenon.Repository.EfCore.Extensions;
 
 namespace Tenon.Repository.EfCore;
 
 /// <summary>
-/// Tenon基础数据库上下文
+///     Tenon基础数据库上下文
 /// </summary>
 public abstract class TenonDbContext : DbContext
 {
@@ -14,7 +14,7 @@ public abstract class TenonDbContext : DbContext
     }
 
     /// <summary>
-    /// 获取实体所在程序集
+    ///     获取实体所在程序集
     /// </summary>
     protected abstract Assembly EntityAssembly { get; }
 
@@ -27,6 +27,5 @@ public abstract class TenonDbContext : DbContext
 
         // 为所有实现了ISoftDelete的实体添加全局软删除过滤器
         modelBuilder.ApplySoftDeleteQueryFilter();
-
     }
-} 
+}

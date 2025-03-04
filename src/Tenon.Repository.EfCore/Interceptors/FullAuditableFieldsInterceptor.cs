@@ -7,7 +7,7 @@ namespace Tenon.Repository.EfCore.Interceptors;
 /// <summary>
 /// 完整审计字段拦截器
 /// </summary>
-public class FullAuditableFieldsInterceptor(EfUserResolver userResolver) : SaveChangesInterceptor
+public class FullAuditableFieldsInterceptor(IEfUserResolver userResolver) : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
