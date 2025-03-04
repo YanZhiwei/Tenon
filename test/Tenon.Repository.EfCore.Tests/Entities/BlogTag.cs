@@ -5,7 +5,7 @@ namespace Tenon.Repository.EfCore.Tests.Entities;
 /// <summary>
 /// 博客标签实体
 /// </summary>
-public class BlogTag : EfBasicAuditEntity
+public class BlogTag : EfTimestampAuditEntity
 {
     /// <summary>
     /// 标签名称

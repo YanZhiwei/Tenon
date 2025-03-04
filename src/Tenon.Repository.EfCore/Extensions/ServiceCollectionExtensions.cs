@@ -65,15 +65,30 @@ public static class ServiceCollectionExtensions
     /// </summary>
     private static void ConfigureInterceptors(IServiceProvider serviceProvider, DbContextOptionsBuilder options)
     {
-        var auditableUser = serviceProvider.GetService<IEfUserResolver>();
+        var auditableUser = serviceProvider.GetService<IUserResolver<long>>();
+        options.AddInterceptors(auditableUser);
+    }
+
+    /// <summary>
+    ///     添加拦截器
+    /// </summary>
+    private static void AddInterceptors(this DbContextOptionsBuilder options, IUserResolver<long> auditableUser = null)
+    {
+        // 添加时间戳审计拦截器（不依赖用户信息）
+        options.AddInterceptors(new TimestampAuditableFieldsInterceptor());
+        
+        // 添加并发检查拦截器
+        options.AddInterceptors(new ConcurrencyCheckInterceptor());
+        
+        // 添加依赖用户信息的拦截器
         if (auditableUser != null)
         {
-            var fullAuditableFieldsInterceptor = new FullAuditableFieldsInterceptor(auditableUser);
-            options.AddInterceptors(fullAuditableFieldsInterceptor);
+            // 完整审计拦截器处理用户相关审计字段
+            options.AddInterceptors(new FullAuditableFieldsInterceptor(auditableUser));
+            
+            // 删除审计拦截器处理软删除相关字段
+            options.AddInterceptors(new DeletionAuditableFieldsInterceptor(auditableUser));
         }
-
-        options.AddInterceptors(new BasicAuditableFieldsInterceptor());
-        options.AddInterceptors(new ConcurrencyCheckInterceptor());
     }
 
     /// <summary>

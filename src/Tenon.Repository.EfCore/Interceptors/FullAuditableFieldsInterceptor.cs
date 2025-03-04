@@ -5,108 +5,77 @@ using System.Collections;
 namespace Tenon.Repository.EfCore.Interceptors;
 
 /// <summary>
-/// 完整审计字段拦截器
+/// 完整审计字段拦截器，用于自动设置实体的创建、更新和删除相关字段。
 /// </summary>
-public class FullAuditableFieldsInterceptor(IEfUserResolver userResolver) : SaveChangesInterceptor
+public class FullAuditableFieldsInterceptor : SaveChangesInterceptor
 {
-    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
-        DbContextEventData eventData,
-        InterceptionResult<int> result,
-        CancellationToken cancellationToken = default)
+    private readonly IUserResolver<long> userResolver;
+
+    /// <summary>
+    /// 初始化 <see cref="FullAuditableFieldsInterceptor"/> 类的新实例。
+    /// </summary>
+    /// <param name="userResolver">用户解析器，用于获取当前用户ID</param>
+    public FullAuditableFieldsInterceptor(IUserResolver<long> userResolver)
     {
-        if (eventData.Context is not null)
-        {
-            HandleAuditableFields(eventData.Context);
-            HandleSoftDelete(eventData.Context);
-        }
-        return base.SavingChangesAsync(eventData, result, cancellationToken);
+        this.userResolver = userResolver;
     }
 
-    public override InterceptionResult<int> SavingChanges(
-        DbContextEventData eventData,
-        InterceptionResult<int> result)
+    /// <summary>
+    /// 在保存更改前处理审计字段。
+    /// </summary>
+    /// <param name="eventData">上下文事件数据</param>
+    /// <param name="result">拦截结果</param>
+    /// <returns>拦截结果</returns>
+    public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
-        if (eventData.Context is not null)
+        if (eventData.Context != null)
         {
-            HandleAuditableFields(eventData.Context);
-            HandleSoftDelete(eventData.Context);
+            // 处理用户审计字段
+            HandleUserAuditFields(eventData.Context);
         }
+        
         return base.SavingChanges(eventData, result);
     }
 
-    private void HandleAuditableFields(DbContext context)
+    /// <summary>
+    /// 在异步保存更改前处理审计字段。
+    /// </summary>
+    /// <param name="eventData">上下文事件数据</param>
+    /// <param name="result">拦截结果</param>
+    /// <param name="cancellationToken">取消标记</param>
+    /// <returns>拦截结果</returns>
+    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
-        var userId = userResolver.UserId;
-        var entries = context.ChangeTracker.Entries<EfFullAuditableEntity>().ToList();
+        if (eventData.Context != null)
+        {
+            // 处理用户审计字段
+            HandleUserAuditFields(eventData.Context);
+        }
+        
+        return base.SavingChangesAsync(eventData, result, cancellationToken);
+    }
 
-        foreach (var entry in entries)
+    /// <summary>
+    /// 处理用户审计字段，包括创建者和更新者。
+    /// </summary>
+    /// <param name="context">数据库上下文</param>
+    private void HandleUserAuditFields(DbContext context)
+    {
+        if (context == null) return;
+
+        var userId = userResolver.UserId;
+        if (userId <= 0) return;
+
+        foreach (var entry in context.ChangeTracker.Entries<IFullAuditable<long>>())
         {
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.CreatedAt = DateTimeOffset.UtcNow;
                     entry.Entity.CreatedBy = userId;
                     break;
                 case EntityState.Modified:
-                    entry.Entity.UpdatedAt = DateTimeOffset.UtcNow;
                     entry.Entity.UpdatedBy = userId;
                     break;
-            }
-        }
-    }
-
-    private void HandleSoftDelete(DbContext context)
-    {
-        var userId = userResolver.UserId;
-        var entries = context.ChangeTracker.Entries<EfFullAuditableEntity>()
-            .Where(e => e.State != EntityState.Deleted && e.Entity.IsDeleted)
-            .ToList();
-
-        foreach (var entry in entries)
-        {
-            // 设置软删除字段
-            if (entry.Entity.IsDeleted && !entry.Entity.DeletedAt.HasValue)
-            {
-                entry.Entity.DeletedAt = DateTimeOffset.UtcNow;
-                entry.Entity.DeletedBy = userId;
-
-                // 获取所有导航属性
-                var navigations = entry.Metadata.GetNavigations()
-                    .Where(n => typeof(IDeletionAuditable<long>).IsAssignableFrom(n.TargetEntityType.ClrType))
-                    .ToList();
-
-                foreach (var navigation in navigations)
-                {
-                    // 获取导航属性的值
-                    var navigationValue = entry.Navigation(navigation).CurrentValue;
-                    if (navigationValue == null) continue;
-
-                    // 处理集合导航属性
-                    if (navigation.IsCollection)
-                    {
-                        var items = ((IEnumerable)navigationValue).Cast<IDeletionAuditable<long>>();
-                        foreach (var item in items)
-                        {
-                            if (!item.IsDeleted)
-                            {
-                                item.IsDeleted = true;
-                                item.DeletedAt = DateTimeOffset.UtcNow;
-                                item.DeletedBy = userId;
-                            }
-                        }
-                    }
-                    // 处理单个导航属性
-                    else
-                    {
-                        var item = (IDeletionAuditable<long>)navigationValue;
-                        if (!item.IsDeleted)
-                        {
-                            item.IsDeleted = true;
-                            item.DeletedAt = DateTimeOffset.UtcNow;
-                            item.DeletedBy = userId;
-                        }
-                    }
-                }
             }
         }
     }

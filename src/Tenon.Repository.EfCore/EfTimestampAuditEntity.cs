@@ -1,0 +1,17 @@
+namespace Tenon.Repository.EfCore;
+
+/// <summary>
+/// 时间戳审计实体基类，实现了创建和更新时间的跟踪。
+/// </summary>
+public class EfTimestampAuditEntity : EfEntity, ITimestampAuditable
+{
+    /// <summary>
+    /// 获取或设置创建时间。
+    /// </summary>
+    public DateTimeOffset CreatedAt { get; set; }
+    
+    /// <summary>
+    /// 获取或设置更新时间。
+    /// </summary>
+    public DateTimeOffset? UpdatedAt { get; set; }
+}
