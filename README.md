@@ -303,3 +303,136 @@
               return Task.CompletedTask;
           });
   ```
+
+- **多租户数据访问**
+  
+  定义多租户实体
+  
+  ```csharp
+  public class TenantBlog : EfTenantEntity
+  {
+      public string Url { get; set; }
+      public int Rating { get; set; }
+      public virtual ICollection<TenantPost> Posts { get; set; } = default!;
+  }
+  
+  public class TenantPost : EfTenantEntity
+  {
+      public string Title { get; set; }
+      public string Content { get; set; }
+      public long BlogId { get; set; }
+      public virtual TenantBlog Blog { get; set; } = default!;
+  }
+  ```
+  
+  定义租户解析器
+  
+  ```csharp
+  public class CurrentTenantResolver : IEfTenantResolver
+  {
+      private readonly IHttpContextAccessor _httpContextAccessor;
+      
+      public CurrentTenantResolver(IHttpContextAccessor httpContextAccessor)
+      {
+          _httpContextAccessor = httpContextAccessor;
+      }
+      
+      public long? TenantId => GetTenantIdFromHeader();
+      
+      public long? UserId => GetUserIdFromHeader();
+      
+      private long? GetTenantIdFromHeader()
+      {
+          if (_httpContextAccessor.HttpContext == null)
+              return null;
+              
+          if (_httpContextAccessor.HttpContext.Request.Headers.TryGetValue("X-Tenant-Id", out var tenantIdValue) && 
+              long.TryParse(tenantIdValue, out var tenantId))
+          {
+              return tenantId;
+          }
+          
+          return null;
+      }
+      
+      private long? GetUserIdFromHeader()
+      {
+          if (_httpContextAccessor.HttpContext == null)
+              return null;
+              
+          if (_httpContextAccessor.HttpContext.Request.Headers.TryGetValue("X-User-Id", out var userIdValue) && 
+              long.TryParse(userIdValue, out var userId))
+          {
+              return userId;
+          }
+          
+          return null;
+      }
+  }
+  ```
+  
+  定义 DbContext
+  
+  ```csharp
+  public sealed class TenantDbContext : TenonDbContext
+  {
+      public TenantDbContext(DbContextOptions options, IEfTenantResolver tenantResolver)
+          : base(options, tenantResolver)
+      {
+      }
+      
+      public DbSet<TenantBlog> TenantBlogs { get; set; }
+      public DbSet<TenantPost> TenantPosts { get; set; }
+      
+      protected override void OnModelCreating(ModelBuilder modelBuilder)
+      {
+          base.OnModelCreating(modelBuilder);
+          
+          modelBuilder.Entity<TenantBlog>().ToTable("tenant_blogs");
+          modelBuilder.Entity<TenantPost>().ToTable("tenant_posts");
+          
+          // 应用租户过滤器
+          modelBuilder.ApplyTenantFilter();
+      }
+  }
+  ```
+  
+  依赖注入
+  
+  ```csharp
+  services.AddHttpContextAccessor();
+  services.AddScoped<IEfTenantResolver, CurrentTenantResolver>();
+  services.AddTenantEfCore<TenantDbContext>(configuration.GetSection("MySql"), 
+      options => options.UseMySql(
+          configuration.GetConnectionString("MySql"),
+          ServerVersion.AutoDetect(configuration.GetConnectionString("MySql")),
+          mySqlOptions => mySqlOptions.MigrationsAssembly(typeof(TenantDbContext).Assembly.GetName().Name)));
+  ```
+  
+  使用多租户仓储
+  
+  ```csharp
+  // 获取当前租户的博客列表
+  public async Task<List<TenantBlog>> GetBlogsForCurrentTenantAsync()
+  {
+      return await _tenantBlogRepository.GetListForCurrentTenantAsync();
+  }
+  
+  // 切换租户上下文
+  public async Task<List<TenantBlog>> GetBlogsForSpecificTenantAsync(long tenantId)
+  {
+      using (_tenantBlogRepository.ChangeTenant(tenantId))
+      {
+          return await _tenantBlogRepository.GetListAsync();
+      }
+  }
+  
+  // 禁用租户过滤，获取所有租户的博客
+  public async Task<List<TenantBlog>> GetBlogsForAllTenantsAsync()
+  {
+      using (_tenantBlogRepository.DisableTenantFilter())
+      {
+          return await _tenantBlogRepository.GetListAsync();
+      }
+  }
+  ```
