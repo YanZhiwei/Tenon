@@ -3,7 +3,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using FluentValidationSample.Models;
 using Microsoft.Extensions.Logging;
-using Tenon.AspNetCore.Abstractions.Application;
+using Tenon.AspNetCore.Abstractions;
 using Tenon.FluentValidation.AspNetCore.Extensions;
 using Tenon.FluentValidation.Extensions;
 
@@ -12,7 +12,7 @@ namespace FluentValidationSample.Services;
 /// <summary>
 /// 用户服务实现
 /// </summary>
-public class UserService : ServiceBase,IUserService
+public class UserService : ApiServiceBase, IUserService
 {
     private readonly IValidator<UserRegistrationRequest> _validator;
     private readonly ILogger<UserService> _logger;
@@ -22,14 +22,14 @@ public class UserService : ServiceBase,IUserService
     /// </summary>
     /// <param name="validator">验证器</param>
     /// <param name="logger">日志记录器</param>
-    public UserService(IValidator<UserRegistrationRequest> validator, ILogger<UserService> logger)
+    public UserService(IValidator<UserRegistrationRequest> validator, ILogger<UserService> logger) : base(logger)
     {
         _validator = validator;
         _logger = logger;
     }
 
     /// <inheritdoc />
-    public async Task<ServiceResult<UserRegistrationResultDto>> RegisterAsync(UserRegistrationRequest request,
+    public async Task<ApiResult<UserRegistrationResultDto>> RegisterAsync(UserRegistrationRequest request,
         CancellationToken cancellationToken)
     {
         try
@@ -54,7 +54,7 @@ public class UserService : ServiceBase,IUserService
         catch (Exception ex)
         {
             _logger.LogError(ex, "用户注册失败: {Email}", request.Email);
-            return Problem(HttpStatusCode.InternalServerError, "注册时发生错误");
+            return Error(HttpStatusCode.InternalServerError, "注册时发生错误");
         }
     }
-} 
+}

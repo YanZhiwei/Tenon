@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tenon.AspNetCore.Abstractions.Application;
+using Tenon.AspNetCore.Abstractions;
 
 namespace Tenon.AspNetCore.Controllers;
 
@@ -39,7 +39,7 @@ public abstract class AbstractController : ControllerBase
     }
 
     [NonAction]
-    protected virtual ActionResult Result(ServiceResult serviceResult)
+    protected virtual ActionResult Result(ApiResult serviceResult)
     {
         if (serviceResult.Succeeded)
             return NoContent();
@@ -48,7 +48,7 @@ public abstract class AbstractController : ControllerBase
 
 
     [NonAction]
-    protected virtual ActionResult<T> Result<T>(ServiceResult<T> serviceResult)
+    protected virtual ActionResult<T> Result<T>(ApiResult<T> serviceResult)
     {
         if (serviceResult.Succeeded)
             return serviceResult.Content;
@@ -62,7 +62,7 @@ public abstract class AbstractController : ControllerBase
     }
 
     [NonAction]
-    protected virtual ActionResult<T> CreatedResult<T>(ServiceResult<T> serviceResult)
+    protected virtual ActionResult<T> CreatedResult<T>(ApiResult<T> serviceResult)
     {
         return serviceResult.Succeeded ? Created(Request.Path, serviceResult.Content) : Problem(serviceResult.ProblemDetails);
     }
