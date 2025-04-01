@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FluentValidation;
 using FluentValidationSample.Models;
 using FluentValidationSample.Resources;
@@ -6,22 +7,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Tenon.AspNetCore.Controllers;
 using Tenon.FluentValidation.AspNetCore.Extensions;
+using Tenon.FluentValidation.AspNetCore.Extensions.Extensions;
 
 namespace FluentValidationSample.Controllers;
 
 /// <summary>
-/// 用户控制器
+///     用户控制器
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class UserController : AbstractController
 {
-    private readonly IValidator<UserRegistrationRequest> _validator;
-    private readonly IUserService _userService;
     private readonly IStringLocalizer<ValidationMessages> _localizer;
-
+    private readonly IUserService _userService;
+    private readonly IValidator<UserRegistrationRequest> _validator;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     /// <summary>
-    /// 构造函数
+    ///     构造函数
     /// </summary>
     /// <param name="validator">验证器</param>
     /// <param name="userService">用户服务</param>
@@ -29,15 +31,16 @@ public class UserController : AbstractController
     public UserController(
         IValidator<UserRegistrationRequest> validator,
         IUserService userService,
-        IStringLocalizer<ValidationMessages> localizer)
+        IStringLocalizer<ValidationMessages> localizer, IHttpContextAccessor httpContextAccessor)
     {
         _validator = validator;
         _userService = userService;
         _localizer = localizer;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     /// <summary>
-    /// 用户注册
+    ///     用户注册
     /// </summary>
     /// <param name="request">注册请求</param>
     /// <param name="cancellationToken">取消令牌</param>
@@ -55,13 +58,13 @@ public class UserController : AbstractController
     {
         // 手动验证并本地化错误消息
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-        
+
         // 测试本地化器是否正常工作
         var testMessage = ValidationMessages.GetString("Username_Required");
-        System.Diagnostics.Debug.WriteLine($"Test localization - Message: {testMessage}");
-        
+        Debug.WriteLine($"Test localization - Message: {testMessage}");
+
         if (!validationResult.IsValid)
-            return validationResult.ToLocalizedValidationProblemDetails(_localizer);
+            return validationResult.ToLocalizedProblemDetails(_localizer, _httpContextAccessor);
 
         var result = await _userService.RegisterAsync(request, cancellationToken);
         return Result(result);

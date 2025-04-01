@@ -52,4 +52,10 @@
     <data name="Age_Range" xml:space="preserve">
         <value>年龄必须大于或等于 {0} 岁</value>
     </data>
-</root> 
+    <data name="Validation_Failed" xml:space="preserve">
+        <value>验证失败</value>
+    </data>
+    <data name="Validation_Summary" xml:space="preserve">
+        <value>发生 {0} 个验证错误，涉及字段：{1}</value>
+    </data>
+</root>

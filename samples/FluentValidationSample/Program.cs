@@ -1,13 +1,8 @@
 using System.Globalization;
-using FluentValidation;
-using FluentValidationSample.Models;
 using FluentValidationSample.Services;
-using FluentValidationSample.Validators;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
 using Tenon.AspNetCore.OpenApi.Extensions;
 using Tenon.FluentValidation.AspNetCore.Extensions;
-using Tenon.FluentValidation.AspNetCore.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +16,7 @@ builder.Services.AddLocalization();
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var localizationConfig = builder.Configuration.GetSection("Localization").Get<LocalizationConfig>();
-    
+
     var supportedCultures = localizationConfig?.SupportedCultures?
         .Select(c => new CultureInfo(c))
         .ToArray() ?? new[] { new CultureInfo("zh-CN") };
@@ -31,7 +26,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.DefaultRequestCulture = new RequestCulture(defaultCulture);
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
-    
+
     // 配置请求本地化选项
     options.RequestCultureProviders = new List<IRequestCultureProvider>
     {
@@ -40,9 +35,9 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new AcceptLanguageHeaderRequestCultureProvider()
     };
 });
-
+builder.Services.AddHttpContextAccessor();
 // Add FluentValidation
-builder.Services.AddWebApiFluentValidation(
+builder.Services.AddFluentValidation(
     builder.Configuration.GetSection("FluentValidation"),
     typeof(Program).Assembly);
 
@@ -65,17 +60,17 @@ app.MapControllers();
 app.Run();
 
 /// <summary>
-/// 本地化配置
+///     本地化配置
 /// </summary>
 public class LocalizationConfig
 {
     /// <summary>
-    /// 默认文化信息
+    ///     默认文化信息
     /// </summary>
     public string DefaultCulture { get; set; } = "zh-CN";
 
     /// <summary>
-    /// 支持的文化信息列表
+    ///     支持的文化信息列表
     /// </summary>
     public string[] SupportedCultures { get; set; } = { "zh-CN" };
 }

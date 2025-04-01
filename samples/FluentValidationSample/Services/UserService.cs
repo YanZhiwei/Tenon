@@ -37,7 +37,7 @@ public class UserService : ApiServiceBase, IUserService
             // 验证请求
             ValidationResult? validationResult = await _validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
-                return validationResult.ToFluentValidationProblemDetails();
+                return validationResult.ToProblemDetails();
 
             // TODO: 实现实际的注册逻辑
             // 这里仅作示例，返回模拟数据

@@ -43,17 +43,16 @@ public static class FluentValidationExtension
         return problemDetails;
     }
 
-    public static FluentValidationProblemDetails ToFluentValidationProblemDetails(this ValidationResult validationResult)
+    public static FluentValidationProblemDetails ToProblemDetails(this ValidationResult validationResult)
     {
-        if (validationResult == null)
-            throw new ArgumentNullException(nameof(validationResult));
+        ArgumentNullException.ThrowIfNull(validationResult);
 
-        var problemDetails = new FluentValidationProblemDetails(validationResult.Errors)
+        return new FluentValidationProblemDetails(validationResult.Errors)
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Title = "One or more validation errors occurred.",
             Status = (int)HttpStatusCode.BadRequest
         };
-        return problemDetails;
     }
+
 }

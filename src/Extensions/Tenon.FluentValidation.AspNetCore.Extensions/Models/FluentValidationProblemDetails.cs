@@ -5,16 +5,15 @@ namespace Tenon.FluentValidation.AspNetCore.Extensions.Models;
 
 public class FluentValidationProblemDetails : HttpValidationProblemDetails
 {
-    public FluentValidationProblemDetails(IEnumerable<ValidationFailure> error)
+    public FluentValidationProblemDetails(IEnumerable<ValidationFailure> errors)
     {
-        if (error == null)
-            throw new ArgumentNullException(nameof(error));
-        Errors = error.Select(c => new ValidationError
+        ArgumentNullException.ThrowIfNull(errors);
+        ValidationErrors = errors.Select(c => new ValidationError
         {
             PropertyName = c.PropertyName,
             ErrorMessage = c.ErrorMessage
         }).ToArray();
     }
 
-    public new IEnumerable<ValidationError> Errors { get; }
+    public IEnumerable<ValidationError> ValidationErrors { get; }
 }
