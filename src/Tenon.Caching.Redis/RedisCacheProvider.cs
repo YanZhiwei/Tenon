@@ -1,4 +1,4 @@
-﻿using Tenon.Caching.Abstractions;
+using Tenon.Caching.Abstractions;
 using Tenon.Caching.Abstractions.Configurations;
 using Tenon.Helper;
 using Tenon.Helper.Internal;
@@ -106,7 +106,12 @@ public sealed class RedisCacheProvider
 
     public async Task KeysExpireAsync(IEnumerable<string> cacheKeys, TimeSpan expiration)
     {
-     
+        ArgumentCheck(cacheKeys);
+        var seconds = (int)expiration.TotalSeconds;
+        if (seconds <= 0)
+            return;
+        foreach (var key in ReNameCacheKeys(cacheKeys))
+            await _redisProvider.KeyExpireAsync(key, seconds).ConfigureAwait(false);
     }
 
     private string ReNameCacheKey(string cacheKey)

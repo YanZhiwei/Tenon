@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
@@ -47,13 +47,35 @@ namespace Tenon.Caching.Interceptor.CastleTests
         [TestMethod()]
         public void GetCacheKeysTest()
         {
-            Assert.Fail();
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var cacheKeyBuilder = scope.ServiceProvider.GetRequiredService<ICacheKeyGenerator>();
+                var interfaceMethod = typeof(TestService).GetInterfaces()
+                    .SelectMany(i => i.GetMethods())
+                    .FirstOrDefault(m => m.Name == "CreateAsync");
+                Assert.IsNotNull(interfaceMethod);
+                var args = new object[] { new CreationDto { Code = "input" } };
+                var singleKey = cacheKeyBuilder.GetCacheKey(interfaceMethod!, args, "test");
+                var keys = cacheKeyBuilder.GetCacheKeys(interfaceMethod!, args, "test");
+                Assert.IsNotNull(keys);
+                Assert.AreEqual(1, keys.Length);
+                Assert.AreEqual(singleKey, keys[0]);
+            }
         }
 
         [TestMethod()]
         public void GetCacheKeyPrefixTest()
         {
-            Assert.Fail();
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var cacheKeyBuilder = scope.ServiceProvider.GetRequiredService<ICacheKeyGenerator>();
+                var interfaceMethod = typeof(TestService).GetInterfaces()
+                    .SelectMany(i => i.GetMethods())
+                    .FirstOrDefault(m => m.Name == "CreateAsync");
+                Assert.IsNotNull(interfaceMethod);
+                var prefix = cacheKeyBuilder.GetCacheKeyPrefix(interfaceMethod!, "test");
+                Assert.AreEqual("test:ITestService:CreateAsync:", prefix);
+            }
         }
     }
 }

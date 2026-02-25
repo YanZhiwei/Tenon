@@ -1,12 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tenon.Caching.Extensions;
-using Tenon.Caching.Redis.Extensions;
-using Tenon.Caching.RedisStackExchange;
+using Tenon.Caching.Abstractions;
+using Tenon.Caching.RedisStackExchange.Extensions;
 using Tenon.Helper.Internal;
-using Tenon.Redis.StackExchangeProvider.Extensions;
 using Tenon.Serialization.Json.Extensions;
 
 namespace Tenon.Caching.RedisTests;
@@ -29,10 +27,8 @@ public class RedisStackExchangeCacheProviderTests
                 .AddConsole()
                 .SetMinimumLevel(LogLevel.Debug))
             .AddSystemTextJsonSerializer()
-            .AddRedisStackExchangeProvider(configuration.GetSection("RedisCache2:Redis"))
-            .AddRedisCache(configuration.GetSection("RedisCache2"))
-            .AddKeyedRedisStackExchangeProvider(_serviceKey, configuration.GetSection("RedisCache:Redis"))
-            .AddKeyedRedisCache(_serviceKey, configuration.GetSection("RedisCache"))
+            .AddRedisStackExchangeCache(configuration.GetSection("RedisCache2:Redis"))
+            .AddKeyedRedisStackExchangeCache(_serviceKey, configuration.GetSection("RedisCache:Redis"))
             .BuildServiceProvider();
     }
 
