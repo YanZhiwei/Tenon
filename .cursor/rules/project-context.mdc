@@ -1,0 +1,13 @@
+---
+description: 写/改代码时遵循项目规范（project-context.md）
+alwaysApply: true
+---
+
+# 项目代码规范上下文
+
+在**编写或修改本仓库任意代码**时：
+
+1. **优先读取** `_bmad-output/project-context.md`，并严格按其中的技术栈、实现规则、代码风格与禁止项执行。
+2. 若需要了解项目结构、架构或文档入口，可参考 `docs/index.md`。
+
+不要忽略 project-context 中的规则（如 .NET 9、Nullable、方法复杂度、异步约定、异常与可见性等）；有冲突时以 project-context.md 为准。
