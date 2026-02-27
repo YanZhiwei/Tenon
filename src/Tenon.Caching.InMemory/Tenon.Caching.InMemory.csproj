@@ -1,3 +1,4 @@
+<!-- 内存缓存实现：基于 System.Runtime.Caching.MemoryCache，实现 Tenon.Caching.Abstractions 的 ICacheProvider。 -->
 <Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\nuget.props"></Import>
 	<Import Project="..\common.props"></Import>

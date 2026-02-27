@@ -42,7 +42,7 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - **Namespaces**: Match project/package identity (e.g. `Tenon.Helper`, `Tenon.Serialization.Json.Extensions`). Use file-scoped namespaces where the codebase already does.
 - **Extension methods**: Place in static classes named `*Extension` or `*Extensions` under an `Extensions` subfolder or namespace; keep them in the same project as the type they extend or in the official Extensions project for that layer.
 - **Implicit usings**: Rely on global usings; add project-level or solution-level usings only when necessary for the whole project.
-- **XML docs**: Use `<summary>` (and optional `<param>`/`<returns>`) for public API. Existing code uses Chinese or English summaries; match the language of the surrounding file or module.
+- **XML docs**: Use `<summary>` (and optional `<param>`/`<returns>`) for public API. Existing code uses Chinese or English summaries; match the language of the surrounding file or module. For interface implementations, prefer explicit `<summary>` and `<param>` so the contract is self-documenting; use `<inheritdoc />` only when the base or interface already has complete XML documentation to inherit.
 
 ### Framework-Specific Rules (Library / ASP.NET Core / EF Core)
 
