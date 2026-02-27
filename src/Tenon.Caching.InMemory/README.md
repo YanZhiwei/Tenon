@@ -8,132 +8,100 @@
 ## ✨ 功能特性
 
 - 🚀 基于 MemoryCache 的高性能实现
-- 🔧 支持自定义缓存配置
 - 💉 集成依赖注入框架
 - 🎯 统一的 ICacheProvider 接口
 - 🔄 自动过期缓存清理
-- 📊 可配置内存使用限制
 - 🛡️ 保证线程安全
 
 ## 📦 安装方式
 
 通过 NuGet 包管理器安装：
+
 ```bash
 dotnet add package Tenon.Caching.InMemory
 ```
 
-## 🚀 快速入门
+## 🚀 快速开始
 
 ### 1. 注册服务
-在 `Startup.cs` 或 `Program.cs` 中配置服务：
+
+在 `Program.cs` 中配置服务，使用默认内存缓存（`MemoryCache.Default`）：
 
 ```csharp
-// 使用默认配置
 services.AddInMemoryCache();
-
-// 或使用自定义配置
-services.AddInMemoryCache(options =>
-{
-    // 设置最大内存限制为 1GB
-    options.CacheMemoryLimitMegabytes = 1024;    
-    // 使用最多 50% 的物理内存
-    options.PhysicalMemoryLimitPercentage = 50;  
-    // 每 5 分钟清理过期缓存
-    options.PollingInterval = TimeSpan.FromMinutes(5); 
-});
 ```
 
 ### 2. 使用缓存服务
 
 ```csharp
-public class WeatherService
+public class MyService
 {
     private readonly ICacheProvider _cache;
 
-    public WeatherService(ICacheProvider cache)
+    public MyService(ICacheProvider cache)
     {
         _cache = cache;
     }
 
-    public async Task<WeatherForecast> GetForecastAsync(string city)
+    public async Task<string> GetOrSetAsync(string key)
     {
-        var cacheKey = $"weather:{city}";
-        
-        // 尝试从缓存获取数据
-        if (_cache.TryGet(cacheKey, out WeatherForecast? forecast))
-            return forecast;
+        var value = _cache.Get<string>(key);
+        if (value.HasValue)
+            return value.Value!;
 
-        // 缓存未命中，从数据源获取
-        forecast = await GetForecastFromApiAsync(city);
-        
-        // 存入缓存，设置 30 分钟过期
-        _cache.Set(cacheKey, forecast, TimeSpan.FromMinutes(30));
-        
-        return forecast;
+        var data = await FetchFromSourceAsync(key);
+        _cache.Set(key, data, TimeSpan.FromMinutes(30));
+        return data;
     }
 }
 ```
 
-## 📖 高级用法
+所有读写均通过 `Get<T>` / `Set` 与 `CacheValue<T>.HasValue` / `Value` 完成，接口无 `TryGet`。
 
-### 自定义缓存配置
+## 📖 两种注册方式
+
+### 方式一：无参注册（默认缓存）
+
+适用于单实例、无需键控的场景：
+
+```csharp
+services.AddInMemoryCache();
+```
+
+### 方式二：通过 AddCaching + UseInMemoryStorage（键控或统一入口）
+
+需要与 Tenon.Caching.Abstractions 的 `AddCaching` 配合、或使用键控服务时：
+
+```csharp
+services.AddCaching(options =>
+{
+    options.UseInMemoryStorage();
+    // 可选：options.KeyedServiceKey = "InMemory";
+});
+```
+
+## ⚙️ 配置说明
+
+- **无参注册**：`AddInMemoryCache()` 使用 `MemoryCache.Default`，无需配置。
+- **带配置注册**：可通过 `AddInMemoryCache(options => { ... })` 使用 `InMemoryCacheOptions` 自定义行为：
+
+| 选项 | 类型 | 说明 |
+|------|------|------|
+| `CacheName` | string? | 缓存实例名称；与其余选项均为 null 时使用默认缓存。 |
+| `CacheMemoryLimitMegabytes` | long? | 缓存最大内存限制（MB）。 |
+| `PhysicalMemoryLimitPercentage` | int? | 占物理内存的百分比上限（0–100）。 |
+| `PollingInterval` | TimeSpan? | 过期项轮询清理间隔；未设置时默认 2 分钟。 |
+
+示例：
 
 ```csharp
 services.AddInMemoryCache(options =>
 {
-    // 基础配置
-    options.CacheName = "CustomCache";
-    options.CacheMemoryLimitMegabytes = 2048;
-    
-    // 内存限制
-    options.PhysicalMemoryLimitPercentage = 75;
-    
-    // 清理配置
-    options.PollingInterval = TimeSpan.FromMinutes(10);
+    options.CacheName = "MyAppCache";
+    options.CacheMemoryLimitMegabytes = 100;
+    options.PollingInterval = TimeSpan.FromMinutes(5);
 });
 ```
-
-### 缓存操作示例
-
-```csharp
-public class CacheExample
-{
-    private readonly ICacheProvider _cache;
-
-    public CacheExample(ICacheProvider cache)
-    {
-        _cache = cache;
-    }
-
-    public void CacheOperations()
-    {
-        // 设置字符串缓存
-        _cache.Set("key1", "value1", TimeSpan.FromHours(1));
-
-        // 获取缓存数据
-        if (_cache.TryGet("key1", out string? value))
-        {
-            Console.WriteLine($"缓存命中: {value}");
-        }
-
-        // 删除缓存
-        _cache.Remove("key1");
-
-        // 缓存复杂对象
-        var user = new User { Id = 1, Name = "张三" };
-        _cache.Set($"user:{user.Id}", user, TimeSpan.FromMinutes(30));
-    }
-}
-```
-
-## ⚙️ 配置选项说明
-
-| 配置项 | 说明 | 默认值 |
-|------|------|--------|
-| CacheName | 缓存实例名称 | MemoryCacheProvider |
-| CacheMemoryLimitMegabytes | 最大内存限制（MB） | 不限制 |
-| PhysicalMemoryLimitPercentage | 物理内存使用限制百分比 | 不限制 |
-| PollingInterval | 过期缓存清理间隔 | 2分钟 |
 
 ## 🔨 项目依赖
 
@@ -146,35 +114,24 @@ public class CacheExample
 ```
 Tenon.Caching.InMemory/
 ├── Configurations/
-│   └── InMemoryCachingOptions.cs    # 缓存配置选项
+│   └── InMemoryCachingOptions.cs    # CachingOptions 扩展（UseInMemoryStorage）
 ├── Extensions/
-│   ├── CachingOptionsExtension.cs    # 缓存选项扩展
+│   ├── CachingOptionsExtension.cs  # 缓存选项扩展
 │   └── ServiceCollectionExtension.cs # 服务注册扩展
 ├── MemoryCacheProvider.cs           # 内存缓存实现
-└── Tenon.Caching.InMemory.csproj    # 项目文件
+└── Tenon.Caching.InMemory.csproj
 ```
 
 ## 📝 使用注意事项
 
-### 1. 内存管理
-- 根据应用程序需求合理设置内存限制
-- 为缓存项设置合适的过期时间
-- 定期监控缓存命中率和内存使用情况
-
-### 2. 性能优化
-- 合理配置缓存清理间隔
-- 避免缓存过大的对象
-- 使用合适的缓存策略
-
-### 3. 最佳实践
-- 采用统一的缓存键命名规范
-- 实现缓存预热机制
-- 添加必要的缓存监控和日志记录
+- 根据应用程序需求为缓存项设置合适的过期时间。
+- 采用统一的缓存键命名规范，便于排查与清理。
+- 本包为进程内缓存，多实例或分布式场景请选用 Redis 等实现。
 
 ## 🤝 参与贡献
 
-欢迎参与项目贡献！请阅读我们的[贡献指南](../CONTRIBUTING.md)了解如何参与项目开发。
+欢迎参与项目贡献！请阅读仓库的贡献指南了解如何参与开发。
 
 ## 📄 开源协议
 
-本项目采用 MIT 开源协议 - 详情请查看 [LICENSE](../LICENSE) 文件。
+本项目采用 MIT 开源协议。

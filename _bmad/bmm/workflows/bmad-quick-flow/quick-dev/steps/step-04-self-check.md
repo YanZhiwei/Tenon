@@ -64,9 +64,11 @@ Verify code quality:
 If `{execution_mode}` is "tech-spec":
 
 1. Load `{tech_spec_path}`
-2. Mark all tasks as `[x]` complete
-3. Update status to "Implementation Complete"
-4. Save changes
+2. In **Implementation Plan → Tasks**: change every task checkbox from `- [ ]` to `- [x]`
+3. In **Acceptance Criteria**: change every AC checkbox from `- [ ]` to `- [x]`
+4. In **frontmatter**: set `stepsCompleted` to the full list of step indices (e.g. if the spec has 5 tasks, set `stepsCompleted: [1, 2, 3, 4, 5]`)
+5. In **frontmatter**: set `status: 'done'`
+6. Save changes
 
 ---
 

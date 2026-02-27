@@ -88,8 +88,8 @@ Skipped (noise/uncertain): F2, F4
 If `{execution_mode}` is "tech-spec":
 
 1. Load `{tech_spec_path}`
-2. Update status to "Completed"
-3. Add review notes:
+2. Ensure frontmatter `status: 'done'` (Step 4 should already have set it; if not, set it now)
+3. Append a **Review Notes** section (if not already present) with:
    ```
    ## Review Notes
    - Adversarial review completed
