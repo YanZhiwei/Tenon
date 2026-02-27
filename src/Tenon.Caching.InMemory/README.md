@@ -25,7 +25,7 @@ dotnet add package Tenon.Caching.InMemory
 
 ### 1. 注册服务
 
-在 `Program.cs` 中配置服务，使用默认内存缓存（`MemoryCache.Default`）：
+在 `Program.cs` 中配置服务，使用默认内存缓存（由 `AddMemoryCache` 注册的 `IMemoryCache`）：
 
 ```csharp
 services.AddInMemoryCache();
@@ -84,7 +84,7 @@ services.AddCaching(options =>
 
 ## ⚙️ 配置说明
 
-- **无参注册**：`AddInMemoryCache()` 使用 `MemoryCache.Default`，无需配置。
+- **无参注册**：`AddInMemoryCache()` 内部调用 `AddMemoryCache()` 并注册单例 `ICacheProvider`，使用默认选项，无需额外配置。
 - **带配置注册**：可通过 `AddInMemoryCache(options => { ... })` 使用 `InMemoryCacheOptions` 自定义行为：
 
 | 选项 | 类型 | 说明 |

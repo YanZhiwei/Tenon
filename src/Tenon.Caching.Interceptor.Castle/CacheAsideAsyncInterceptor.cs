@@ -1,4 +1,4 @@
-﻿using Castle.DynamicProxy;
+using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 using Tenon.Caching.Abstractions;
 using Tenon.Caching.Interceptor.Castle.Attributes;
@@ -10,11 +10,12 @@ using Tenon.Caching.Interceptor.Castle.Models;
 namespace Tenon.Caching.Interceptor.Castle;
 
 /// <summary>
-///     Cache Aside + 延时双删 + 失败补偿
+/// Cache Aside 缓存拦截器，支持延时双删与失败补偿。
 /// </summary>
-/// <param name="cacheProvider"></param>
-/// <param name="cacheKeyBuilder"></param>
-/// <param name="logger"></param>
+/// <param name="cacheProvider">缓存提供程序。</param>
+/// <param name="cacheKeyBuilder">缓存键生成器。</param>
+/// <param name="options">拦截器选项。</param>
+/// <param name="logger">日志。</param>
 public sealed class CacheAsideAsyncInterceptor(
     ICacheProvider cacheProvider,
     ICacheKeyGenerator cacheKeyBuilder,
@@ -35,9 +36,9 @@ public sealed class CacheAsideAsyncInterceptor(
         _options = options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>
-    ///     同步拦截器
+    /// 同步方法拦截入口。
     /// </summary>
-    /// <param name="invocation">IInvocation</param>
+    /// <param name="invocation">当前调用。</param>
     public void InterceptSynchronous(IInvocation invocation)
     {
         var metaData = invocation.GetMetadata();
@@ -52,9 +53,9 @@ public sealed class CacheAsideAsyncInterceptor(
     }
 
     /// <summary>
-    ///     异步拦截器 无返回值
+    /// 异步方法拦截入口（无返回值 Task）。
     /// </summary>
-    /// <param name="invocation">IInvocation</param>
+    /// <param name="invocation">当前调用。</param>
     public void InterceptAsynchronous(IInvocation invocation)
     {
         var metaData = invocation.GetMetadata();
@@ -69,10 +70,10 @@ public sealed class CacheAsideAsyncInterceptor(
     }
 
     /// <summary>
-    ///     异步拦截器 有返回值
+    /// 异步方法拦截入口（返回 Task&lt;TResult&gt;）。
     /// </summary>
-    /// <typeparam name="TResult">TResult</typeparam>
-    /// <param name="invocation">IInvocation</param>
+    /// <typeparam name="TResult">方法返回类型。</typeparam>
+    /// <param name="invocation">当前调用。</param>
     public void InterceptAsynchronous<TResult>(IInvocation invocation)
     {
         var metaData = invocation.GetMetadata();
@@ -103,13 +104,13 @@ public sealed class CacheAsideAsyncInterceptor(
     }
 
     /// <summary>
-    ///     延时双删
+    /// 延时双删：先删缓存、执行方法、再删一次缓存；失败时入队补偿。
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
-    /// <param name="metaData"></param>
-    /// <param name="invocation"></param>
-    /// <param name="evictAttribute"></param>
-    /// <returns></returns>
+    /// <typeparam name="TResult">方法返回类型。</typeparam>
+    /// <param name="metaData">调用元数据。</param>
+    /// <param name="invocation">当前调用。</param>
+    /// <param name="evictAttribute">失效注解配置。</param>
+    /// <returns>方法执行结果。</returns>
     private async Task<TResult> CachingEvictInterceptAsync<TResult>(InvocationMetadata metaData, IInvocation invocation,
         CachingEvictAttribute evictAttribute)
     {

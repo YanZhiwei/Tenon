@@ -42,7 +42,7 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - **Namespaces**: Match project/package identity (e.g. `Tenon.Helper`, `Tenon.Serialization.Json.Extensions`). Use file-scoped namespaces where the codebase already does.
 - **Extension methods**: Place in static classes named `*Extension` or `*Extensions` under an `Extensions` subfolder or namespace; keep them in the same project as the type they extend or in the official Extensions project for that layer.
 - **Implicit usings**: Rely on global usings; add project-level or solution-level usings only when necessary for the whole project.
-- **XML docs**: Use `<summary>` (and optional `<param>`/`<returns>`) for public API. Existing code uses Chinese or English summaries; match the language of the surrounding file or module. For interface implementations, prefer explicit `<summary>` and `<param>` so the contract is self-documenting; use `<inheritdoc />` only when the base or interface already has complete XML documentation to inherit.
+- **注释 / XML 文档**：公开 API 写简短 `<summary>`，需要时加 `<param>`、`<returns>`。一句话说清用途即可，不堆砌废话。实现接口时优先自己写 summary；基类/接口已有完整文档时才用 `<inheritdoc />`。与文件其余注释语言一致（中文或英文）。**C# 标准**：写了 `<param>`、`<returns>`、`<typeparam>` 就必须写清含义，不留空标签；根据方法、类实际写，无内容可写则省略该标签。
 
 ### Framework-Specific Rules (Library / ASP.NET Core / EF Core)
 
@@ -69,7 +69,7 @@ _This file contains critical rules and patterns that AI agents must follow when 
 
 - **Method complexity**: Keep cyclomatic complexity per method ≤ 10. If higher, extract helper methods or simplify conditionals (e.g. early returns, guard clauses).
 - **Single responsibility**: One method does one thing. If the method name needs "and" or multiple verbs, split into smaller methods and compose.
-- **No comments inside method bodies**: Do not add inline comments (e.g. `// step 1`) inside methods. Prefer self-explanatory names and small methods; use XML `<summary>` on the method for "why" only when necessary.
+- **方法体内不写注释**：不写 `// step 1` 这类行内注释。靠命名和小方法表达意图；只有需要说明“为什么”时才在方法上写 `<summary>`。
 - **Method length**: Prefer short methods (e.g. under ~30 lines). Long logic should be broken into named private/static helpers with clear responsibilities.
 - **Parameters**: Prefer at most 3–4 parameters per method. Use options object or builder when more are needed; avoid long parameter lists.
 - **Early return / guard clauses**: Use early returns for validation and edge cases; avoid deep nesting (e.g. reduce `if` nesting beyond 2–3 levels).

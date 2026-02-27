@@ -1,11 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<!-- Castle 动态代理实现的缓存旁路拦截器：Cache Aside、延时双删、失败补偿。 -->
+<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\nuget.props"></Import>
 	<Import Project="..\common.props"></Import>
 	<Import Project="..\version.props"></Import>
   <PropertyGroup>
-     <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Description>基于 Castle 动态代理的缓存拦截器，支持 Cache Aside、延时双删与失败补偿。</Description>
+    <PackageTags>tenon;caching;interceptor;castle;cache-aside</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
