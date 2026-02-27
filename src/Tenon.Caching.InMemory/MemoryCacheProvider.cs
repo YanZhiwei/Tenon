@@ -93,25 +93,27 @@ public sealed class MemoryCacheProvider : ICacheProvider, IDisposable
     }
 
     /// <summary>
-    /// 移除指定键的缓存项。
+    /// 移除指定键的缓存项。先判断键是否存在；若存在则移除，移除后再次检查，确认不存在后返回 true。
     /// </summary>
     /// <param name="cacheKey">缓存键。</param>
-    /// <returns>若该键原本存在则为 true，否则为 false。</returns>
+    /// <returns>键不存在（移除前或移除后确认）为 true；键为 null 或空，或移除后仍存在时为 false。</returns>
     public bool Remove(string cacheKey)
     {
         if (string.IsNullOrEmpty(cacheKey))
             return false;
 
-        var existed = _cache.TryGetValue(cacheKey, out _);
+        if (!_cache.TryGetValue(cacheKey, out _))
+            return true;
+
         _cache.Remove(cacheKey);
-        return existed;
+        return !_cache.TryGetValue(cacheKey, out _);
     }
 
     /// <summary>
-    /// 异步移除指定键的缓存项。
+    /// 异步移除指定键的缓存项。语义同 <see cref="Remove" />：先判断存在，移除后再校验。
     /// </summary>
     /// <param name="cacheKey">缓存键。</param>
-    /// <returns>若该键原本存在则为 true，否则为 false。</returns>
+    /// <returns>键不存在（移除前或移除后确认）为 true；否则为 false。</returns>
     public Task<bool> RemoveAsync(string cacheKey)
     {
         return Task.FromResult(Remove(cacheKey));
