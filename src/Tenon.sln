@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
@@ -163,6 +163,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTenantSample", "..\samples\MultiTenantSample\MultiTenantSample.csproj", "{CF27756D-E69D-8D55-C7B5-05E8E17AAA13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching.InMemoryTests", "..\test\Tenon.Caching.InMemoryTests\Tenon.Caching.InMemoryTests.csproj", "{637F3069-0ADD-4359-B0DD-57E72A0C7D6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching.Interceptor.CastleTests", "..\test\Tenon.Caching.Interceptor.CastleTests\Tenon.Caching.Interceptor.CastleTests.csproj", "{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -978,6 +980,18 @@ Global
 		{637F3069-0ADD-4359-B0DD-57E72A0C7D6C}.Release|x64.Build.0 = Release|Any CPU
 		{637F3069-0ADD-4359-B0DD-57E72A0C7D6C}.Release|x86.ActiveCfg = Release|Any CPU
 		{637F3069-0ADD-4359-B0DD-57E72A0C7D6C}.Release|x86.Build.0 = Release|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Debug|x64.Build.0 = Debug|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Debug|x86.Build.0 = Debug|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Release|x64.ActiveCfg = Release|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Release|x64.Build.0 = Release|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Release|x86.ActiveCfg = Release|Any CPU
+		{7A8B9C0D-1E2F-4A5B-8C9D-0E1F2A3B4C5D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -17,73 +17,65 @@
 
 ```bash
 dotnet add package Tenon.Caching.Interceptor.Castle
-```
-
-需同时提供 `ICacheProvider` 实现（例如 `Tenon.Caching.InMemory`）：
-
-```bash
 dotnet add package Tenon.Caching.InMemory
 ```
 
-## 🚀 快速开始
+## 🚀 快速开始（与单元测试一致）
 
 ### 1. 注册依赖
 
-需注册：缓存实现、键生成器、拦截器选项、以及本库的拦截器。示例（配合内存缓存）：
-
 ```csharp
-// 缓存实现
-services.AddInMemoryCache();
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Tenon.Caching.InMemory.Extensions;
+using Tenon.Caching.Interceptor.Castle;
+using Tenon.Caching.Interceptor.Castle.Configurations;
 
-// 拦截器选项（延时双删的第二次删除前等待时间）
-services.Configure<CacheAsideInterceptorOptions>(options =>
-{
-    options.DelayedDelete = TimeSpan.FromSeconds(1);
-});
+var services = new ServiceCollection()
+    .AddInMemoryCache()
+    .AddSingleton<ICacheKeyGenerator, DefaultCacheKeyGenerator>()
+    .Configure<CacheAsideInterceptorOptions>(o => o.DelayedDelete = TimeSpan.FromMilliseconds(1))
+    .AddLogging(b => b.SetMinimumLevel(LogLevel.Warning));
 
-// 缓存键生成器（可选，不注册则需自行提供 ICacheKeyGenerator）
-services.AddSingleton<ICacheKeyGenerator, DefaultCacheKeyGenerator>();
-
-// 拦截器（需 ICacheProvider、ICacheKeyGenerator、CacheAsideInterceptorOptions、ILogger）
-services.AddSingleton<CacheAsideAsyncInterceptor>();
+using var provider = services.BuildServiceProvider();
 ```
 
-### 2. 使用 Castle 创建代理
-
-拦截器实现 Castle 的 `IAsyncInterceptor`，需通过 Castle 的 `ProxyGenerator` 对接口/类创建代理并注入拦截器。示例：
+### 2. 创建代理并调用
 
 ```csharp
-// 伪代码示例：在解析服务时用代理包装实现类
+using Castle.DynamicProxy;
+using Microsoft.Extensions.Options;
+
+var target = new MyService();
+var interceptor = new CacheAsideAsyncInterceptor(
+    provider.GetRequiredService<ICacheProvider>(),
+    provider.GetRequiredService<ICacheKeyGenerator>(),
+    provider.GetRequiredService<IOptions<CacheAsideInterceptorOptions>>().Value,
+    provider.GetRequiredService<ILogger<CacheAsideAsyncInterceptor>>());
+
 var generator = new ProxyGenerator();
-var interceptor = serviceProvider.GetRequiredService<CacheAsideAsyncInterceptor>();
-var target = serviceProvider.GetRequiredService<ProductService>();
-var proxy = generator.CreateInterfaceProxyWithTarget<IProductService>(target, interceptor);
+var proxy = generator.CreateInterfaceProxyWithTarget<IMyService>(target, interceptor);
+
+var first = await proxy.GetAsync(1);
+var second = await proxy.GetAsync(1);  // 第二次可能命中缓存
+// first == second
 ```
 
-实际项目中可将上述逻辑封装为扩展方法或工厂，按需注册为 `IProductService` 的实现。
-
-### 3. 在方法上使用特性
+### 3. 目标服务与特性
 
 ```csharp
-public interface IProductService
+public interface IMyService
 {
-    Task<Product?> GetByIdAsync(int id);
-    Task UpdateAsync(Product product);
+    Task<int> GetAsync(int id);
+    Task<int> GetNoCacheAsync(int id);  // 无特性，直接执行
 }
 
-public class ProductService : IProductService
+public class MyService : IMyService
 {
-    [CachingAbl(ExpirationInSec = 3600)]  // 先查缓存，未命中执行方法并写入缓存 1 小时
-    public async Task<Product?> GetByIdAsync(int id)
-    {
-        return await _repository.GetByIdAsync(id);
-    }
+    [CachingAbl(ExpirationInSec = 60)]
+    public Task<int> GetAsync(int id) => Task.FromResult(id);
 
-    [CachingEvict]  // 执行前后延时双删；可配置 CacheKeys 指定要删的键
-    public async Task UpdateAsync(Product product)
-    {
-        await _repository.UpdateAsync(product);
-    }
+    public Task<int> GetNoCacheAsync(int id) => Task.FromResult(id);
 }
 ```
 
@@ -91,89 +83,107 @@ public class ProductService : IProductService
 
 ### CachingAblAttribute（Cache-Aside）
 
-标记“先查缓存，未命中再执行并回写”的方法：
-
-| 属性 | 类型 | 说明 |
-|------|------|------|
-| `ExpirationInSec` | int | 缓存过期秒数，默认 30 |
-| `CacheKeyPrefix` | string | 继承自基类，键前缀 |
-| `IsHighAvailability` | bool | 继承自基类，为 true 时异常不抛出仅记录 |
-| `CacheKey` | string | 继承自基类，可选固定键片段 |
+| 属性 | 类型 | 默认 | 说明 |
+|------|------|------|------|
+| `ExpirationInSec` | int | 30 | 缓存过期秒数 |
+| `CacheKeyPrefix` | string | "" | 键前缀 |
+| `IsHighAvailability` | bool | true | 为 true 时异常不抛出仅记录 |
+| `CacheKey` | string | "" | 可选固定键片段 |
 
 ```csharp
-[CachingAbl(ExpirationInSec = 1800, CacheKeyPrefix = "Product")]
-public async Task<Product?> GetByCodeAsync(string code) => await _repo.GetByCodeAsync(code);
+[CachingAbl(ExpirationInSec = 3600)]
+public Task<Product?> GetByIdAsync(int id) => _repo.GetByIdAsync(id);
 ```
 
-### CachingEvictAttribute（失效 / 延时双删）
+### CachingEvictAttribute（延时双删）
 
-标记“执行前后删除缓存”的方法，支持延时双删与失败入队：
-
-| 属性 | 类型 | 说明 |
-|------|------|------|
-| `CacheKeys` | string[] | 要失效的键或键模板，可与方法参数组合；空则按方法参数生成 |
-| `CacheKeyPrefix` / `IsHighAvailability` / `CacheKey` | 同基类 | 同上 |
+| 属性 | 类型 | 默认 | 说明 |
+|------|------|------|------|
+| `CacheKeys` | string[] | 空 | 要失效的键；空则按方法参数生成 |
+| 基类属性 | 同上 | 同上 | CacheKeyPrefix、IsHighAvailability、CacheKey |
 
 ```csharp
 [CachingEvict]
-public async Task UpdateAsync(int id, Product product) => await _repo.UpdateAsync(id, product);
+public Task UpdateAsync(int id, Product p) => _repo.UpdateAsync(id, p);
 
-[CachingEvict(CacheKeys = new[] { "Product:List" })]  // 同时删指定 key
-public async Task RefreshAsync() => await _repo.RefreshAsync();
+[CachingEvict(CacheKeys = new[] { "k1", "k2" })]
+public Task RefreshAsync() => _repo.RefreshAsync();
 ```
 
 ### CachingParameterAttribute（参与键生成的参数）
 
-标记哪些参数参与缓存键生成；**未标记任何参数时，默认使用全部参数**。
+若有任意参数带 `[CachingParameter]`，则仅用带标记的参数；否则用全部参数。
 
 ```csharp
 [CachingAbl(ExpirationInSec = 600)]
-public async Task<Order?> GetOrderAsync(
-    [CachingParameter] string orderId,   // 参与生成 key
-    string traceId)                        // 未标记，若其他参数有标记则可不参与（由生成器决定）
+public Task<Order?> GetOrderAsync(
+    [CachingParameter] string orderId,
+    string traceId)
 ```
 
-默认的 `DefaultCacheKeyGenerator` 行为：若有任意参数带 `[CachingParameter]`，则仅用带标记的参数；否则用全部参数。
+## 🔧 默认缓存键生成器（与单元测试一致）
+
+`DefaultCacheKeyGenerator` 行为：
+
+- **无参方法**：`类型名:方法名:0`
+- **带前缀**：`App:类型名:方法名:...`
+- **带参数**：参数序列化后拼接到键
+- **GetCacheKeys**：每个参数生成一条键（非数组参数时使用完整 args，多条键内容相同）
+
+```csharp
+// 示例：GetCacheKeyPrefix(method, "")  → "FakeTarget:GetNoArg:"
+// 示例：GetCacheKeyPrefix(method, "P") → "P:FakeTarget:GetNoArg:"
+```
 
 ## 🔧 自定义缓存键生成器
-
-实现 `ICacheKeyGenerator` 的三个方法即可：
 
 ```csharp
 public class CustomCacheKeyGenerator : ICacheKeyGenerator
 {
     public string GetCacheKey(MethodInfo methodInfo, object[] args, string prefix)
     {
-        // 自定义单键生成逻辑
         var key = $"{prefix}{methodInfo.DeclaringType?.Name}:{methodInfo.Name}";
-        foreach (var arg in args)
-            key += $":{arg}";
+        foreach (var arg in args) key += $":{arg}";
         return key;
     }
 
     public string[] GetCacheKeys(MethodInfo methodInfo, object[] args, string prefix)
-    {
-        // 批量失效时返回多键
-        return new[] { GetCacheKey(methodInfo, args, prefix) };
-    }
+        => new[] { GetCacheKey(methodInfo, args, prefix) };
 
     public string GetCacheKeyPrefix(MethodInfo methodInfo, string prefix)
-    {
-        return string.IsNullOrWhiteSpace(prefix)
+        => string.IsNullOrWhiteSpace(prefix)
             ? $"{methodInfo.DeclaringType?.Name}:{methodInfo.Name}:"
             : $"{prefix}:{methodInfo.DeclaringType?.Name}:{methodInfo.Name}:";
-    }
 }
 
-// 注册
 services.AddSingleton<ICacheKeyGenerator, CustomCacheKeyGenerator>();
 ```
 
 ## ⚙️ 配置项
 
-| 类型 | 选项 | 说明 |
-|------|------|------|
-| `CacheAsideInterceptorOptions` | `DelayedDelete` | 延时双删中，第二次删除前的等待时间，默认 1 秒 |
+| 类型 | 选项 | 默认 | 说明 |
+|------|------|------|------|
+| `CacheAsideInterceptorOptions` | `DelayedDelete` | 1 秒 | 延时双删中，第二次删除前的等待时间 |
+
+```csharp
+services.Configure<CacheAsideInterceptorOptions>(o =>
+{
+    o.DelayedDelete = TimeSpan.FromMilliseconds(500);
+});
+```
+
+## 🔌 失败补偿队列
+
+失效失败时入队到 `CachingEvictFailedQueue.Instance`：
+
+```csharp
+// Enqueue 后 TryDequeue 可获得键数组
+CachingEvictFailedQueue.Instance.Enqueue(new[] { "key1", "key2" });
+var ok = CachingEvictFailedQueue.Instance.TryDequeue(out var keys);  // true
+// keys 即 ["key1", "key2"]
+
+// 空队列时 TryDequeue 返回 false
+```
 
 ## 🔨 项目依赖
 
@@ -182,14 +192,14 @@ services.AddSingleton<ICacheKeyGenerator, CustomCacheKeyGenerator>();
 - Microsoft.Extensions.Logging.Abstractions
 - Microsoft.Extensions.Configuration.Abstractions
 
-使用前需提供 `ICacheProvider` 的实现（如 Tenon.Caching.InMemory）。
+使用前需提供 `ICacheProvider`（如 Tenon.Caching.InMemory）。
 
 ## 📝 使用注意
 
-- 延时双删的延迟时间根据数据一致性与性能需求权衡设置。
-- `IsHighAvailability = true` 时，缓存读写/删除异常不会抛出，仅记录日志；设为 `false` 时抛出。
-- 失效失败会入队到 `CachingEvictFailedQueue.Instance`，可由后台任务消费并重试删除。
-- 缓存键生成依赖方法参数：避免用易变或大对象作为唯一参与键生成的参数。
+- 延时双删的延迟时间根据数据一致性与性能权衡设置。
+- `IsHighAvailability = true` 时异常不抛出仅记录；设为 `false` 时抛出。
+- 失效失败入队到 `CachingEvictFailedQueue.Instance`，可由后台任务消费重试。
+- 避免用易变或大对象作为唯一参与键生成的参数。
 
 ## 🤝 参与贡献
 
