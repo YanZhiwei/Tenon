@@ -3,11 +3,11 @@
 [![NuGet version](https://badge.fury.io/nu/Tenon.Caching.InMemory.svg)](https://badge.fury.io/nu/Tenon.Caching.InMemory)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-基于 System.Runtime.Caching.MemoryCache 的高性能内存缓存实现，为 .NET 应用程序提供简单且灵活的缓存操作接口。
+基于 Microsoft.Extensions.Caching.Memory (IMemoryCache) 的高性能内存缓存实现，为 .NET 应用程序提供简单且灵活的缓存操作接口。
 
 ## ✨ 功能特性
 
-- 🚀 基于 MemoryCache 的高性能实现
+- 🚀 基于 IMemoryCache（Microsoft.Extensions.Caching.Memory）的高性能实现
 - 💉 集成依赖注入框架
 - 🎯 统一的 ICacheProvider 接口
 - 🔄 自动过期缓存清理
@@ -80,6 +80,8 @@ services.AddCaching(options =>
 });
 ```
 
+> **说明**：通过本方式注册时，当前仅使用默认内存缓存（无内存限制、轮询间隔等配置）。如需自定义缓存名称、内存限制或轮询间隔，请使用下方「配置说明」中的带配置注册：`AddInMemoryCache(options => { … })`。
+
 ## ⚙️ 配置说明
 
 - **无参注册**：`AddInMemoryCache()` 使用 `MemoryCache.Default`，无需配置。
@@ -105,7 +107,7 @@ services.AddInMemoryCache(options =>
 
 ## 🔨 项目依赖
 
-- System.Runtime.Caching
+- Microsoft.Extensions.Caching.Memory
 - Tenon.Caching.Abstractions
 - Microsoft.Extensions.DependencyInjection.Abstractions
 
@@ -114,11 +116,12 @@ services.AddInMemoryCache(options =>
 ```
 Tenon.Caching.InMemory/
 ├── Configurations/
-│   └── InMemoryCachingOptions.cs    # CachingOptions 扩展（UseInMemoryStorage）
+│   └── InMemoryCacheOptions.cs              # 内存缓存选项类（用于 AddInMemoryCache(options => …)）
 ├── Extensions/
-│   ├── CachingOptionsExtension.cs  # 缓存选项扩展
-│   └── ServiceCollectionExtension.cs # 服务注册扩展
-├── MemoryCacheProvider.cs           # 内存缓存实现
+│   ├── CachingOptionsExtension.cs           # ICachingOptionsExtension 实现（DI 注册）
+│   ├── CachingOptionsInMemoryExtensions.cs # CachingOptions 扩展（UseInMemoryStorage）
+│   └── ServiceCollectionExtension.cs       # 服务注册扩展（AddInMemoryCache）
+├── MemoryCacheProvider.cs                   # 内存缓存实现
 └── Tenon.Caching.InMemory.csproj
 ```
 
@@ -127,6 +130,7 @@ Tenon.Caching.InMemory/
 - 根据应用程序需求为缓存项设置合适的过期时间。
 - 采用统一的缓存键命名规范，便于排查与清理。
 - 本包为进程内缓存，多实例或分布式场景请选用 Redis 等实现。
+- 方式二（`AddCaching` + `UseInMemoryStorage`）注册时不可配置内存限制等，见上方「方式二」说明。
 
 ## 🤝 参与贡献
 

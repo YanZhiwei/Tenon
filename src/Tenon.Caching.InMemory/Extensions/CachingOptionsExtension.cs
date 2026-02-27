@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Tenon.Caching.Abstractions;
@@ -29,14 +30,16 @@ public sealed class CachingOptionsExtension : ICachingOptionsExtension
     {
         ArgumentNullException.ThrowIfNull(services);
 
+        services.AddMemoryCache();
+
         if (string.IsNullOrWhiteSpace(_options.KeyedServiceKey))
         {
-            services.TryAddSingleton<ICacheProvider, MemoryCacheProvider>();
+            services.TryAddSingleton<ICacheProvider>(sp => new MemoryCacheProvider(sp.GetRequiredService<IMemoryCache>()));
         }
         else
         {
             var key = _options.KeyedServiceKey;
-            services.TryAddKeyedSingleton<ICacheProvider>(key, (_, _) => new MemoryCacheProvider());
+            services.TryAddKeyedSingleton<ICacheProvider>(key, (sp, _) => new MemoryCacheProvider(sp.GetRequiredService<IMemoryCache>()));
         }
     }
 }

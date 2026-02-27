@@ -1,13 +1,12 @@
 using Microsoft.Extensions.Configuration;
 using Tenon.Caching.Abstractions.Configurations;
-using Tenon.Caching.InMemory.Extensions;
 
-namespace Tenon.Caching.InMemory.Configurations;
+namespace Tenon.Caching.InMemory.Extensions;
 
 /// <summary>
-/// 内存缓存相关的 <see cref="CachingOptions" /> 扩展方法。
+/// <see cref="CachingOptions" /> 的内存缓存扩展方法（如 UseInMemoryStorage）。
 /// </summary>
-public static class InMemoryCachingOptions
+public static class CachingOptionsInMemoryExtensions
 {
     /// <summary>
     /// 将缓存存储配置为内存实现（使用 <see cref="MemoryCacheProvider" />）。

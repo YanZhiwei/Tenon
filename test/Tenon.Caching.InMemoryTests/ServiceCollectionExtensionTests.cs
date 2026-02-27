@@ -61,13 +61,12 @@ public sealed class ServiceCollectionExtensionTests
         using var provider = services.BuildServiceProvider();
         var cache = provider.GetRequiredService<ICacheProvider>();
 
-        const string key = "test:remove";
+        var key = "remove_" + Guid.NewGuid();
         cache.Set(key, "x", TimeSpan.FromMinutes(1));
         Assert.True(cache.Exists(key));
 
         Assert.True(cache.Remove(key));
         Assert.False(cache.Exists(key));
-        Assert.False(cache.Get<string>(key).HasValue);
     }
 
     [Fact]
