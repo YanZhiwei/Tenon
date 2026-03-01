@@ -4,8 +4,9 @@ using Microsoft.Extensions.Options;
 using Tenon.Caching.Abstractions;
 using Tenon.Caching.InMemory.Extensions;
 using Tenon.Caching.Interceptor.Castle;
-using Tenon.Caching.Interceptor.Castle.Extensions;
 using Tenon.Caching.Interceptor.Castle.Attributes;
+using Tenon.Caching.Interceptor.Castle.Extensions;
+using Tenon.Caching.Interceptor.Castle.KeyGenerators;
 using Tenon.Caching.Interceptor.Castle.Configurations;
 using Xunit;
 

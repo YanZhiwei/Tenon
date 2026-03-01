@@ -2,6 +2,7 @@ using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 using Tenon.Caching.Abstractions;
 using Tenon.Caching.Interceptor.Castle.Attributes;
+using Tenon.Caching.Interceptor.Castle.KeyGenerators;
 using Tenon.Caching.Interceptor.Castle.Configurations;
 using Tenon.Caching.Interceptor.Castle.Exceptions;
 using Tenon.Caching.Interceptor.Castle.Extensions;

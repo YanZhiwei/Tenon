@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Tenon.Caching.Interceptor.Castle;
+namespace Tenon.Caching.Interceptor.Castle.KeyGenerators;
 
 /// <summary>
 /// 根据方法与参数生成缓存键。

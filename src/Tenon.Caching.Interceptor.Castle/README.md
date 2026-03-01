@@ -154,6 +154,8 @@ services.Configure<CacheAsideInterceptorOptions>(o =>
 ### 自定义生成器
 
 ```csharp
+using Tenon.Caching.Interceptor.Castle.KeyGenerators;
+
 public class CustomCacheKeyGenerator : ICacheKeyGenerator
 {
     public string GetCacheKey(MethodInfo methodInfo, object[] args, string prefix)
@@ -203,6 +205,8 @@ var ok = CachingEvictFailedQueue.Instance.TryDequeue(out var keys);  // true，k
 若需脱离 DI 手动创建代理（如测试、脚本场景），可自行注册依赖后使用 `ProxyGenerator`：
 
 ```csharp
+using Tenon.Caching.Interceptor.Castle.KeyGenerators;
+
 var services = new ServiceCollection()
     .AddInMemoryCache()
     .AddSingleton<ICacheKeyGenerator, DefaultCacheKeyGenerator>()

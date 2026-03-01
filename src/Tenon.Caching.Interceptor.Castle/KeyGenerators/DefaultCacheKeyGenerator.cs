@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Text;
 using Tenon.Caching.Interceptor.Castle.Attributes;
 
-namespace Tenon.Caching.Interceptor.Castle;
+namespace Tenon.Caching.Interceptor.Castle.KeyGenerators;
 
 /// <summary>
 /// 默认缓存键生成器：前缀 + 类型名 + 方法名 + 参数片段，用 : 连接。

@@ -1,6 +1,4 @@
-using Tenon.Caching.Interceptor.Castle.Attributes;
-
-namespace Tenon.Caching.Interceptor.Castle.Extensions;
+namespace Tenon.Caching.Interceptor.Castle.Attributes;
 
 /// <summary>
 /// 缓存拦截器注解的扩展方法。

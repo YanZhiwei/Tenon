@@ -1,6 +1,6 @@
 using System.Reflection;
-using Tenon.Caching.Interceptor.Castle;
 using Tenon.Caching.Interceptor.Castle.Attributes;
+using Tenon.Caching.Interceptor.Castle.KeyGenerators;
 using Xunit;
 
 namespace Tenon.Caching.Interceptor.CastleTests;

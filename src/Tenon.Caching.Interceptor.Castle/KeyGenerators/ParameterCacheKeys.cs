@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Reflection;
 
-namespace Tenon.Caching.Interceptor.Castle;
+namespace Tenon.Caching.Interceptor.Castle.KeyGenerators;
 
 /// <summary>
 /// 根据方法参数生成缓存键片段（用于拼接到完整 key）。

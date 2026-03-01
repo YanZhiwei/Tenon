@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Tenon.Caching.Abstractions;
 using Tenon.Caching.Interceptor.Castle.Configurations;
+using Tenon.Caching.Interceptor.Castle.KeyGenerators;
 
 namespace Tenon.Caching.Interceptor.Castle.Extensions;
 
