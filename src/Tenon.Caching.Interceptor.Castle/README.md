@@ -20,64 +20,72 @@ dotnet add package Tenon.Caching.Interceptor.Castle
 dotnet add package Tenon.Caching.InMemory
 ```
 
-## 🚀 快速开始（与单元测试一致）
+## 🚀 快速开始
 
-### 1. 注册依赖
+### 方式一：程序集扫描（推荐，多接口批量注册）
+
+接口继承 `ICacheableService`（定义于 Tenon.Caching.Abstractions），通过 `AddProxiesFromAssembly` 自动扫描并注册：
 
 ```csharp
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Tenon.Caching.Abstractions;
 using Tenon.Caching.InMemory.Extensions;
-using Tenon.Caching.Interceptor.Castle;
-using Tenon.Caching.Interceptor.Castle.Configurations;
+using Tenon.Caching.Interceptor.Castle.Extensions;
+
+public interface IUserService : ICacheableService
+{
+    Task<User?> GetByIdAsync(int id);
+}
+public class UserService : IUserService { /* ... */ }
 
 var services = new ServiceCollection()
     .AddInMemoryCache()
-    .AddSingleton<ICacheKeyGenerator, DefaultCacheKeyGenerator>()
-    .Configure<CacheAsideInterceptorOptions>(o => o.DelayedDelete = TimeSpan.FromMilliseconds(1))
-    .AddLogging(b => b.SetMinimumLevel(LogLevel.Warning));
+    .AddProxiesFromAssembly(typeof(IUserService).Assembly, o => o.DelayedDelete = TimeSpan.FromMilliseconds(1));
 
-using var provider = services.BuildServiceProvider();
+using var sp = services.BuildServiceProvider();
+using var scope = sp.CreateScope();
+var proxy = scope.ServiceProvider.GetRequiredService<IUserService>();
 ```
 
-### 2. 创建代理并调用
+**约定**：扫描程序集中继承 `ICacheableService` 的接口，查找实现类（若有多实现，优先 `IXxxService` → `XxxService`）。
+
+### 方式二：单接口注册（AddCachedProxyServices）
+
+适用于少数接口、或不想让接口继承 `ICacheableService` 的场景：
 
 ```csharp
-using Castle.DynamicProxy;
-using Microsoft.Extensions.Options;
+using Tenon.Caching.InMemory.Extensions;
+using Tenon.Caching.Interceptor.Castle.Extensions;
 
-var target = new MyService();
-var interceptor = new CacheAsideAsyncInterceptor(
-    provider.GetRequiredService<ICacheProvider>(),
-    provider.GetRequiredService<ICacheKeyGenerator>(),
-    provider.GetRequiredService<IOptions<CacheAsideInterceptorOptions>>().Value,
-    provider.GetRequiredService<ILogger<CacheAsideAsyncInterceptor>>());
-
-var generator = new ProxyGenerator();
-var proxy = generator.CreateInterfaceProxyWithTarget<IMyService>(target, interceptor);
-
-var first = await proxy.GetAsync(1);
-var second = await proxy.GetAsync(1);  // 第二次可能命中缓存
-// first == second
-```
-
-### 3. 目标服务与特性
-
-```csharp
-public interface IMyService
+public interface IOrderService
 {
-    Task<int> GetAsync(int id);
-    Task<int> GetNoCacheAsync(int id);  // 无特性，直接执行
+    Task<Order?> GetByIdAsync(int id);
 }
+public class OrderService : IOrderService { /* ... */ }
 
-public class MyService : IMyService
+var services = new ServiceCollection()
+    .AddInMemoryCache()
+    .AddCachedProxyServices<IOrderService, OrderService>(o => o.DelayedDelete = TimeSpan.FromMilliseconds(1));
+
+using var sp = services.BuildServiceProvider();
+using var scope = sp.CreateScope();
+var proxy = scope.ServiceProvider.GetRequiredService<IOrderService>();
+```
+
+### 目标服务与特性标注
+
+在实现类的方法上使用 `[CachingAbl]`、`[CachingEvict]` 等特性；无特性的方法直接透传：
+
+```csharp
+public class UserService : IUserService
 {
     [CachingAbl(ExpirationInSec = 60)]
-    public Task<int> GetAsync(int id) => Task.FromResult(id);
+    public Task<User?> GetByIdAsync(int id) => _repo.GetByIdAsync(id);
 
-    public Task<int> GetNoCacheAsync(int id) => Task.FromResult(id);
+    public Task<int> GetCountAsync() => _repo.GetCountAsync();  // 无特性，不缓存
 }
 ```
+
+---
 
 ## 📖 特性说明
 
@@ -116,26 +124,34 @@ public Task RefreshAsync() => _repo.RefreshAsync();
 
 ```csharp
 [CachingAbl(ExpirationInSec = 600)]
-public Task<Order?> GetOrderAsync(
-    [CachingParameter] string orderId,
-    string traceId)
+public Task<Order?> GetOrderAsync([CachingParameter] string orderId, string traceId)
 ```
 
-## 🔧 默认缓存键生成器（与单元测试一致）
+---
 
-`DefaultCacheKeyGenerator` 行为：
+## ⚙️ 配置项
+
+| 类型 | 选项 | 默认 | 说明 |
+|------|------|------|------|
+| `CacheAsideInterceptorOptions` | `DelayedDelete` | 1 秒 | 延时双删中，第二次删除前的等待时间 |
+
+```csharp
+services.Configure<CacheAsideInterceptorOptions>(o =>
+    o.DelayedDelete = TimeSpan.FromMilliseconds(500));
+```
+
+---
+
+## 🔧 缓存键生成器
+
+### 默认行为
 
 - **无参方法**：`类型名:方法名:0`
 - **带前缀**：`App:类型名:方法名:...`
 - **带参数**：参数序列化后拼接到键
-- **GetCacheKeys**：每个参数生成一条键（非数组参数时使用完整 args，多条键内容相同）
+- **GetCacheKeys**：每个参数生成一条键（非数组参数时使用完整 args）
 
-```csharp
-// 示例：GetCacheKeyPrefix(method, "")  → "FakeTarget:GetNoArg:"
-// 示例：GetCacheKeyPrefix(method, "P") → "P:FakeTarget:GetNoArg:"
-```
-
-## 🔧 自定义缓存键生成器
+### 自定义生成器
 
 ```csharp
 public class CustomCacheKeyGenerator : ICacheKeyGenerator
@@ -146,10 +162,8 @@ public class CustomCacheKeyGenerator : ICacheKeyGenerator
         foreach (var arg in args) key += $":{arg}";
         return key;
     }
-
     public string[] GetCacheKeys(MethodInfo methodInfo, object[] args, string prefix)
         => new[] { GetCacheKey(methodInfo, args, prefix) };
-
     public string GetCacheKeyPrefix(MethodInfo methodInfo, string prefix)
         => string.IsNullOrWhiteSpace(prefix)
             ? $"{methodInfo.DeclaringType?.Name}:{methodInfo.Name}:"
@@ -159,47 +173,54 @@ public class CustomCacheKeyGenerator : ICacheKeyGenerator
 services.AddSingleton<ICacheKeyGenerator, CustomCacheKeyGenerator>();
 ```
 
-## ⚙️ 配置项
-
-| 类型 | 选项 | 默认 | 说明 |
-|------|------|------|------|
-| `CacheAsideInterceptorOptions` | `DelayedDelete` | 1 秒 | 延时双删中，第二次删除前的等待时间 |
-
-```csharp
-services.Configure<CacheAsideInterceptorOptions>(o =>
-{
-    o.DelayedDelete = TimeSpan.FromMilliseconds(500);
-});
-```
+---
 
 ## 🔌 失败补偿队列
 
-失效失败时入队到 `CachingEvictFailedQueue.Instance`：
+失效失败时入队到 `CachingEvictFailedQueue.Instance`，可由后台任务消费重试：
 
 ```csharp
-// Enqueue 后 TryDequeue 可获得键数组
 CachingEvictFailedQueue.Instance.Enqueue(new[] { "key1", "key2" });
-var ok = CachingEvictFailedQueue.Instance.TryDequeue(out var keys);  // true
-// keys 即 ["key1", "key2"]
-
-// 空队列时 TryDequeue 返回 false
+var ok = CachingEvictFailedQueue.Instance.TryDequeue(out var keys);  // true，keys = ["key1", "key2"]
 ```
 
-## 🔨 项目依赖
+---
 
-- Castle.Core.AsyncInterceptor
-- Tenon.Caching.Abstractions
-- Microsoft.Extensions.Logging.Abstractions
-- Microsoft.Extensions.Configuration.Abstractions
+## 🔨 依赖与注意
 
-使用前需提供 `ICacheProvider`（如 Tenon.Caching.InMemory）。
+**依赖**：Castle.Core.AsyncInterceptor、Tenon.Caching.Abstractions、Microsoft.Extensions.*  
+**前置**：使用前需注册 `ICacheProvider`（如 Tenon.Caching.InMemory 或 Tenon.Caching.RedisStackExchange）。
 
-## 📝 使用注意
-
+**使用注意**：
 - 延时双删的延迟时间根据数据一致性与性能权衡设置。
 - `IsHighAvailability = true` 时异常不抛出仅记录；设为 `false` 时抛出。
-- 失效失败入队到 `CachingEvictFailedQueue.Instance`，可由后台任务消费重试。
 - 避免用易变或大对象作为唯一参与键生成的参数。
+
+---
+
+## 📌 高级用法：手动创建代理
+
+若需脱离 DI 手动创建代理（如测试、脚本场景），可自行注册依赖后使用 `ProxyGenerator`：
+
+```csharp
+var services = new ServiceCollection()
+    .AddInMemoryCache()
+    .AddSingleton<ICacheKeyGenerator, DefaultCacheKeyGenerator>()
+    .Configure<CacheAsideInterceptorOptions>(o => { })
+    .AddLogging();
+using var sp = services.BuildServiceProvider();
+
+var target = new MyService();
+var interceptor = new CacheAsideAsyncInterceptor(
+    sp.GetRequiredService<ICacheProvider>(),
+    sp.GetRequiredService<ICacheKeyGenerator>(),
+    sp.GetRequiredService<IOptions<CacheAsideInterceptorOptions>>().Value,
+    sp.GetRequiredService<ILogger<CacheAsideAsyncInterceptor>>());
+var generator = new ProxyGenerator();
+var proxy = generator.CreateInterfaceProxyWithTarget<IMyService>(target, interceptor);
+```
+
+---
 
 ## 🤝 参与贡献
 
