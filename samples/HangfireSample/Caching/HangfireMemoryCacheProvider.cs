@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using Tenon.Caching.Abstractions;
 using Tenon.Caching.InMemory;
 using Tenon.Hangfire.Extensions.Caching;
@@ -16,11 +17,12 @@ public sealed class HangfireMemoryCacheProvider : IHangfireCacheProvider, IDispo
     /// </summary>
     public HangfireMemoryCacheProvider()
     {
-        _cache = new MemoryCacheProvider(
-            cacheName: "HangfireCache",
-            cacheMemoryLimitMegabytes: 100,
-            physicalMemoryLimitPercentage: 10,
-            pollingInterval: TimeSpan.FromMinutes(5));
+        var options = new MemoryCacheOptions
+        {
+            SizeLimit = 100 * 1024,
+            ExpirationScanFrequency = TimeSpan.FromMinutes(5)
+        };
+        _cache = new MemoryCacheProvider(options);
     }
 
     /// <inheritdoc />
