@@ -4,7 +4,7 @@ namespace Tenon.Repository.EfCore;
 /// 完整审计实体基类，实现了完整的审计和软删除功能。
 /// 包含创建时间、创建者、更新时间、更新者以及软删除相关信息。
 /// </summary>
-public class EfFullAuditableEntity : EfEntity, IFullAuditable<long>
+public class EfFullAuditableEntity : EfEntity, IAuditableEntity<long>
 {
     /// <summary>
     /// 获取或设置创建时间。

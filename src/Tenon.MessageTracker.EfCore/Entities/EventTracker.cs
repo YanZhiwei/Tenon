@@ -5,7 +5,7 @@ namespace Tenon.MessageTracker.EfCore.Entities;
 /// <summary>
 /// 事件跟踪实体
 /// </summary>
-public sealed class EventTracker : EfTimestampAuditEntity
+public sealed class EventTracker : EfCreationModificationAuditEntity
 {
     public long EventId { get; set; }
 

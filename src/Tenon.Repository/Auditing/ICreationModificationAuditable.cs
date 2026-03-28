@@ -1,9 +1,9 @@
 namespace Tenon.Repository;
 
 /// <summary>
-/// 时间戳审计接口，用于跟踪实体的创建和更新时间。
+/// 创建与修改审计接口，用于跟踪实体的创建时间和最后更新时间。
 /// </summary>
-public interface ITimestampAuditable
+public interface ICreationModificationAuditable
 {
     /// <summary>
     /// 获取或设置创建时间。

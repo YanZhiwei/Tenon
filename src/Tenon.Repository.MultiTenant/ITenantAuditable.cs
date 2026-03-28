@@ -5,7 +5,7 @@ namespace Tenon.Repository;
 /// </summary>
 /// <typeparam name="TUserKey">用户主键类型</typeparam>
 /// <typeparam name="TTenantKey">租户主键类型</typeparam>
-public interface ITenantAuditable<TUserKey, TTenantKey> : IFullAuditable<TUserKey>, ITenant<TTenantKey>
+public interface ITenantAuditable<TUserKey, TTenantKey> : IAuditableEntity<TUserKey>, ITenant<TTenantKey>
     where TUserKey : struct
 {
 }

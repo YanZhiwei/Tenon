@@ -1,11 +1,11 @@
 namespace Tenon.Repository;
 
 /// <summary>
-/// 完整审计接口，提供创建、更新和软删除的完整审计功能。
+/// 完整审计实体接口，聚合创建/修改时间、创建/更新者以及软删除的全量审计能力。
 /// 实现此接口的实体将记录创建时间、创建者、更新时间、更新者以及软删除相关信息。
 /// </summary>
 /// <typeparam name="TKey">用户标识的类型</typeparam>
-public interface IFullAuditable<TKey> : ITimestampAuditable, IDeletionAuditable<TKey>
+public interface IAuditableEntity<TKey> : ICreationModificationAuditable, IDeletionAuditable<TKey>
     where TKey : struct
 {
     /// <summary>

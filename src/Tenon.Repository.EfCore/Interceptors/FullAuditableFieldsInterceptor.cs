@@ -66,7 +66,7 @@ public class FullAuditableFieldsInterceptor : SaveChangesInterceptor
         var userId = userResolver.UserId;
         if (userId <= 0) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<IFullAuditable<long>>())
+        foreach (var entry in context.ChangeTracker.Entries<IAuditableEntity<long>>())
         {
             switch (entry.State)
             {

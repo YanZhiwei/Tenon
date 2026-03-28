@@ -51,7 +51,7 @@ public sealed class TimestampAuditableFieldsInterceptor : SaveChangesInterceptor
     {
         if (context == null) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<ITimestampAuditable>())
+        foreach (var entry in context.ChangeTracker.Entries<ICreationModificationAuditable>())
         {
             switch (entry.State)
             {
