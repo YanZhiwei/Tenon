@@ -48,9 +48,10 @@ public abstract class TenonDbContext : DbContext
         modelBuilder.ApplySoftDeleteQueryFilter();
         
         // 如果启用了多租户，为所有实现了ITenant的实体添加全局租户过滤器
+        // 传递 resolver 引用而非快照值，确保每次查询时动态读取当前 TenantId
         if (_multiTenancyEnabled && _tenantResolver != null)
         {
-            modelBuilder.ApplyTenantFilter(_tenantResolver.TenantId);
+            modelBuilder.ApplyTenantFilter(_tenantResolver);
         }
     }
 }

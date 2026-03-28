@@ -50,7 +50,7 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     }
 
     /// <summary>
-    /// 禁用租户过滤
+    /// 禁用租户过滤（通过 IgnoreQueryFilters 绕过全局过滤器）
     /// </summary>
     /// <returns>一个可释放的对象，用于在完成操作后恢复租户过滤</returns>
     public IDisposable DisableTenantFilter()
@@ -69,30 +69,32 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     }
 
     /// <summary>
-    /// 切换到指定租户
+    /// 临时切换到指定租户（修改 resolver 状态，全局过滤器动态读取）
     /// </summary>
     /// <param name="tenantId">租户标识</param>
     /// <returns>一个可释放的对象，用于在完成操作后恢复原租户</returns>
     public IDisposable ChangeTenant(long tenantId)
     {
-        var previousTenantId = _currentTenantId;
+        var previousTenantId = _tenantResolver.TenantId;
+        _tenantResolver.TenantId = tenantId;
         _currentTenantId = tenantId;
-        return new DisposeAction(() => _currentTenantId = previousTenantId);
+        return new DisposeAction(() =>
+        {
+            _tenantResolver.TenantId = previousTenantId;
+            _currentTenantId = previousTenantId;
+        });
     }
 
     /// <summary>
-    /// 获取数据库集合，应用租户过滤
+    /// 获取数据库集合，租户过滤由 DbContext 全局查询过滤器负责。
+    /// 仅在禁用租户过滤时调用 IgnoreQueryFilters 绕过全局过滤器。
     /// </summary>
     /// <param name="noTracking">是否不追踪实体</param>
     protected override IQueryable<TEntity> GetDbSet(bool noTracking)
     {
         var query = base.GetDbSet(noTracking);
-        
-        if (_tenantFilterEnabled)
-        {
-            query = query.Where(e => e.TenantId == _currentTenantId);
-        }
-        
+        if (!_tenantFilterEnabled)
+            query = query.IgnoreQueryFilters();
         return query;
     }
 
@@ -172,7 +174,7 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <param name="tenantId">租户标识</param>
     /// <param name="whereExpression">查询条件表达式</param>
     /// <param name="token">取消令牌</param>
-    public async Task<int> CountByTenantAsync(long tenantId, Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default)
+    public async Task<long> CountByTenantAsync(long tenantId, Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default)
     {
         using (ChangeTenant(tenantId))
         {
@@ -185,7 +187,7 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// </summary>
     /// <param name="whereExpression">查询条件表达式</param>
     /// <param name="token">取消令牌</param>
-    public async Task<int> CountForCurrentTenantAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default)
+    public async Task<long> CountForCurrentTenantAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default)
     {
         return await CountAsync(whereExpression, token);
     }
@@ -244,60 +246,5 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
         return await GetAsync(keyValue, navigationPropertyPaths, token);
     }
 
-    /// <summary>
-    /// 在插入实体前设置租户ID
-    /// </summary>
-    /// <param name="entity">要插入的实体</param>
-    /// <param name="token">取消令牌</param>
-    public override async Task<int> InsertAsync(TEntity entity, CancellationToken token = default)
-    {
-        entity.TenantId = _currentTenantId;
-        return await base.InsertAsync(entity, token);
-    }
-
-    /// <summary>
-    /// 在批量插入实体前设置租户ID
-    /// </summary>
-    /// <param name="entities">要插入的实体集合</param>
-    /// <param name="token">取消令牌</param>
-    public override async Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken token = default)
-    {
-        var entityList = entities.ToList();
-        foreach (var entity in entityList)
-        {
-            entity.TenantId = _currentTenantId;
-        }
-        
-        return await base.InsertAsync(entityList, token);
-    }
 }
 
-/// <summary>
-/// 用于管理资源释放的操作类
-/// </summary>
-internal class DisposeAction : IDisposable
-{
-    private readonly Action _action;
-    private bool _disposed;
-
-    /// <summary>
-    /// 构造函数
-    /// </summary>
-    /// <param name="action">释放时执行的操作</param>
-    public DisposeAction(Action action)
-    {
-        _action = action ?? throw new ArgumentNullException(nameof(action));
-    }
-
-    /// <summary>
-    /// 释放资源
-    /// </summary>
-    public void Dispose()
-    {
-        if (_disposed)
-            return;
-
-        _action();
-        _disposed = true;
-    }
-}

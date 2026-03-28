@@ -64,55 +64,65 @@ public class DeletionAuditableFieldsInterceptor : SaveChangesInterceptor
         var userId = userResolver.UserId;
         if (userId <= 0) return;
 
+        var now = DateTimeOffset.UtcNow;
+        var visited = new HashSet<object>(ReferenceEqualityComparer.Instance);
+
         var entries = context.ChangeTracker.Entries<IDeletionAuditable<long>>()
             .Where(e => e.State != EntityState.Deleted && e.Entity.IsDeleted)
             .ToList();
 
         foreach (var entry in entries)
+            ApplySoftDelete(entry.Entity, entry.Metadata.GetNavigations()
+                .Where(n => typeof(IDeletionAuditable<long>).IsAssignableFrom(n.TargetEntityType.ClrType))
+                .ToList(), entry, userId, now, visited);
+    }
+
+    private static void ApplySoftDelete(
+        IDeletionAuditable<long> entity,
+        IReadOnlyList<Microsoft.EntityFrameworkCore.Metadata.INavigation> navigations,
+        Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry entry,
+        long userId,
+        DateTimeOffset now,
+        HashSet<object> visited)
+    {
+        if (!visited.Add(entity)) return;
+
+        if (entity.IsDeleted && !entity.DeletedAt.HasValue)
         {
-            // 设置软删除字段
-            if (entry.Entity.IsDeleted && !entry.Entity.DeletedAt.HasValue)
+            entity.DeletedAt = now;
+            entity.DeletedBy = userId;
+        }
+
+        foreach (var navigation in navigations)
+        {
+            var navigationValue = entry.Navigation(navigation).CurrentValue;
+            if (navigationValue == null) continue;
+
+            if (navigation.IsCollection)
             {
-                entry.Entity.DeletedAt = DateTimeOffset.UtcNow;
-                entry.Entity.DeletedBy = userId;
-
-                // 获取所有导航属性
-                var navigations = entry.Metadata.GetNavigations()
-                    .Where(n => typeof(IDeletionAuditable<long>).IsAssignableFrom(n.TargetEntityType.ClrType))
-                    .ToList();
-
-                foreach (var navigation in navigations)
+                foreach (var item in ((IEnumerable)navigationValue).Cast<IDeletionAuditable<long>>())
                 {
-                    // 获取导航属性的值
-                    var navigationValue = entry.Navigation(navigation).CurrentValue;
-                    if (navigationValue == null) continue;
-
-                    // 处理集合导航属性
-                    if (navigation.IsCollection)
+                    if (visited.Contains(item)) continue;
+                    if (!item.IsDeleted)
                     {
-                        var items = ((IEnumerable)navigationValue).Cast<IDeletionAuditable<long>>();
-                        foreach (var item in items)
-                        {
-                            if (!item.IsDeleted)
-                            {
-                                item.IsDeleted = true;
-                                item.DeletedAt = DateTimeOffset.UtcNow;
-                                item.DeletedBy = userId;
-                            }
-                        }
+                        item.IsDeleted = true;
+                        item.DeletedAt = now;
+                        item.DeletedBy = userId;
                     }
-                    // 处理单个导航属性
-                    else
-                    {
-                        var item = (IDeletionAuditable<long>)navigationValue;
-                        if (!item.IsDeleted)
-                        {
-                            item.IsDeleted = true;
-                            item.DeletedAt = DateTimeOffset.UtcNow;
-                            item.DeletedBy = userId;
-                        }
-                    }
+                    visited.Add(item);
                 }
+            }
+            else
+            {
+                var item = (IDeletionAuditable<long>)navigationValue;
+                if (visited.Contains(item)) continue;
+                if (!item.IsDeleted)
+                {
+                    item.IsDeleted = true;
+                    item.DeletedAt = now;
+                    item.DeletedBy = userId;
+                }
+                visited.Add(item);
             }
         }
     }

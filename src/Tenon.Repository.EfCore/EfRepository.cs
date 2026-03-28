@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Tenon.Extensions.Collection;
@@ -241,11 +241,11 @@ public class EfRepository<TEntity> : IRepository<TEntity, long>, IEfRepository<T
     /// </summary>
     /// <param name="whereExpression">查询条件表达式</param>
     /// <param name="token">取消令牌</param>
-    public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression,
+    public virtual async Task<long> CountAsync(Expression<Func<TEntity, bool>> whereExpression,
         CancellationToken token = default)
     {
         _logger.LogDebug("开始获取满足条件的实体数量，查询条件: {WhereExpression}", whereExpression);
-        var count = await DbContext.Set<TEntity>().AsNoTracking().CountAsync(whereExpression, token);
+        var count = await DbContext.Set<TEntity>().AsNoTracking().LongCountAsync(whereExpression, token);
         _logger.LogDebug("满足条件的实体数量: {Count}", count);
         return count;
     }
@@ -298,7 +298,7 @@ public class EfRepository<TEntity> : IRepository<TEntity, long>, IEfRepository<T
     }
 
     /// <summary>
-    /// 异步更新实体的指定属性
+    /// 异步更新实体的指定属性。支持 Detached 状态实体的局部列更新。
     /// </summary>
     /// <param name="entity">要更新的实体</param>
     /// <param name="updatingExpressions">指定要更新的属性表达式数组</param>
@@ -307,27 +307,24 @@ public class EfRepository<TEntity> : IRepository<TEntity, long>, IEfRepository<T
         CancellationToken token = default)
     {
         if (updatingExpressions.IsNullOrEmpty())
-            await UpdateAsync(entity, token);
+            return await UpdateAsync(entity, token);
+
         var entry = DbContext.Entry(entity);
-        if (entry.State == EntityState.Detached)
-            throw new InvalidOperationException("Entity is not tracked, need to specify updated columns");
 
-        if (entry.State == EntityState.Added || entry.State == EntityState.Deleted)
-            throw new InvalidOperationException($"{nameof(entity)},The entity state is {nameof(entry.State)}");
-
-        if (entry.State == EntityState.Modified)
-        {
-            var propNames = updatingExpressions.Select(x => x.GetMemberName()).ToArray();
-            foreach (var propEntry in entry.Properties)
-                if (!propNames.Contains(propEntry.Metadata.Name))
-                    propEntry.IsModified = false;
-        }
+        if (entry.State is EntityState.Added or EntityState.Deleted)
+            throw new InvalidOperationException($"{nameof(entity)} state is {entry.State}, cannot perform partial update");
 
         if (entry.State == EntityState.Detached)
         {
             entry.State = EntityState.Unchanged;
             foreach (var expression in updatingExpressions)
                 entry.Property(expression).IsModified = true;
+        }
+        else
+        {
+            var propNames = updatingExpressions.Select(x => x.GetMemberName()).ToArray();
+            foreach (var propEntry in entry.Properties)
+                propEntry.IsModified = propNames.Contains(propEntry.Metadata.Name);
         }
 
         return await DbContext.SaveChangesAsync(token);
@@ -336,9 +333,9 @@ public class EfRepository<TEntity> : IRepository<TEntity, long>, IEfRepository<T
     /// <summary>
     /// 异步获取所有实体
     /// </summary>
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken token = default)
     {
-        return await GetAll().ToListAsync();
+        return await GetAll().ToListAsync(token);
     }
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 
 namespace Tenon.Repository;
 
@@ -37,7 +37,7 @@ public interface IRepository<TEntity, in TKey> where TEntity : IEntity<TKey>
     /// <summary>
     /// 异步获取满足条件的实体数量
     /// </summary>
-    Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default);
+    Task<long> CountAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default);
     
     /// <summary>
     /// 异步删除单个实体
@@ -63,7 +63,7 @@ public interface IRepository<TEntity, in TKey> where TEntity : IEntity<TKey>
     /// <summary>
     /// 异步获取所有实体
     /// </summary>
-    Task<IEnumerable<TEntity>> GetAllAsync();
+    Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken token = default);
 
     /// <summary>
     /// 异步获取满足条件的实体列表

@@ -27,42 +27,37 @@ public static class ModelBuilderExtension
     }
     
     /// <summary>
-    /// 应用多租户查询过滤器
+    /// 应用多租户查询过滤器（运行时动态读取 TenantId，避免在 OnModelCreating 时快照为常量）
     /// </summary>
     /// <param name="modelBuilder">模型构建器</param>
-    /// <param name="tenantId">当前租户ID</param>
-    public static void ApplyTenantFilter(this ModelBuilder modelBuilder, long tenantId)
+    /// <param name="tenantResolver">租户解析器，每次查询执行时从中实时读取 TenantId</param>
+    public static void ApplyTenantFilter(this ModelBuilder modelBuilder, IEfTenantResolver tenantResolver)
     {
+        var resolverConstant = Expression.Constant(tenantResolver, typeof(IEfTenantResolver));
+        var tenantIdAccessor = Expression.Property(resolverConstant, nameof(ITenantResolver<long, long>.TenantId));
+
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
-            // 检查实体是否实现了ITenant<long>接口
-            if (typeof(ITenant<long>).IsAssignableFrom(entityType.ClrType))
+            if (!typeof(ITenant<long>).IsAssignableFrom(entityType.ClrType))
+                continue;
+
+            var parameter = Expression.Parameter(entityType.ClrType, "e");
+            var tenantProperty = Expression.Property(parameter, nameof(ITenant<long>.TenantId));
+            var tenantEqual = Expression.Equal(tenantProperty, tenantIdAccessor);
+
+            Expression filterBody;
+            if (typeof(IDeletionAuditable<long>).IsAssignableFrom(entityType.ClrType))
             {
-                var parameter = Expression.Parameter(entityType.ClrType, "e");
-                var property = Expression.Property(parameter, nameof(ITenant<long>.TenantId));
-                var tenantIdConstant = Expression.Constant(tenantId);
-                var equalExpression = Expression.Equal(property, tenantIdConstant);
-                
-                // 如果实体同时实现了软删除接口，则组合两个过滤条件
-                if (typeof(IDeletionAuditable<long>).IsAssignableFrom(entityType.ClrType))
-                {
-                    var isDeletedProperty = Expression.Property(parameter, nameof(IDeletionAuditable<long>.IsDeleted));
-                    var falseConstant = Expression.Constant(false);
-                    var notDeletedExpression = Expression.Equal(isDeletedProperty, falseConstant);
-                    
-                    // 组合租户过滤和软删除过滤
-                    var combinedExpression = Expression.AndAlso(equalExpression, notDeletedExpression);
-                    var lambda = Expression.Lambda(combinedExpression, parameter);
-                    
-                    modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
-                }
-                else
-                {
-                    // 只应用租户过滤
-                    var lambda = Expression.Lambda(equalExpression, parameter);
-                    modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
-                }
+                var isDeletedProperty = Expression.Property(parameter, nameof(IDeletionAuditable<long>.IsDeleted));
+                var notDeleted = Expression.Equal(isDeletedProperty, Expression.Constant(false));
+                filterBody = Expression.AndAlso(tenantEqual, notDeleted);
             }
+            else
+            {
+                filterBody = tenantEqual;
+            }
+
+            modelBuilder.Entity(entityType.ClrType).HasQueryFilter(Expression.Lambda(filterBody, parameter));
         }
     }
 }

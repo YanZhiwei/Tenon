@@ -72,7 +72,7 @@ public interface ITenantRepository<TEntity, in TKey, TTenantKey> : IRepository<T
     /// <param name="whereExpression">查询条件表达式</param>
     /// <param name="token">取消令牌</param>
     /// <returns>实体数量</returns>
-    Task<int> CountByTenantAsync(TTenantKey tenantId, Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default);
+    Task<long> CountByTenantAsync(TTenantKey tenantId, Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default);
     
     /// <summary>
     /// 异步获取当前租户下满足条件的实体数量
@@ -80,7 +80,7 @@ public interface ITenantRepository<TEntity, in TKey, TTenantKey> : IRepository<T
     /// <param name="whereExpression">查询条件表达式</param>
     /// <param name="token">取消令牌</param>
     /// <returns>实体数量</returns>
-    Task<int> CountForCurrentTenantAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default);
+    Task<long> CountForCurrentTenantAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default);
     
     /// <summary>
     /// 异步根据主键获取指定租户下的实体
