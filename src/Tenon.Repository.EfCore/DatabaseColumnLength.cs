@@ -1,4 +1,4 @@
-namespace Tenon.Repository;
+namespace Tenon.Repository.EfCore;
 
 /// <summary>
 ///     数据库列长度常量定义
@@ -223,4 +223,4 @@ public static class DatabaseColumnLength
     /// </summary>
     public const int ColorCodeLength = 32;
     #endregion
-} 
+}

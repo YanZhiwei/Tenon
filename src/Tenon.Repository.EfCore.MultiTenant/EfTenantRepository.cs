@@ -1,8 +1,9 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Tenon.Repository.EfCore;
 
-namespace Tenon.Repository.EfCore;
+namespace Tenon.Repository.EfCore.MultiTenant;
 
 /// <summary>
 /// EF Core 多租户仓储实现
@@ -101,8 +102,6 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步获取指定租户下的所有实体
     /// </summary>
-    /// <param name="tenantId">租户标识</param>
-    /// <param name="token">取消令牌</param>
     public async Task<IEnumerable<TEntity>> GetAllByTenantAsync(long tenantId, CancellationToken token = default)
     {
         using (ChangeTenant(tenantId))
@@ -114,7 +113,6 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步获取当前租户下的所有实体
     /// </summary>
-    /// <param name="token">取消令牌</param>
     public async Task<IEnumerable<TEntity>> GetAllForCurrentTenantAsync(CancellationToken token = default)
     {
         return await GetAllAsync();
@@ -123,9 +121,6 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步获取指定租户下满足条件的实体列表
     /// </summary>
-    /// <param name="tenantId">租户标识</param>
-    /// <param name="whereExpression">查询条件表达式</param>
-    /// <param name="token">取消令牌</param>
     public async Task<IEnumerable<TEntity>> GetListByTenantAsync(long tenantId, Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default)
     {
         using (ChangeTenant(tenantId))
@@ -137,8 +132,6 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步获取当前租户下满足条件的实体列表
     /// </summary>
-    /// <param name="whereExpression">查询条件表达式</param>
-    /// <param name="token">取消令牌</param>
     public async Task<IEnumerable<TEntity>> GetListForCurrentTenantAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default)
     {
         return await GetListAsync(whereExpression, token);
@@ -147,9 +140,6 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步检查指定租户下是否存在满足条件的实体
     /// </summary>
-    /// <param name="tenantId">租户标识</param>
-    /// <param name="whereExpression">查询条件表达式</param>
-    /// <param name="token">取消令牌</param>
     public async Task<bool> AnyByTenantAsync(long tenantId, Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default)
     {
         using (ChangeTenant(tenantId))
@@ -161,8 +151,6 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步检查当前租户下是否存在满足条件的实体
     /// </summary>
-    /// <param name="whereExpression">查询条件表达式</param>
-    /// <param name="token">取消令牌</param>
     public async Task<bool> AnyForCurrentTenantAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default)
     {
         return await AnyAsync(whereExpression, token);
@@ -171,9 +159,6 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步获取指定租户下满足条件的实体数量
     /// </summary>
-    /// <param name="tenantId">租户标识</param>
-    /// <param name="whereExpression">查询条件表达式</param>
-    /// <param name="token">取消令牌</param>
     public async Task<long> CountByTenantAsync(long tenantId, Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default)
     {
         using (ChangeTenant(tenantId))
@@ -185,8 +170,6 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步获取当前租户下满足条件的实体数量
     /// </summary>
-    /// <param name="whereExpression">查询条件表达式</param>
-    /// <param name="token">取消令牌</param>
     public async Task<long> CountForCurrentTenantAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken token = default)
     {
         return await CountAsync(whereExpression, token);
@@ -195,9 +178,6 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步根据主键获取指定租户下的实体
     /// </summary>
-    /// <param name="tenantId">租户标识</param>
-    /// <param name="keyValue">主键值</param>
-    /// <param name="token">取消令牌</param>
     public async Task<TEntity?> GetByTenantAsync(long tenantId, long keyValue, CancellationToken token = default)
     {
         using (ChangeTenant(tenantId))
@@ -209,8 +189,6 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步根据主键获取当前租户下的实体
     /// </summary>
-    /// <param name="keyValue">主键值</param>
-    /// <param name="token">取消令牌</param>
     public async Task<TEntity?> GetForCurrentTenantAsync(long keyValue, CancellationToken token = default)
     {
         return await GetAsync(keyValue, token);
@@ -219,12 +197,8 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步根据主键和导航属性路径获取指定租户下的实体
     /// </summary>
-    /// <param name="tenantId">租户标识</param>
-    /// <param name="keyValue">主键值</param>
-    /// <param name="navigationPropertyPaths">导航属性路径集合</param>
-    /// <param name="token">取消令牌</param>
-    public async Task<TEntity?> GetByTenantAsync(long tenantId, long keyValue, 
-        IEnumerable<Expression<Func<TEntity, dynamic>>>? navigationPropertyPaths = null, 
+    public async Task<TEntity?> GetByTenantAsync(long tenantId, long keyValue,
+        IEnumerable<Expression<Func<TEntity, dynamic>>>? navigationPropertyPaths = null,
         CancellationToken token = default)
     {
         using (ChangeTenant(tenantId))
@@ -236,15 +210,10 @@ public class EfTenantRepository<TEntity> : EfRepository<TEntity>, ITenantReposit
     /// <summary>
     /// 异步根据主键和导航属性路径获取当前租户下的实体
     /// </summary>
-    /// <param name="keyValue">主键值</param>
-    /// <param name="navigationPropertyPaths">导航属性路径集合</param>
-    /// <param name="token">取消令牌</param>
-    public async Task<TEntity?> GetForCurrentTenantWithNavigationAsync(long keyValue, 
-        IEnumerable<Expression<Func<TEntity, dynamic>>>? navigationPropertyPaths = null, 
+    public async Task<TEntity?> GetForCurrentTenantWithNavigationAsync(long keyValue,
+        IEnumerable<Expression<Func<TEntity, dynamic>>>? navigationPropertyPaths = null,
         CancellationToken token = default)
     {
         return await GetAsync(keyValue, navigationPropertyPaths, token);
     }
-
 }
-

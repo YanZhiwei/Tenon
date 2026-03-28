@@ -1,4 +1,6 @@
-namespace Tenon.Repository.EfCore;
+using Tenon.Repository.EfCore;
+
+namespace Tenon.Repository.EfCore.MultiTenant;
 
 /// <summary>
 /// 多租户完整审计实体基类

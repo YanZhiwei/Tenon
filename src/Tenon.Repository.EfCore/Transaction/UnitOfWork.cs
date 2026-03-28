@@ -1,10 +1,10 @@
-﻿using System.Data;
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Tenon.Repository.EfCore.Transaction;
 
-public abstract class UnitOfWork : IUnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
     protected readonly DbContext DbContext;
 
@@ -52,6 +52,9 @@ public abstract class UnitOfWork : IUnitOfWork
         await DbTransaction.CommitAsync(token);
     }
 
-    protected abstract IDbContextTransaction GetDbTransaction(
-        IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
+    protected virtual IDbContextTransaction GetDbTransaction(
+        IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+    {
+        return DbContext.Database.BeginTransaction(isolationLevel);
+    }
 }

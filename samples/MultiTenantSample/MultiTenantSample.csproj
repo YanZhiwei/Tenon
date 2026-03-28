@@ -14,7 +14,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Tenon.Repository\Tenon.Repository.csproj" />
+    <ProjectReference Include="..\..\src\Tenon.Repository.MultiTenant\Tenon.Repository.MultiTenant.csproj" />
     <ProjectReference Include="..\..\src\Tenon.Repository.EfCore\Tenon.Repository.EfCore.csproj" />
+    <ProjectReference Include="..\..\src\Tenon.Repository.EfCore.MultiTenant\Tenon.Repository.EfCore.MultiTenant.csproj" />
   </ItemGroup>
 
 </Project>

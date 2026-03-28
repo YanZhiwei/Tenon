@@ -9,15 +9,15 @@ namespace Tenon.Repository.EfCore.Interceptors;
 /// </summary>
 public class DeletionAuditableFieldsInterceptor : SaveChangesInterceptor
 {
-    private readonly IUserResolver<long> userResolver;
+    private readonly ICurrentUser<long> userResolver;
 
     /// <summary>
     /// 初始化 <see cref="DeletionAuditableFieldsInterceptor"/> 类的新实例。
     /// </summary>
-    /// <param name="userResolver">用户解析器，用于获取当前用户ID</param>
-    public DeletionAuditableFieldsInterceptor(IUserResolver<long> userResolver)
+    /// <param name="currentUser">当前用户上下文，用于获取当前用户ID</param>
+    public DeletionAuditableFieldsInterceptor(ICurrentUser<long> currentUser)
     {
-        this.userResolver = userResolver;
+        this.userResolver = currentUser;
     }
 
     /// <summary>

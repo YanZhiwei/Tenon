@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Tenon.Repository.EfCore.Interceptors;
+namespace Tenon.Repository.EfCore.MultiTenant.Interceptors;
 
 /// <summary>
 /// 多租户拦截器，用于自动设置租户ID
@@ -45,14 +45,10 @@ public class TenantInterceptor : SaveChangesInterceptor
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    /// <summary>
-    /// 应用租户ID
-    /// </summary>
-    /// <param name="dbContext">数据库上下文</param>
     private void ApplyTenantId(DbContext dbContext)
     {
         var tenantId = _tenantResolver.TenantId;
-        var entries = dbContext.ChangeTracker.Entries<ITenant<long>>().Where(e => 
+        var entries = dbContext.ChangeTracker.Entries<ITenant<long>>().Where(e =>
             e.State == EntityState.Added);
 
         foreach (var entry in entries)

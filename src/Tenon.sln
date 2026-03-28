@@ -168,6 +168,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Caching.Interceptor.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Infra.ConsulTests", "..\test\Tenon.Infra.ConsulTests\Tenon.Infra.ConsulTests.csproj", "{D9AF1D0C-3EC9-47D9-AF08-307A9FBB8859}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Repository.MultiTenant", "Tenon.Repository.MultiTenant\Tenon.Repository.MultiTenant.csproj", "{889C644D-F944-453B-93EA-00468A87DA3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenon.Repository.EfCore.MultiTenant", "Tenon.Repository.EfCore.MultiTenant\Tenon.Repository.EfCore.MultiTenant.csproj", "{B9C69A15-40FD-4CC5-9C00-C1963C321681}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1006,6 +1010,30 @@ Global
 		{D9AF1D0C-3EC9-47D9-AF08-307A9FBB8859}.Release|x64.Build.0 = Release|Any CPU
 		{D9AF1D0C-3EC9-47D9-AF08-307A9FBB8859}.Release|x86.ActiveCfg = Release|Any CPU
 		{D9AF1D0C-3EC9-47D9-AF08-307A9FBB8859}.Release|x86.Build.0 = Release|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Debug|x64.Build.0 = Debug|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Debug|x86.Build.0 = Debug|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Release|x64.ActiveCfg = Release|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Release|x64.Build.0 = Release|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Release|x86.ActiveCfg = Release|Any CPU
+		{889C644D-F944-453B-93EA-00468A87DA3F}.Release|x86.Build.0 = Release|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Debug|x64.Build.0 = Debug|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Debug|x86.Build.0 = Debug|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Release|x64.ActiveCfg = Release|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Release|x64.Build.0 = Release|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Release|x86.ActiveCfg = Release|Any CPU
+		{B9C69A15-40FD-4CC5-9C00-C1963C321681}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

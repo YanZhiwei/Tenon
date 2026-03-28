@@ -4,8 +4,8 @@ using Microsoft.OpenApi.Models;
 using MultiTenantSample.Data;
 using MultiTenantSample.Services;
 using Tenon.Repository;
-using Tenon.Repository.EfCore;
 using Tenon.Repository.EfCore.Extensions;
+using Tenon.Repository.EfCore.MultiTenant;
 
 var builder = WebApplication.CreateBuilder(args);
 

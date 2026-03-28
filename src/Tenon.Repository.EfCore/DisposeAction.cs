@@ -3,7 +3,7 @@ namespace Tenon.Repository.EfCore;
 /// <summary>
 /// 用于在 using 语句结束时执行回调操作的辅助类
 /// </summary>
-internal sealed class DisposeAction : IDisposable
+public sealed class DisposeAction : IDisposable
 {
     private readonly Action _action;
     private bool _disposed;

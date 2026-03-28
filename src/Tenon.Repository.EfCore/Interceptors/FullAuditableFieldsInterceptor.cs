@@ -9,15 +9,15 @@ namespace Tenon.Repository.EfCore.Interceptors;
 /// </summary>
 public class FullAuditableFieldsInterceptor : SaveChangesInterceptor
 {
-    private readonly IUserResolver<long> userResolver;
+    private readonly ICurrentUser<long> userResolver;
 
     /// <summary>
     /// 初始化 <see cref="FullAuditableFieldsInterceptor"/> 类的新实例。
     /// </summary>
-    /// <param name="userResolver">用户解析器，用于获取当前用户ID</param>
-    public FullAuditableFieldsInterceptor(IUserResolver<long> userResolver)
+    /// <param name="currentUser">当前用户上下文，用于获取当前用户ID</param>
+    public FullAuditableFieldsInterceptor(ICurrentUser<long> currentUser)
     {
-        this.userResolver = userResolver;
+        this.userResolver = currentUser;
     }
 
     /// <summary>

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Http;
-using Tenon.Repository.EfCore;
+using Tenon.Repository.EfCore.MultiTenant;
 
 namespace MultiTenantSample.TenantResolvers;
 
