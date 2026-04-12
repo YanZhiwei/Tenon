@@ -363,3 +363,8 @@ MigrationBackup/
 FodyWeavers.xsd
 src/.vs/Tenon/v17/.suo
 /src/.vs/Tenon/v17/.suo
+
+# Local AI tooling folders
+.codex/
+.cursor/
+.claude/
